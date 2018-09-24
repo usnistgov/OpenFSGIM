@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The basic Observation model.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="data_quality.xsd"/>
+	<xs:include schemaLocation="metadata.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:element name="Observation" type="Observation"/>
+	<xs:complexType name="Observation">
+		<xs:annotation>
+			<xs:documentation>Weather observation. This class comprises the measurements and observed phenomena at a point in time and for a given weather area.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="metadata" type="MD_Metadata" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Metadata for the observation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="parameter" type="xs:anyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This holds any data primitive of complex structure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resultQuality" type="DQ_Element" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality metadata about the observation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resultTime" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time when observation procedure was applied. Can be used to store product generation time or issue time.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="samplingTime" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sampling time of observation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="procedure" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The procedure is the description of a process used to generate the result. 
+It must be suitable for the observed property. 
+							NOTE: 	At this level we do not distinguish between sensor-observations, estimations made by an observer, or algorithms, simulations, computations and complex processing chains.	</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ObservationCollection" type="ObservationCollection"/>
+	<xs:complexType name="ObservationCollection">
+		<xs:annotation>
+			<xs:documentation>Collection of arbitrary observations.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="member" type="xs:anyURI" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Member of observation collection.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

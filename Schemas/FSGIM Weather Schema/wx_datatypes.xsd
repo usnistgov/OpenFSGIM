@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Data types used in weather descriptions.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="measures.xsd"/>
+	<xs:simpleType name="Compass16">
+		<xs:annotation>
+			<xs:documentation>Enumeration for compass points, including 12 intercardinal points.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>North.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NNE">
+				<xs:annotation>
+					<xs:documentation>North-North-East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NE">
+				<xs:annotation>
+					<xs:documentation>North-East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ENE">
+				<xs:annotation>
+					<xs:documentation>East-North-East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ESE">
+				<xs:annotation>
+					<xs:documentation>East-South-East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SE">
+				<xs:annotation>
+					<xs:documentation>South-East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SSE">
+				<xs:annotation>
+					<xs:documentation>South-South-East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="S">
+				<xs:annotation>
+					<xs:documentation>South.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SSW">
+				<xs:annotation>
+					<xs:documentation>South-South-West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SW">
+				<xs:annotation>
+					<xs:documentation>South-West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WSW">
+				<xs:annotation>
+					<xs:documentation>West-South-West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="W">
+				<xs:annotation>
+					<xs:documentation>West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WNW">
+				<xs:annotation>
+					<xs:documentation>West-North-West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NW">
+				<xs:annotation>
+					<xs:documentation>North-West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NNW">
+				<xs:annotation>
+					<xs:documentation>North-North-West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Compass4">
+		<xs:annotation>
+			<xs:documentation>Enumeration for cardinal compass points.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>North.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="S">
+				<xs:annotation>
+					<xs:documentation>South.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>East</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="W">
+				<xs:annotation>
+					<xs:documentation>West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Compass8">
+		<xs:annotation>
+			<xs:documentation>Enumeration for 8 compass points, including 4 intercardinal points.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>North.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NE">
+				<xs:annotation>
+					<xs:documentation>North-East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SE">
+				<xs:annotation>
+					<xs:documentation>South-East.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="S">
+				<xs:annotation>
+					<xs:documentation>South.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SW">
+				<xs:annotation>
+					<xs:documentation>South-West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="W">
+				<xs:annotation>
+					<xs:documentation>West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NW">
+				<xs:annotation>
+					<xs:documentation>North-West.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ForecastChangeIndicator">
+		<xs:annotation>
+			<xs:documentation>Enumeration for forecast change indicator descriptions.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BECOMING">
+				<xs:annotation>
+					<xs:documentation>Forecast change indicator is becoming.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NO SIGNIFICANT CHANGE">
+				<xs:annotation>
+					<xs:documentation>Forecast change indicator is no significant change.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Forecast change indicator is temporary.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FROM">
+				<xs:annotation>
+					<xs:documentation>Forecast change indicator is from.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Growth">
+		<xs:annotation>
+			<xs:documentation>Enumeration for storm growth (taken from CCFP).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FAST POSITIVE">
+				<xs:annotation>
+					<xs:documentation>Storm growth is fast and positive.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="POSITIVE">
+				<xs:annotation>
+					<xs:documentation>Storm growth is positive.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NO CHANGE">
+				<xs:annotation>
+					<xs:documentation>Storm growth is no-change.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NEGATIVE">
+				<xs:annotation>
+					<xs:documentation>Storm growth is negative.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntensityChange">
+		<xs:annotation>
+			<xs:documentation>Enumeration for intensity change descriptions.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INTENSIFY">
+				<xs:annotation>
+					<xs:documentation>Weather will intensify.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NO CHANGE">
+				<xs:annotation>
+					<xs:documentation>No change.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WEAKEN">
+				<xs:annotation>
+					<xs:documentation>Weather phenomena will weaken.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PastTendency">
+		<xs:annotation>
+			<xs:documentation>Enumeration for past tendency descriptions.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DOWNWARD">
+				<xs:annotation>
+					<xs:documentation>Past tendency is downward.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NO CHANGE">
+				<xs:annotation>
+					<xs:documentation>Past tendency is no change.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UPWARD">
+				<xs:annotation>
+					<xs:documentation>Past tendency is upward.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="PercentageRange" type="PercentageRange"/>
+	<xs:complexType name="PercentageRange">
+		<xs:annotation>
+			<xs:documentation>Percentage range.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="maximum" type="Percentage" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Maximum value of percentage.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="minimum" type="Percentage" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Minimum value of percentage.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="WeatherDescriptor">
+		<xs:annotation>
+			<xs:documentation>Enumeration for weather descriptor.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BLOWING">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as blowing.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FREEZING">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as freezing.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DRIFTING">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as drifting.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LOW DRIFTING">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as low-drifting.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PARTIAL">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as partial.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PATCHES">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as pathes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SHALLOW">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as shallow.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SHOWERS">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as showers.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="THUNDERSTORMS">
+				<xs:annotation>
+					<xs:documentation>Weather characterized as thunderstorms.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WeatherIntensity">
+		<xs:annotation>
+			<xs:documentation>Enumeration for weather intensity descriptions.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE">
+				<xs:annotation>
+					<xs:documentation>A report of no intensity (no icing present, for example) for a condition.  This is different from missing information</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LIGHT">
+				<xs:annotation>
+					<xs:documentation>Weather intensity is light.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LIGHT-MODERATE">
+				<xs:annotation>
+					<xs:documentation>A light to moderate intensity.  This is used by AIR/SIGMETs</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MODERATE">
+				<xs:annotation>
+					<xs:documentation>Weather intensity is moderate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MODERATE-SEVERE">
+				<xs:annotation>
+					<xs:documentation>A moderate to severe intensity.  This is used by AIR/SIGMETs</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HEAVY">
+				<xs:annotation>
+					<xs:documentation>Weather intensity is heavy.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SEVERE">
+				<xs:annotation>
+					<xs:documentation>Weather intensity is severe.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="WeatherModifier" type="WeatherModifier"/>
+	<xs:complexType name="WeatherModifier">
+		<xs:annotation>
+			<xs:documentation>Weather modifier.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="weatherIntensity" type="WeatherIntensity" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Intensity of weather.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="weatherProximity" type="WeatherProximity" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Proximity of weather.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="WeatherProximity">
+		<xs:annotation>
+			<xs:documentation>Enumeration for weather intensity descriptions.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="VICINITY">
+				<xs:annotation>
+					<xs:documentation>Weather proximity is vicinity.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="WxCode" type="WxCode"/>
+	<xs:complexType name="WxCode">
+		<xs:annotation>
+			<xs:documentation>Restriction of weather codes.  This includes notation for weather conditions (rain, snow, etc) like that used in METARs and TAFs</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+</xs:schema>

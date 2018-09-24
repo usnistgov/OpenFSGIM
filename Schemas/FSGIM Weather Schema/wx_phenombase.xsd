@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Base description of a weather phenomenon.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="measures.xsd"/>
+	<xs:include schemaLocation="iso19136.xsd"/>
+	<xs:include schemaLocation="wx_base.xsd"/>
+	<xs:include schemaLocation="wx_datatypes.xsd"/>
+	<xs:element name="AbstractPhenomenon" type="AbstractPhenomenon"/>
+	<xs:complexType name="AbstractPhenomenon" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstract class intended to act as head of subsitution group for all weather phenomena classes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractFeature">
+				<xs:sequence>
+					<xs:element name="coverage" type="PercentageRange" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Percentage of coverage of the phenomenon.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="abstractExtentOf" type="ExtentOf" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Extent of the phenomenon.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="abstractMovement" type="MovementDescription" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Movement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="abstractIntensity" type="WeatherIntensity" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Weather intensity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MovementDescription" type="MovementDescription"/>
+	<xs:complexType name="MovementDescription">
+		<xs:annotation>
+			<xs:documentation>Movement description feature.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="directionTowards" type="Bearing" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Direction feature is moving towards.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isStationary" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>True if movement description is stationary.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="speed" type="Speed" minOccurs="1" maxOccurs="1" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Speed of feature motion.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="compassDirection" type="Compass16" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Compass direction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ObscurationTypes">
+		<xs:annotation>
+			<xs:documentation>Enumeration for obscuration types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MIST">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is mist.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FOG">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is fog.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SMOKE">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is smoke.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VOLCANIC ASH">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is volcanic ash.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DUST">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is dust.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SAND">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is sand.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HAZE">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is haze.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SPRAY">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is spray.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UNIDENTIFIED">
+				<xs:annotation>
+					<xs:documentation>Obscuration type is unidentified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OtherPhenomenonTypes">
+		<xs:annotation>
+			<xs:documentation>Enumeration for other types of phenomenon.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DUSTWHIRL">
+				<xs:annotation>
+					<xs:documentation>Includes SANDWHIRL (dust devil).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SQUALL">
+				<xs:annotation>
+					<xs:documentation>Squall.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FUNNEL CLOUD">
+				<xs:annotation>
+					<xs:documentation>Includes TORNADO and WATERSPOUT.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DUSTSTORM">
+				<xs:annotation>
+					<xs:documentation>Dust storm.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SANDSTORM">
+				<xs:annotation>
+					<xs:documentation>Sand storm.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PrecipitationTypes">
+		<xs:annotation>
+			<xs:documentation>Enumeration for precipitation types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DRIZZLE">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is drizzle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RAIN">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is rain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SNOW">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is snow.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SNOW_GRAINS">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is snow grains.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ICE CRYSTALS">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is ice crystals.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ICE PELLETS">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is ice pellets.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HAIL">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is hail.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SMALL HAIL">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is small hail.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UNKNOWN">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is unknown.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UNIDENTIFIED">
+				<xs:annotation>
+					<xs:documentation>Precipitation type is unidentified (Sharknado).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="WxCondition" type="WxCondition"/>
+	<xs:complexType name="WxCondition">
+		<xs:annotation>
+			<xs:documentation>Weather condition description.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractFeature">
+				<xs:sequence>
+					<xs:element ref="WeatherModifier" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Allows for intensity or proximity attribution of condition.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="wxCode" type="WxCode" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Weather codes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="weatherDescriptor" type="WeatherDescriptor" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Descriptor of weather condition.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

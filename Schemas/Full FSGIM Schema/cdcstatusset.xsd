@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>For applicable services, see Annex B.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="objectreferences.xsd"/>
+	<xs:include schemaLocation="constructeddas.xsd"/>
+	<xs:include schemaLocation="metamodel.xsd"/>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:element name="CUG" type="CUG"/>
+	<xs:complexType name="CUG">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent currency settings.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cur" type="CurrencyKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the currency setting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ENG" type="ENG"/>
+	<xs:complexType name="ENG" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent integer settings with the value restricted to those in an enumeration.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="setVal" type="EnumDA" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the status setting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ING" type="ING"/>
+	<xs:complexType name="ING">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent integer settings.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="maxVal" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Maximum setting for 'setVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="minVal" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Minimum setting for 'setVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="setVal" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the status setting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stepSize" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Step between the individual values of 'setVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="units" type="Unit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unit for 'setVal', 'minVal', 'maxVal', 'stepSize'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ORG" type="ORG"/>
+	<xs:complexType name="ORG">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent object reference settings, such as object reference to the logical node of which the statistical data have been calculated.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="intAddr" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Manufacturer-specific internal address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="purpose" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of the purpose of the object reference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="setSrcCB" type="ObjectReference" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the object reference to the control block, indicating from where the object referred to with 'setSrcRef' shall be received.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="setSrcRef" type="ObjectReference" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the object reference setting used to reference for example a logical node instance or a data object instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="setTstCB" type="ObjectReference" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the object reference to the control block indicating from where the object referred to with 'setTstRef' shall be received, used when 'tstEna'=true for testing purposes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="setTstRef" type="ObjectReference" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the test object reference setting, used as alternative to 'setSrcRef' when 'tstEna'=true for testing purpose.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tstEna" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Switch between original data source (as defined with 'setSrcRef' and 'setSrcCB') for a reference and test data source (as defined with 'setTstRef' and 'setTstCB').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SPG" type="SPG"/>
+	<xs:complexType name="SPG">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent single point settings.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="setVal" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the status setting (false is off, true is on).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

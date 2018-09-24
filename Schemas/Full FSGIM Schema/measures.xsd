@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Basic measurements for weather observations.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:element name="AbstractMeasure" type="AbstractMeasure"/>
+	<xs:complexType name="AbstractMeasure" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstract measurement class. Each measurment has a unit of measure, uom. WXXM allows more than one uom -- e.g., F/C/K for temperature. FSGIM only allows one choice of uom for a physical quantity.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the measure.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Units of measure for the measurment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Default is 1.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Angle" type="Angle"/>
+	<xs:complexType name="Angle">
+		<xs:annotation>
+			<xs:documentation>Generic angle class.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="AbstractMeasure">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The value of the measure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit of measure for angle.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Default is 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Bearing" type="Bearing"/>
+	<xs:complexType name="Bearing">
+		<xs:annotation>
+			<xs:documentation>Bearing is used to represent direction in the 2D coordinate reference system. It is an "angle measured from true north". It is represented as an angle restricted to the range greater than 0 and up to and including 360 degrees which is true north.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="maxInclusive" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of true north, 360.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="minInclusive" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Must be greater than 0.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Distance" type="Distance"/>
+	<xs:complexType name="Distance">
+		<xs:annotation>
+			<xs:documentation>Generic distance class.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="AbstractMeasure">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The value of the measure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units of measure for distance.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Default is 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Luminance" type="Luminance"/>
+	<xs:complexType name="Luminance">
+		<xs:annotation>
+			<xs:documentation>Density of luminous intenstity.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="AbstractMeasure">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The value of the measure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit of measure for luminance.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Default is 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Percentage" type="Percentage"/>
+	<xs:complexType name="Percentage">
+		<xs:annotation>
+			<xs:documentation>Generic percentage class; value is limited to between 0 and 100 inclusive.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="maxInclusive" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Maximum inclusive value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="minInclusive" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Minimum inclusive value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Pressure" type="Pressure"/>
+	<xs:complexType name="Pressure">
+		<xs:annotation>
+			<xs:documentation>Generic pressure class.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="AbstractMeasure">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The value of the measure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit of measure for pressure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Default is 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Speed" type="Speed"/>
+	<xs:complexType name="Speed">
+		<xs:annotation>
+			<xs:documentation>Generic speed class.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="AbstractMeasure">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The value of the measure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit of measure for speed.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Default is 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Temperature" type="Temperature"/>
+	<xs:complexType name="Temperature">
+		<xs:annotation>
+			<xs:documentation>Generic temperature class.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="AbstractMeasure">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The value of the measure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit of measure for temperature.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Default is 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

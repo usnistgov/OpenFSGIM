@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This group of logical nodes represents various types of control function blocks. Logical nodes of this group do include some form of control algorithm. They will normally be part of a logical device providing overall functionality within the system. Therefore, no description and requirements for the logical nodes of group F are given in IEC 61850-5. The LNs of the group F are never located at the border to the process.
+The logical nodes of the group F shall be used only if another LN class from other groups does not fit to the semantic and function to be modelled.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="cdcanalogueset.xsd"/>
+	<xs:include schemaLocation="cdcanalogueinfo.xsd"/>
+	<xs:include schemaLocation="derivedcdcs.xsd"/>
+	<xs:include schemaLocation="lngroupl.xsd"/>
+	<xs:element name="DERComplexOutputRamping" type="DERComplexOutputRamping"/>
+	<xs:complexType name="DERComplexOutputRamping">
+		<xs:annotation>
+			<xs:documentation>This logical node models a generic ramp. It is required due to the fact that the data object attributes of the ASG common data class do not contain all of the information required to achieve a full ramping function with divergent up and down trends (61850 LogicalNode FRMP).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="AdjSt" type="ENSAdjustment" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AdjSt.stVal' is the state of adjustment process.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ErrTerm" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ErrTerm.mag.f' is the control loop termination error value, in case the function cannot be fulfilled because of external reasons. The value is a difference between set point and actual value.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Out" type="MV" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'Out.mag.f' is the analogue output of this function.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RmpDn" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'RmpDn.setMag.f' is the ramping rate on a downward trend.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RmpUp" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'RmpUp.setMag.f' is the ramping rate on an upward trend.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StepNg" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'StepNg.setMag.f' is the step size when turning from positive to negative direction.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StepPs" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'StepPs.setMag.f' is the step size when turning from negative to positive direction.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

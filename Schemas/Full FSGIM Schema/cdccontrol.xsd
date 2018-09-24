@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>All common data classes for control include both the control and the related status information.
+For applicable services, see Annex B.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="metamodel.xsd"/>
+	<xs:include schemaLocation="coretypes.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="constructeddas.xsd"/>
+	<xs:element name="APC" type="APC"/>
+	<xs:complexType name="APC">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent analogue controls.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ctlNum" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.ctlNum'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ctlVal" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Service parameter that determines the control activity, containing the new value for 'mxVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="db" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'RangeDeadbandCDC.db'. Used in case 'mxVal' is deadbanded for reporting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="maxVal" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Maximum setting for 'ctlVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="minVal" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Minimum setting for 'ctlVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mxVal" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Current value of the controllable analogue process value; it can be deadbanded for reporting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="origin" type="Originator" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.origin'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="q" type="Quality" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the data value 'mxVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stepSize" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Step between the individual values of 'ctlVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stSeld" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.stSeld'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subVal" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value used to substitute 'mxVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sVC" type="ScaledValueConfig" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Configuration for scaled value representation ('mxVal', 'subVal', 'minVal', 'maxVal', 'stepSize') and for service parameter 'ctlVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="t" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change in the data value 'mxVal', or quality 'q'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="units" type="Unit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Units of the data values: 'mxVal', 'subVal', 'minVal', 'maxVal', 'stepSize', 'ctlVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DPC" type="DPC"/>
+	<xs:complexType name="DPC">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent double point controls.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ctlNum" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.ctlNum'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ctlVal" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Service parameter that determines the control activity, containing the new value for 'stVal' ('false' for off, 'true' for on).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="origin" type="Originator" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.origin'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pulseConfig" type="PulseConfig" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.pulseConfig'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="q" type="Quality" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the data value 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stSeld" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.stSeld'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="DpStatusKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Status data value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subVal" type="DpStatusKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value used to substitute 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="t" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change of the data value 'stVal' or quality 'q'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ENC" type="ENC"/>
+	<xs:complexType name="ENC" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent integer controls with the value restricted to those in an enumeration.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ctlNum" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.ctlNum'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ctlVal" type="EnumDA" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Service parameter that determines the control activity, containing the new value for 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="origin" type="Originator" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.origin'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="q" type="Quality" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the data value 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stSeld" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>See 'SPC.stSeld'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="EnumDA" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Status data value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subVal" type="EnumDA" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value used to substitute 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="t" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change of the data value 'stVal' or quality 'q'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SPC" type="SPC"/>
+	<xs:complexType name="SPC">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent single point controls.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ctlNum" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Control sequence number of the control service when the change of the status data value has been caused by a control. The only thing that the server shall do with 'ctlNum' is to include it in the responses to the control model and in the reports about a status change that is caused by a command.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ctlVal" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Service parameter that determines the control activity, containing the new value for 'stVal' ('false' for off, 'true' for on).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="origin" type="Originator" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information related to the originator of the last change of the controllable data value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pulseConfig" type="PulseConfig" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Used to configure the output pulse generated with the command, if applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="q" type="Quality" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the data value 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stSeld" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>True means that the controllable data is in the status "selected".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Status data value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subVal" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value used to substitute 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="t" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change of the data value 'stVal' or quality 'q'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

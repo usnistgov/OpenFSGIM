@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This group of logical nodes represents TODO</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="cdcdescription.xsd"/>
+	<xs:include schemaLocation="cdccontrol.xsd"/>
+	<xs:include schemaLocation="cdcstatusset.xsd"/>
+	<xs:include schemaLocation="cdcstatusinfo.xsd"/>
+	<xs:include schemaLocation="derivedcdcs.xsd"/>
+	<xs:include schemaLocation="cdcanalogueinfo.xsd"/>
+	<xs:include schemaLocation="lngroupl.xsd"/>
+	<xs:element name="DERMeasurement" type="DERMeasurement"/>
+	<xs:complexType name="DERMeasurement">
+		<xs:annotation>
+			<xs:documentation>This logical node is used for calculation of currents, voltages, powers and impedances in a three-phase system. The main use is for operative applications (61850 LogicalNode MMXU).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="A" type="WYE" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'A' holds the currents [A] for three phases, as follows:
+	- 'A.[phsA,phsB,phsC].cVal.[mag,ang].f' are phase current phasors; 
+	- 'A.neut.cVal.[mag,ang].f' is neutral current phasor; 
+	- 'A.net.cVal.[mag,ang].f' is net current phasor (phsA+phsB+phsC+neut); 
+	- 'A.res.cVal.[mag,ang].f' is residual current phasor (phsA+phsB+phsC); 
+	- 'A.angRef.stVal' is the quantity used as reference for the phase angles of the 6 phasors above. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AvAPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AvAPhs.mag.f' is the arithmetic average of the magnitude of current of the 3 phases: average(Ia,Ib,Ic).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AvPFPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AvPFPhs.mag.f' is the arithmetic average of the magnitude of power factor of the 3 phases.: average(PFa, PFb, PFc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AvPhVPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AvPhVPhs.mag.f' is the arithmetic average of the magnitude of phase to reference voltage of the 3 phases: average(PhVa, PhVb, PhVc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AvPPVPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AvPPVPhs.mag.f' is the arithmetic average of the magnitude of phase to phase voltage of the 3 phases: average(PPVa, PPVb, PPVc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AvVAPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AvVAPhs.mag.f' is the arithmetic average of the magnitude of apparent power of the 3 phases: average(VAa, VAb, VAc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AvVArPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AvVArPhs.mag.f' is the arithmetic average of the magnitude of rective power of the 3 phases: average(VAra, VArb, VArc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AvWPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AvWPhs.mag.f' is the arithmetic average of the magnitude of active power of the 3 phases: average(Wa, Wb, Wc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AvZPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'AvZPhs.mag.f' is the arithmetic average of the magnitude of impedance of the 3 phases.: average(Za, Zb, Zc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Beh" type="ENSBehaviourMode" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'DomainLN.Beh.stVal' is a read-only value, describing the behaviour of a domain logical node. It depends on the current operating mode of the logical node ('DomainLN.Mod.stVal'), and the current operating mode of the logical device that contains it ('LLN0.Mod.stVal'). Processing of the quality status (q) of the received data is the prerequisite for correct interpretation of 'DomainLN.Beh.stVal'. See statechart diagram 'DomainLN.behStateMachine'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Blk" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'Blk.stVal=true', this function has been dynamically blocked.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="BlkRef" type="ORG" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>'BlkRef[i].setRef' shows the receiving of dynamically blocking signal i.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcExp" type="SPSTransient" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'ClcExp.stVal=true', the calculation period of a statistical logical node has expired.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcIntvPer" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcIntvPer.setVal' is the number of units to consider to calculate the calculation interval duration, in case 'ClcIntvTyp.setVal' other than 'external'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcIntvTyp" type="ENGCalcIntervalType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcIntvTyp.setVal' is the calculation interval type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcMod" type="ENGCalcMode" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcMod.setVal' is the calculation mode.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcMth" type="ENGCalcMethod" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcMth.setVal' is the kind of statistical calculation, specifying how the data attributes that represent analogue values have been calculated. The calculation method shall be the same for all data objects of the logical node instance.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcNxTmms" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcNxTmms.setVal' is the remaining time [ms] up to the end of the current calculation interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcRfPer" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcRfPer.setVal' is the number of units to consider to calculate the refreshment interval duration in case 'ClcIntvTyp.setVal' is other than 'external'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcRfTyp" type="ENGCalcIntervalType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcRfTyp.setVal' is the kind of refresh interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcSrc" type="ORG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcSrc.setRef' is the object reference to the logical node whose analogue data attributes are used to calculate the values contained in this logical node instance.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcStr" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcStr.ctlVal=true' enables the start calculation of statistical data, either immediately or at 'operTm' of the control model (if set). Resulting status is 'ClcStr.stVal'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClcTotVA" type="ENGSTotalCalcMethod" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'ClcTotVA.setVal' is the calculation method used for total apparent power 'TotVA'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CmdBlk" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'CmdBlk.ctlVal=true' initiates blocking of control sequences and action triggers of all controllable data objects in this function. The resulting status is 'CmdBlk.stVal'. NOTE  This data object may be used only in case the logical node does not already contain BlkOpn/BlkCls available (i.e., logical nodes with controllable data objects, other than XCBR, XSWI, YPSH and KVLV).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Health" type="ENSHealth" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'Health.stVal' reflects the state of the logical node related hardware and software. More detailed information related to the source of the problem may be provided by specific attribute of the logical node.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Hz" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'Hz.mag.f' is the frequency [Hz].</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="InRef" type="ORG" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>'InRef[i].setRef' is reference to the data object i bound to this input.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="InSyn" type="ORG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'InSyn.setRef' is the object reference to the source of the external synchronization signal for the calculation interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxAPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MaxAPhs.mag.f' is the maximum magnitude of current of the 3 phases: max(Ia,Ib,Ic).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxPFPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MaxPFPhs.mag.f' is the maximum magnitude of power factor of the 3 phases.: max(PFa, PFb, PFc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxPhVPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MaxPhVPhs.mag.f' is the maximum magnitude of phase to reference voltage of the 3 phases: max(PhVa, PhVb, PhVc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxPPVPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MaxPPVPhs.mag.f' is the maximum magnitude of phase to phase voltage of the 3 phases: max(PPVa, PPVb, PPVc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxVAPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MaxVAPhs.mag.f' is the maximum magnitude of apparent power of the 3 phases: max(VAa, VAb, VAc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxVArPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MaxVArPhs.mag.f' is the maximum magnitude of rective power of the 3 phases: max(VAra, VArb, VArc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxWPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MaxWPhs.mag.f' is the maximum magnitude of active power of the 3 phases: max(Wa, Wb, Wc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxZPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MaxZPhs.mag.f' is the maximum magnitude of impedance of the 3 phases.: max(Za, Zb, Zc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinAPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MinAPhs.mag.f' is the minimum magnitude of current of the 3 phases: min(Ia,Ib,Ic).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinPFPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MinPFPhs.mag.f' is the minimum magnitude of power factor of the 3 phases.: min(PFa, PFb, PFc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinPhVPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MinPhVPhs.mag.f' is the minimum magnitude of phase to reference voltage of the 3 phases: min(PhVa, PhVb, PhVc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinPPVPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MinPPVPhs.mag.f' is the minimum magnitude of phase to phase voltage of the 3 phases: min(PPVa, PPVb, PPVc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinVAPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MinVAPhs.mag.f' is the minimum magnitude of apparent power of the 3 phases: min(VAa, VAb, VAc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinVArPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MinVArPhs.mag.f' is the minimum magnitude of rective power of the 3 phases: min(VAra, VArb, VArc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinWPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MinWPhs.mag.f' is the minimum magnitude of active power of the 3 phases: min(Wa, Wb, Wc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinZPhs" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'MinZPhs.mag.f' is the minimum magnitude of impedance of the 3 phases.: min(Za, Zb, Zc).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Mod" type="ENCBehaviourMode" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'DomainLN.Mod.ctlVal' is used by operator to initiate the change in the operating mode of the domain logical node. The resulting operating mode is 'DomainLN.Mod.stVal'. Processing of the quality status (q) of the received data is the prerequisite for correct interpretation of 'DomainLN.Mod.stVal'. See statechart diagram 'DomainLN.behStateMachine'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="NamPlt" type="LPL" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name plate of the logical node.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="NumSubIntv" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'NumSubIntv.setVal' is the number of sub-intervals contained in a calculation period interval duration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PF" type="WYE" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'PF.[phsA,phsB,phsC].cVal' hold the phase to ground power factor phasors. For structure, see 'A'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PFSign" type="ENGPfSign" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'PFSign.setVal' is the sign convention for power factor 'PF' (and reactive power 'VAr'.).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PhV" type="WYE" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'PhV.[phsA,phsB,phsC].cVal.' hold phase to ground (line) voltage phasors [V]. For structure, see 'A'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PPV" type="DEL" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'PPV' holds the phase to phase voltage phasors [V], as follows:
+	- 'PPV.[phsAB,phsBC,phsCA].cVal.[mag,ang].f' are phase voltage phasors; 
+	- 'PPV.angRef.stVal' is the quantity used as reference for the phase angles of the 3 phasors above. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TotPF" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'TotPF.mag.f' is the average three-phase power factor.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TotVA" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'TotVA.mag.f' is the total three-phase apparent power [VA].</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TotVAr" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'TotVAr.mag.f' is the total three-phase reactive power [VAr].</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TotW" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'TotW.mag.f' is the total three-phase real power [W].</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VA" type="WYE" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'VA.[phsA,phsB,phsC].cVal' hold the apparent powers per phase [VA]. For structure, see 'A'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VAr" type="WYE" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'VAr.[phsA,phsB,phsC].cVal' hold the reactive powers per phase [VAr]. For structure, see 'A'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="W" type="WYE" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'W.[phsA,phsB,phsC].cVal' hold the real powers [W] per phase. For structure, see 'A'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Z" type="WYE" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'Z.[phsA,phsB,phsC].cVal' hold the impedances per phase. For structure, see 'A'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

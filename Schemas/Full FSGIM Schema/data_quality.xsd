@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Data quality metadata.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="ref_sys.xsd"/>
+	<xs:include schemaLocation="citation.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:element name="DQ_Element" type="DQ_Element"/>
+	<xs:complexType name="DQ_Element">
+		<xs:annotation>
+			<xs:documentation>Used to provide user specific quality information about a dataset's suitability for a particular application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dateTime" type="UTCDateTime" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>%%%% Time of quality evaluation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="evaluationMethodDescription" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Evaluation method description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="evaluationMethodType" type="DQ_EvaluationMethodTypeCode" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Evaluation method type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="evalProcedure" type="CI_Citation" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Evaluation procedure.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="measureDescription" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Measurement description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="measureIdentification" type="MD_Identifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Measurement identification.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nameOfMeasure" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Name of measurement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="result" type="xs:string" minOccurs="0" maxOccurs="2">
+				<xs:annotation>
+					<xs:documentation>Result.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="DQ_EvaluationMethodTypeCode">
+		<xs:annotation>
+			<xs:documentation>Evaluation method type code.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="directExternal">
+				<xs:annotation>
+					<xs:documentation>Evaluation is direct external.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="directInternal">
+				<xs:annotation>
+					<xs:documentation>Evaluation is direct internal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="indirect">
+				<xs:annotation>
+					<xs:documentation>Evaluation is indirect.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

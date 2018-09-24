@@ -1,0 +1,1 @@
+'''The NOAA weather data does not include any solar information, so we cannot report anything for FSGIMSolar.'''

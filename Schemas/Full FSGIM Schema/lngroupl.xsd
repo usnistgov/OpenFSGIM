@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This group of logical nodes defines the system specific information. This includes information related to the physical device (represented by logical node LPHD), which contains the logical devices (represented by logical node LLN0) and the domain specific logical nodes (represented by DomainLN and all the concrete logical nodes, defined in the rest of this clause). This information (e.g., logical node mode control, nameplate information, operation counters) is independent of the application domain.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="cdcdescription.xsd"/>
+	<xs:include schemaLocation="cdccontrol.xsd"/>
+	<xs:include schemaLocation="cdcstatusset.xsd"/>
+	<xs:include schemaLocation="cdcstatusinfo.xsd"/>
+	<xs:include schemaLocation="derivedcdcs.xsd"/>
+	<xs:element name="DomainLN" type="DomainLN"/>
+	<xs:complexType name="DomainLN" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstract type, holding attributes common to all of all the domain logical nodes (corresponds to Common LN).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Beh" type="ENSBehaviourMode" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>'DomainLN.Beh.stVal' is a read-only value, describing the behaviour of a domain logical node. It depends on the current operating mode of the logical node ('DomainLN.Mod.stVal'), and the current operating mode of the logical device that contains it ('LLN0.Mod.stVal'). Processing of the quality status (q) of the received data is the prerequisite for correct interpretation of 'DomainLN.Beh.stVal'. See statechart diagram 'DomainLN.behStateMachine'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Blk" type="SPS" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If 'Blk.stVal=true', this function has been dynamically blocked.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BlkRef" type="ORG" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>'BlkRef[i].setRef' shows the receiving of dynamically blocking signal i.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CmdBlk" type="SPC" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>'CmdBlk.ctlVal=true' initiates blocking of control sequences and action triggers of all controllable data objects in this function. The resulting status is 'CmdBlk.stVal'. NOTE  This data object may be used only in case the logical node does not already contain BlkOpn/BlkCls available (i.e., logical nodes with controllable data objects, other than XCBR, XSWI, YPSH and KVLV).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Health" type="ENSHealth" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>'Health.stVal' reflects the state of the logical node related hardware and software. More detailed information related to the source of the problem may be provided by specific attribute of the logical node.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InRef" type="ORG" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>'InRef[i].setRef' is reference to the data object i bound to this input.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Mod" type="ENCBehaviourMode" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>'DomainLN.Mod.ctlVal' is used by operator to initiate the change in the operating mode of the domain logical node. The resulting operating mode is 'DomainLN.Mod.stVal'. Processing of the quality status (q) of the received data is the prerequisite for correct interpretation of 'DomainLN.Mod.stVal'. See statechart diagram 'DomainLN.behStateMachine'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NamPlt" type="LPL" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name plate of the logical node.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="LLN0" type="LLN0"/>
+	<xs:complexType name="LLN0">
+		<xs:annotation>
+			<xs:documentation>This logical node contains common information for logical devices (LDs).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="Beh" type="ENSBehaviourMode" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Behaviour of the LogicalNode. It can be either on, blocked, test, test/blocked, or off.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Blk" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'Blk.stVal=true', the function of the logical device has been dynamically blocked.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="BlkRef" type="ORG" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>'BlkRef[i].setRef' shows the receiving of dynamically blocking signal i.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CmdBlk" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'CmdBlk.ctlVal=true' initiates blocking of control sequences and action triggers of all controllable data objects in the logical device. The resulting status is 'CmdBlk.stVal'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Diag" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'Diag.ctlVal=true' initiates running the diagnostics. The resulting status is 'Diag.stVal'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GrRef" type="ORG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'GrRef.setRef' is the reference to a higher level logical device.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Health" type="ENSHealth" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'Health.stVal' reflects the state of the logical device related hardware and software. It is derived from the worst (most critical) value of the health attribute of all the domain logical nodes contained in the logical device: 'Health.stVal' = max('DomainLN[i].Health.stVal').</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="InRef" type="ORG" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>'InRef[i].setRef' is reference to the data object i bound to this input.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LEDRs" type="SPCTransient" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'LEDRs.ctlVal=true' initiates the resetting of all light emitting diodes. The resulting status is 'LEDRs.stVal'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Loc" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'Loc.stVal=true', the control behaviour is allowed at this level. At bay level, "local" means operation from the bay unit and "remote" means operation from a station unit. At process level, "local" means direct operation on the process device (for example on a circuit breaker) and "remote" means operation from a bay unit.
+If in a logical device 'LLN0.Loc.stVal' is in contradiction to the any contained 'DomainLN.Loc', "local" is always dominant.
+(See also Annex B)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LocKey" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'LocKey.stVal=true', the operation of the complete logical device has been switched (from remote) to local. This changeover is always done locally with a physical key or toggle switch, which may have a set of contacts from which the position can be read.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LocSta" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'LocSta.ctlVal=true' switches control authority to station level and disables control from remote. 'LocSta.ctlVal=false' does the opposite, i.e., it switches control authority from local to remote. The resulting status is 'LocSta.stVal'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MltLev" type="SPG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'MltLev.setVal=true', authority control from multiple levels is allowed, otherwise no other control level is allowed (see Annex B).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Mod" type="ENCBehaviourMode" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'Mod.ctlVal' is used by operator to initiate the change in the operating mode of the logical device, which subsequently influences behaviour of the contained domain logical nodes ('DomainLN.Beh.stVal'). The resulting operating mode is 'DomainLN.Mod.stVal'. Processing of the quality status (q) of the received data is the prerequisite for correct interpretation of 'LLN0.Mod.stVal'. See statechart diagram 'DomainLN.behStateMachine'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="NamPlt" type="LPL" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name plate of the logical device.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OpTmh" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'OpTmh.stVal' is the operation time [h], of a physical device (???) since start of the operation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="LPHD" type="LPHD"/>
+	<xs:complexType name="LPHD">
+		<xs:annotation>
+			<xs:documentation>This logical node contains common information for physical devices (IEDs).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="InOv" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'InOv.stVal=true', an input communications buffer overflow occurred. Consequently, the annunciations important for the communication may be lost. A general interrogation is recommended or an integrity scan is started automatically.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="NumPwrUp" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'NumPwrUp.stVal' is the number of power up operations of the IED since the last reset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutOv" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'OutOv.stVal=true', an output communications buffer overflow occurred. Consequently, the annunciations important for the communication may be lost. A general interrogation is recommended or an integrity scan is started automatically.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PhyHealth" type="ENSHealth" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'PhyHealth.stVal' reflects the state of the IED related hardware and software.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PhyNam" type="DPL" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Physical device (IED) name plate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Proxy" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'Proxy.stVal=true', the IED is a proxy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PwrDn" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'PwrDn.stVal=true', an IED power down has been detected.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PwrSupAlm" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'PwrSupAlm.stVal=true', an alarm from the external power supply occured. It may be an external contact. It refers always to the local power supply of the IED, and not to the health (EEHealth) of the complete external supply system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PwrUp" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If 'PwrUp.stVal=true', an IED power up has been detected.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RsStat" type="SPCTransient" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'RsStat.ctlVal=true' initiates the resetting of the IED security statistics.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Sim" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'Sim.ctlVal=true' causes the IED to use simulated GOOSE or sampled measurand values instead of original ones since they are first received.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WacTrg" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'WacTrg.stVal' is the number of times the watchdog circuit has reset the IED since the counter reset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WrmStr" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>'WrmStr.stVal' is the number of warm start operations of the IED since the last reset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

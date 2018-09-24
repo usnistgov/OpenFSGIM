@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This package contains the classes that are defined for the purpose of modeling power measurements.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="naesb_pap10_eui.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="measurements.xsd"/>
+	<xs:element name="PowerApparentQuantity" type="PowerApparentQuantity"/>
+	<xs:complexType name="PowerApparentQuantity">
+		<xs:annotation>
+			<xs:documentation>Quantity and pair used to represent apparent power measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PowerApparentQuantityRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerApparentQuantityRestrictions" type="PowerApparentQuantityRestrictions"/>
+	<xs:complexType name="PowerApparentQuantityRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="PowerQuantityType">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="PowerApparentType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with a PowerApparentQuantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerApparentType" type="PowerApparentType"/>
+	<xs:complexType name="PowerApparentType">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with measurements of apparent power.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="PowerItemType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerCurve" type="PowerCurve"/>
+	<xs:complexType name="PowerCurve">
+		<xs:annotation>
+			<xs:documentation>This class describes the characteristics of a mathematical function used to estimate the power consuming characteristics of a load or the power generating characteristics of a generator.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="maximumReactivePower" type="PowerReactiveQuantity" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the maximum reactive power consumed (or supplied) by the device in units specified in PowerReactiveType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="maximumRealPower" type="PowerRealQuantity" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the maximum real power consumed (or supplied) by the device in units specified in PowerRealType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reactivelPowerCurve" type="PiecewiseLinearSegment" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the reactive component of a single piecewise linear curve mapping the percentage of power consumed by the device as a function of the present level of operation of the device.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="realPowerCurve" type="PiecewiseLinearSegment" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the real component of a single piecewise linear curve mapping the percentage of power consumed by the device as a function of the present level of operation of the device.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PowerItemType" type="PowerItemType"/>
+	<xs:complexType name="PowerItemType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with a power measurement.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="MeasurementMetadataType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerMeasurementsSet" type="PowerMeasurementsSet"/>
+	<xs:complexType name="PowerMeasurementsSet">
+		<xs:annotation>
+			<xs:documentation>A container class used to hold one of each type of power measurement made at a given physical location and time.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PowerMeasurementsSetRestrictions">
+				<xs:sequence>
+					<xs:element name="quantityRealPower" type="PowerRealQuantity" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="quantityReactivePower" type="PowerReactiveQuantity" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="quantityApparentPower" type="PowerApparentQuantity" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerMeasurementsSetRestrictions" type="PowerMeasurementsSetRestrictions"/>
+	<xs:complexType name="PowerMeasurementsSetRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="MeasurementSet">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerQuantityType" type="PowerQuantityType"/>
+	<xs:complexType name="PowerQuantityType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Quantity/metadata pair used to represent types of power measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="MeasurementQuantity">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="PowerItemType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with a PowerQuantityType.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerRatings" type="PowerRatings"/>
+	<xs:complexType name="PowerRatings">
+		<xs:annotation>
+			<xs:documentation>This class describes the power characteristics of a Load (or Generator) component. The attributes defined allow specifying the minimum and maximum expected power draw from the load (supply from a generator).  It also allows a series of predefined operation power curves to be defined with one designated as presently being operational.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="activePowerCurve" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the index into the zero based array of powerCurves indicating which powerCurve is presently active.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="adjustedFullDRPower" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the minimum expected power draw of a load (or the maximum power supplied by a generator) during operation.  This value differs from the rated power since it may take into account operational considerations such as environmental, equipment safety or regulatory conditions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="adjustedNoDRPower" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the maximum expected power draw of a load (or the minimum power supplied by a generator) during operation.  This value differs from the rated power since it may take into account operational considerations such as environmental, equipment safety or regulatory conditions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="powerCurves" type="PowerCurve" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This attribute defines one or more piecewise linear curves mapping the percentage of power consumed by the device as a function of the present level of operation of the device.  Many loads draw power (or generators supply power) based on the present loading characteristics of the device. For example, a motor driving a fan will draw more power as the fan blade pitch is increased.
+
+The axes of the curve are defined in percent to allow loads of any type to utilize the attribute.  For example a simple 60W incandescent light bulb would likely be modeled by a linear segment (0,0), (100,100). Here as the bulb is energized (dimmed) from off (0%) to fully on (100%), the power needed to  energize the device also travels from 0% to 100%.  A more complicated device such as a room air-conditioner may have a non-linear power curve. Here, as the coolness setting is adjusted from warmest to coolest, the air conditioner will draw relative more power when set to maximum cooling than when set to minimum cooling. 
+
+When powerCurve is not present, the load or generator is assumed to be a two state device drawing no power when the device is off and adjustedNoDRPower when the device is on. When adjustedNoDRPower also is not present, the load or generator is assumed to be a two state device drawing no power when the device is off and maximumRealPower when the device is on.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PowerReactiveQuantity" type="PowerReactiveQuantity"/>
+	<xs:complexType name="PowerReactiveQuantity">
+		<xs:annotation>
+			<xs:documentation>Quantity and pair used to represent reactive power measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PowerReactiveQuantityRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerReactiveQuantityRestrictions" type="PowerReactiveQuantityRestrictions"/>
+	<xs:complexType name="PowerReactiveQuantityRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="PowerQuantityType">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="PowerReactiveType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with a PowerReactiveQuantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerReactiveType" type="PowerReactiveType"/>
+	<xs:complexType name="PowerReactiveType">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with measurements of reactive power.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="PowerItemType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerRealQuantity" type="PowerRealQuantity"/>
+	<xs:complexType name="PowerRealQuantity">
+		<xs:annotation>
+			<xs:documentation>Quantity and metadata pair used to represent real power measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PowerRealQuantityRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerRealQuantityRestrictions" type="PowerRealQuantityRestrictions"/>
+	<xs:complexType name="PowerRealQuantityRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="PowerQuantityType">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="PowerRealType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with a PowerRealQuantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerRealType" type="PowerRealType"/>
+	<xs:complexType name="PowerRealType">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with measurements of real power.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="PowerItemType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerThermalQuantity" type="PowerThermalQuantity"/>
+	<xs:complexType name="PowerThermalQuantity">
+		<xs:annotation>
+			<xs:documentation>Quantity/metadata pair used to represent thermal power measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PowerThermalQuantityRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerThermalQuantityRestrictions" type="PowerThermalQuantityRestrictions"/>
+	<xs:complexType name="PowerThermalQuantityRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="PowerQuantityType">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="PowerThermalType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with a PowerThermalQuantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PowerThermalType" type="PowerThermalType"/>
+	<xs:complexType name="PowerThermalType">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with measurements of thermal power.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="PowerItemType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

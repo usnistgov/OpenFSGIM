@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Not explicitly defined in the standard. We define subtypes for ObjectReference type (which is just a string), so as to allow for validation per type of element. This is useful when there is no detailed LN/CDC/FCDA/DA model, and when an application receives only strings as references from the underlying MMS stack - it allows easy building of the meta-model objects.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="ObjectReference" type="ObjectReference"/>
+	<xs:complexType name="ObjectReference" abstract="true">
+		<xs:annotation>
+			<xs:documentation>part 7-2, sec. 5
+Instances of classes in the hierarchical information model (ACSI class hierarchy of logical device, logical node, data, data attributes) shall be constructed by the concatenation of all instance names comprising the whole path-name of an instance of a class that identifies the instance uniquely. The ObjectReference syntax shall be: LDName/LNName[.Name[. ...]].
+The "/" shall separate the instance name of a logical device (LDName) from the name of an instance of a logical node (LNName). The "." shall separate the further names in the hierarchy. The "[  ]" shall indicate an option. The inner square bracket "[. ...]" shall indicate further names of nested definitions.
+NOTE: Section 19 specifies constraints on the use of the type ObjectReference.
+Modelling notes:
+	- We define this type as abstract class and extend it with the subtypes which carry semantics of the above naming scheme.
+	- Subtypes of ObjectReference provide methods that return separately all the elements that make the reference (e.g., FC, LDName, LNName), which have been parsed from the reference string.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+</xs:schema>

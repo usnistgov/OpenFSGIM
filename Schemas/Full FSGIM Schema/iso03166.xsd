@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>ISO standard enumeration for country codes.</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="CountryCode">
+		<xs:annotation>
+			<xs:documentation>ISO 03166 Country Code enumeration.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AI">
+				<xs:annotation>
+					<xs:documentation>Anguila</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AG">
+				<xs:annotation>
+					<xs:documentation>Antugua and Barbuda</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AW">
+				<xs:annotation>
+					<xs:documentation>Aruba</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BS">
+				<xs:annotation>
+					<xs:documentation>Bahamas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BB">
+				<xs:annotation>
+					<xs:documentation>Barbados</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BZ">
+				<xs:annotation>
+					<xs:documentation>Belize</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BM">
+				<xs:annotation>
+					<xs:documentation>Bermuda</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BQ">
+				<xs:annotation>
+					<xs:documentation>Bonaire and Sint Eustatius</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VG">
+				<xs:annotation>
+					<xs:documentation>British Virgin Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CA">
+				<xs:annotation>
+					<xs:documentation>Canada</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KY">
+				<xs:annotation>
+					<xs:documentation>Cayman Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CR">
+				<xs:annotation>
+					<xs:documentation>Costa Rico</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CU">
+				<xs:annotation>
+					<xs:documentation>Cuba</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CW">
+				<xs:annotation>
+					<xs:documentation>Curacao and Netherlands Antilles</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DM">
+				<xs:annotation>
+					<xs:documentation>Dominica</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DO">
+				<xs:annotation>
+					<xs:documentation>Dominican Republic</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SV">
+				<xs:annotation>
+					<xs:documentation>El Salvador</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GL">
+				<xs:annotation>
+					<xs:documentation>Greenland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GD">
+				<xs:annotation>
+					<xs:documentation>Grenada and Carriacuou</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GP">
+				<xs:annotation>
+					<xs:documentation>Guadeloupe</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GT">
+				<xs:annotation>
+					<xs:documentation>Guatemala</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HT">
+				<xs:annotation>
+					<xs:documentation>Haiti</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HN">
+				<xs:annotation>
+					<xs:documentation>Honduras</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JM">
+				<xs:annotation>
+					<xs:documentation>Jamaica</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MQ">
+				<xs:annotation>
+					<xs:documentation>Martinique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MX">
+				<xs:annotation>
+					<xs:documentation>Mexico</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PM">
+				<xs:annotation>
+					<xs:documentation>St. Pierre and Miquelon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MS">
+				<xs:annotation>
+					<xs:documentation>Montserrat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KN">
+				<xs:annotation>
+					<xs:documentation>Nevis and St. Kitts</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NI">
+				<xs:annotation>
+					<xs:documentation>Nicaragua</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PA">
+				<xs:annotation>
+					<xs:documentation>Panama</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PR">
+				<xs:annotation>
+					<xs:documentation>Puerto Rico</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SX">
+				<xs:annotation>
+					<xs:documentation>Sint Maarten</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LC">
+				<xs:annotation>
+					<xs:documentation>St. Lucia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VC">
+				<xs:annotation>
+					<xs:documentation>St. Vincent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TT">
+				<xs:annotation>
+					<xs:documentation>Trinidad and Tobago</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TC">
+				<xs:annotation>
+					<xs:documentation>Turks and Caicos Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="US">
+				<xs:annotation>
+					<xs:documentation>United States</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VI">
+				<xs:annotation>
+					<xs:documentation>US Virgin Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

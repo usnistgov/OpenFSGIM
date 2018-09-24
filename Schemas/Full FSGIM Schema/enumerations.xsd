@@ -1,0 +1,2286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This package contains enumerations used in FSGIM. There are two kinds of enumerations -- simple and Code List. A simple enumeration is a set of strings and descriptions that represent a set of values for the enumeration. An attribute that has the type of the enumeration can be expected to "have" a single value from the list. Code Lists are enumerations that have both string and numeric values. In this case the semantic value is a tuple -- string and code.
+
+The representations of enumerations in communications protocols is a local matter and typically highly specific to the standard encoding it. Therefore, FSGIM code lists do not have a data type. The implementing standards choose whether to encode the enumerated value (string or numeric) and what transport data representation to use.</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="CurrencyKind">
+		<xs:annotation>
+			<xs:documentation>Currency is represented in FSGIM as an enumeration. The use of this is optional so it can be omitted when an actual currency is not known. The enumeration is based on ISO 4217 three character codes and the FSIM model contains a snapshot of this list. Any implementation can extend this list as needed but must unambiguously identify how extensions are separate from the ISO standard set.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AED">
+				<xs:annotation>
+					<xs:documentation>United Arab Emirates dirham</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AFN">
+				<xs:annotation>
+					<xs:documentation>Afghan afghani</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ALL">
+				<xs:annotation>
+					<xs:documentation>Albanian lek</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AMD">
+				<xs:annotation>
+					<xs:documentation>Armenian dram</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ANG">
+				<xs:annotation>
+					<xs:documentation>Netherlands Antillean guilder</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AOA">
+				<xs:annotation>
+					<xs:documentation>Angolan kwanza</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ARS">
+				<xs:annotation>
+					<xs:documentation>Argentine peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AUD">
+				<xs:annotation>
+					<xs:documentation>Australian dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AWG">
+				<xs:annotation>
+					<xs:documentation>Aruban florin</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AZN">
+				<xs:annotation>
+					<xs:documentation>Azerbaijani manat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BAM">
+				<xs:annotation>
+					<xs:documentation>Bosnia and Herzegovina convertible mark</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BBD">
+				<xs:annotation>
+					<xs:documentation>Barbados dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BDT">
+				<xs:annotation>
+					<xs:documentation>Bangladeshi taka</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BGN">
+				<xs:annotation>
+					<xs:documentation>Bulgarian lev</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BHD">
+				<xs:annotation>
+					<xs:documentation>Bahraini dinar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BIF">
+				<xs:annotation>
+					<xs:documentation>Burundian franc</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BMD">
+				<xs:annotation>
+					<xs:documentation>Bermudian dollar (customarily known as Bermuda dollar)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BND">
+				<xs:annotation>
+					<xs:documentation>Brunei dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BOB">
+				<xs:annotation>
+					<xs:documentation>Boliviano</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BOV">
+				<xs:annotation>
+					<xs:documentation>Bolivian Mvdol (funds code)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BRL">
+				<xs:annotation>
+					<xs:documentation>Brazilian real</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BSD">
+				<xs:annotation>
+					<xs:documentation>Bahamian dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BTN">
+				<xs:annotation>
+					<xs:documentation>Bhutanese ngultrum</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BWP">
+				<xs:annotation>
+					<xs:documentation>Botswana pula</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BYR">
+				<xs:annotation>
+					<xs:documentation>Belarusian ruble</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BZD">
+				<xs:annotation>
+					<xs:documentation>Belize dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CAD">
+				<xs:annotation>
+					<xs:documentation>Canadian dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CDF">
+				<xs:annotation>
+					<xs:documentation>Congolese franc</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CHF">
+				<xs:annotation>
+					<xs:documentation>Swiss franc</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLF">
+				<xs:annotation>
+					<xs:documentation>Unidad de Fomento (funds code), Chile</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLP">
+				<xs:annotation>
+					<xs:documentation>Chilean peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CNY">
+				<xs:annotation>
+					<xs:documentation>Chinese yuan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="COP">
+				<xs:annotation>
+					<xs:documentation>Colombian peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="COU">
+				<xs:annotation>
+					<xs:documentation>Unidad de Valor Real</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CRC">
+				<xs:annotation>
+					<xs:documentation>Costa Rican colon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CUC">
+				<xs:annotation>
+					<xs:documentation>Cuban convertible peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CUP">
+				<xs:annotation>
+					<xs:documentation>Cuban peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CVE">
+				<xs:annotation>
+					<xs:documentation>Cape Verde escudo</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CZK">
+				<xs:annotation>
+					<xs:documentation>Czech koruna</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DJF">
+				<xs:annotation>
+					<xs:documentation>Djiboutian franc</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DKK">
+				<xs:annotation>
+					<xs:documentation>Danish krone</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DOP">
+				<xs:annotation>
+					<xs:documentation>Dominican peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DZD">
+				<xs:annotation>
+					<xs:documentation>Algerian dinar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EEK">
+				<xs:annotation>
+					<xs:documentation>Estonian kroon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EGP">
+				<xs:annotation>
+					<xs:documentation>Egyptian pound</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ERN">
+				<xs:annotation>
+					<xs:documentation>Eritrean nakfa</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ETB">
+				<xs:annotation>
+					<xs:documentation>Ethiopian birr</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EUR">
+				<xs:annotation>
+					<xs:documentation>Euro</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FJD">
+				<xs:annotation>
+					<xs:documentation>Fiji dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FKP">
+				<xs:annotation>
+					<xs:documentation>Falkland Islands pound</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GBP">
+				<xs:annotation>
+					<xs:documentation>Pound sterling</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GEL">
+				<xs:annotation>
+					<xs:documentation>Georgian lari</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GHS">
+				<xs:annotation>
+					<xs:documentation>Ghanaian cedi</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GIP">
+				<xs:annotation>
+					<xs:documentation>Gibraltar pound</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GMD">
+				<xs:annotation>
+					<xs:documentation>Gambian dalasi</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GNF">
+				<xs:annotation>
+					<xs:documentation>Guinean franc</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GTQ">
+				<xs:annotation>
+					<xs:documentation>Guatemalan quetzal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GYD">
+				<xs:annotation>
+					<xs:documentation>Guyanese dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HKD">
+				<xs:annotation>
+					<xs:documentation>Hong Kong dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HNL">
+				<xs:annotation>
+					<xs:documentation>Honduran lempira</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HRK">
+				<xs:annotation>
+					<xs:documentation>Croatian kuna</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HTG">
+				<xs:annotation>
+					<xs:documentation>Haitian gourde</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HUF">
+				<xs:annotation>
+					<xs:documentation>Hungarian forint</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IDR">
+				<xs:annotation>
+					<xs:documentation>Indonesian rupiah</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ILS">
+				<xs:annotation>
+					<xs:documentation>Israeli new sheqel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="INR">
+				<xs:annotation>
+					<xs:documentation>Indian rupee</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IQD">
+				<xs:annotation>
+					<xs:documentation>Iraqi dinar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IRR">
+				<xs:annotation>
+					<xs:documentation>Iranian rial</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ISK">
+				<xs:annotation>
+					<xs:documentation>Icelandic króna</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JMD">
+				<xs:annotation>
+					<xs:documentation>Jamaican dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JOD">
+				<xs:annotation>
+					<xs:documentation>Jordanian dinar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JPY">
+				<xs:annotation>
+					<xs:documentation>Japanese yen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KES">
+				<xs:annotation>
+					<xs:documentation>Kenyan shilling</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KGS">
+				<xs:annotation>
+					<xs:documentation>Kyrgyzstani som</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KHR">
+				<xs:annotation>
+					<xs:documentation>Cambodian riel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KMF">
+				<xs:annotation>
+					<xs:documentation>Comoro franc</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KPW">
+				<xs:annotation>
+					<xs:documentation>North Korean won</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KRW">
+				<xs:annotation>
+					<xs:documentation>South Korean won</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KWD">
+				<xs:annotation>
+					<xs:documentation>Kuwaiti dinar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KYD">
+				<xs:annotation>
+					<xs:documentation>Cayman Islands dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KZT">
+				<xs:annotation>
+					<xs:documentation>Kazakhstani tenge</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LAK">
+				<xs:annotation>
+					<xs:documentation>Lao kip</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LBP">
+				<xs:annotation>
+					<xs:documentation>Lebanese pound</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LKR">
+				<xs:annotation>
+					<xs:documentation>Sri Lanka rupee</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LRD">
+				<xs:annotation>
+					<xs:documentation>Liberian dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LSL">
+				<xs:annotation>
+					<xs:documentation>Lesotho loti</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LTL">
+				<xs:annotation>
+					<xs:documentation>Lithuanian litas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LVL">
+				<xs:annotation>
+					<xs:documentation>Latvian lats</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LYD">
+				<xs:annotation>
+					<xs:documentation>Libyan dinar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MAD">
+				<xs:annotation>
+					<xs:documentation>Moroccan dirham</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MDL">
+				<xs:annotation>
+					<xs:documentation>Moldovan leu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MGA">
+				<xs:annotation>
+					<xs:documentation>Malagasy ariary</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MKD">
+				<xs:annotation>
+					<xs:documentation>Macedonian denar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MMK">
+				<xs:annotation>
+					<xs:documentation>Myanma kyat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MNT">
+				<xs:annotation>
+					<xs:documentation>Mongolian tugrik</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MOP">
+				<xs:annotation>
+					<xs:documentation>Macanese pataca</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MRO">
+				<xs:annotation>
+					<xs:documentation>Mauritanian ouguiya</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MUR">
+				<xs:annotation>
+					<xs:documentation>Mauritian rupee</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MVR">
+				<xs:annotation>
+					<xs:documentation>Maldivian rufiyaa</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MWK">
+				<xs:annotation>
+					<xs:documentation>Malawian kwacha</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MXN">
+				<xs:annotation>
+					<xs:documentation>Mexican peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MYR">
+				<xs:annotation>
+					<xs:documentation>Malaysian ringgit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MZN">
+				<xs:annotation>
+					<xs:documentation>Mozambican metical</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NAD">
+				<xs:annotation>
+					<xs:documentation>Namibian dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NGN">
+				<xs:annotation>
+					<xs:documentation>Nigerian naira</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NIO">
+				<xs:annotation>
+					<xs:documentation>Cordoba oro</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NOK">
+				<xs:annotation>
+					<xs:documentation>Norwegian krone</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NPR">
+				<xs:annotation>
+					<xs:documentation>Nepalese rupee</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NZD">
+				<xs:annotation>
+					<xs:documentation>New Zealand dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OMR">
+				<xs:annotation>
+					<xs:documentation>Omani rial</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PAB">
+				<xs:annotation>
+					<xs:documentation>Panamanian balboa</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PEN">
+				<xs:annotation>
+					<xs:documentation>Peruvian nuevo sol</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PGK">
+				<xs:annotation>
+					<xs:documentation>Papua New Guinean kina</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PHP">
+				<xs:annotation>
+					<xs:documentation>Philippine peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PKR">
+				<xs:annotation>
+					<xs:documentation>Pakistani rupee</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PLN">
+				<xs:annotation>
+					<xs:documentation>Polish zloty</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PYG">
+				<xs:annotation>
+					<xs:documentation>Paraguayan guaraní</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="QAR">
+				<xs:annotation>
+					<xs:documentation>Qatari rial</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RON">
+				<xs:annotation>
+					<xs:documentation>Romanian new leu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RSD">
+				<xs:annotation>
+					<xs:documentation>Serbian dinar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RUB">
+				<xs:annotation>
+					<xs:documentation>Russian rouble</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RWF">
+				<xs:annotation>
+					<xs:documentation>Rwandan franc</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SAR">
+				<xs:annotation>
+					<xs:documentation>Saudi riyal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SBD">
+				<xs:annotation>
+					<xs:documentation>Solomon Islands dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCR">
+				<xs:annotation>
+					<xs:documentation>Seychelles rupee</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SDG">
+				<xs:annotation>
+					<xs:documentation>Sudanese pound</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SEK">
+				<xs:annotation>
+					<xs:documentation>Swedish krona/kronor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SGD">
+				<xs:annotation>
+					<xs:documentation>Singapore dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SHP">
+				<xs:annotation>
+					<xs:documentation>Saint Helena pound</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SLL">
+				<xs:annotation>
+					<xs:documentation>Sierra Leonean leone</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SOS">
+				<xs:annotation>
+					<xs:documentation>Somali shilling</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SRD">
+				<xs:annotation>
+					<xs:documentation>Surinamese dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STD">
+				<xs:annotation>
+					<xs:documentation>São Tomé and Príncipe dobra</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SYP">
+				<xs:annotation>
+					<xs:documentation>Syrian pound</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SZL">
+				<xs:annotation>
+					<xs:documentation>Lilangeni</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="THB">
+				<xs:annotation>
+					<xs:documentation>Thai baht</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TJS">
+				<xs:annotation>
+					<xs:documentation>Tajikistani somoni</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TMT">
+				<xs:annotation>
+					<xs:documentation>Turkmenistani manat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TND">
+				<xs:annotation>
+					<xs:documentation>Tunisian dinar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TOP">
+				<xs:annotation>
+					<xs:documentation>Tongan pa?anga</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TRY">
+				<xs:annotation>
+					<xs:documentation>Turkish lira</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TTD">
+				<xs:annotation>
+					<xs:documentation>Trinidad and Tobago dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TWD">
+				<xs:annotation>
+					<xs:documentation>New Taiwan dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TZS">
+				<xs:annotation>
+					<xs:documentation>Tanzanian shilling</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UAH">
+				<xs:annotation>
+					<xs:documentation>Ukrainian hryvnia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UGX">
+				<xs:annotation>
+					<xs:documentation>Ugandan shilling</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="USD">
+				<xs:annotation>
+					<xs:documentation>United States dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UYU">
+				<xs:annotation>
+					<xs:documentation>Uruguayan peso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UZS">
+				<xs:annotation>
+					<xs:documentation>Uzbekistan som</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VEF">
+				<xs:annotation>
+					<xs:documentation>Venezuelan bolívar fuerte</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VND">
+				<xs:annotation>
+					<xs:documentation>Vietnamese d?ng</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VUV">
+				<xs:annotation>
+					<xs:documentation>Vanuatu vatu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WST">
+				<xs:annotation>
+					<xs:documentation>Samoan tala</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="XAF">
+				<xs:annotation>
+					<xs:documentation>CFA franc BEAC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="XCD">
+				<xs:annotation>
+					<xs:documentation>East Caribbean dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="XOF">
+				<xs:annotation>
+					<xs:documentation>CFA Franc BCEAO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="XPF">
+				<xs:annotation>
+					<xs:documentation>CFP franc</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="YER">
+				<xs:annotation>
+					<xs:documentation>Yemeni rial</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZAR">
+				<xs:annotation>
+					<xs:documentation>South African rand</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZMK">
+				<xs:annotation>
+					<xs:documentation>Zambian kwacha</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZWL">
+				<xs:annotation>
+					<xs:documentation>Zimbabwe dollar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MonthType">
+		<xs:annotation>
+			<xs:documentation>An enumerated list of months of the year.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="january">
+				<xs:annotation>
+					<xs:documentation>January</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="february">
+				<xs:annotation>
+					<xs:documentation>February</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="martch">
+				<xs:annotation>
+					<xs:documentation>March</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="april">
+				<xs:annotation>
+					<xs:documentation>April</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="may">
+				<xs:annotation>
+					<xs:documentation>May</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="june">
+				<xs:annotation>
+					<xs:documentation>June</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="july">
+				<xs:annotation>
+					<xs:documentation>July</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="august">
+				<xs:annotation>
+					<xs:documentation>August</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="september">
+				<xs:annotation>
+					<xs:documentation>September</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="october">
+				<xs:annotation>
+					<xs:documentation>October</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="november">
+				<xs:annotation>
+					<xs:documentation>November</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="december">
+				<xs:annotation>
+					<xs:documentation>December</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="QualityOfReading">
+		<xs:annotation>
+			<xs:documentation>List of codes indicating the quality of the reading.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="estimated">
+				<xs:annotation>
+					<xs:documentation>The quality is estimated.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="forecast">
+				<xs:annotation>
+					<xs:documentation>This is forecast data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mixed">
+				<xs:annotation>
+					<xs:documentation>There is a mixture of data quality.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="raw">
+				<xs:annotation>
+					<xs:documentation>This is raw data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="validated">
+				<xs:annotation>
+					<xs:documentation>This data has been validated.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="normalizedForWeather">
+				<xs:annotation>
+					<xs:documentation>This data has been normalized for weather.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation>There is no defined quality for this data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SiScaleCodeType">
+		<xs:annotation>
+			<xs:documentation>Unit multiplier, where the initial value of literal equals the exponent of the multiplier value in base 10.  Only the value "none" is normative to the FSGIM.
+
+Note: A value that is representing a percentage can use the UnitSymbolKind of 1 (none) and an SiScaleCodeType of -2 (centi).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="y">
+				<xs:annotation>
+					<xs:documentation>yocto (10-24)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="z">
+				<xs:annotation>
+					<xs:documentation>zepto (10-21)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="a">
+				<xs:annotation>
+					<xs:documentation>atto (10-18)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="f">
+				<xs:annotation>
+					<xs:documentation>femto (10-15)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="p">
+				<xs:annotation>
+					<xs:documentation>pico (10-12)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="n">
+				<xs:annotation>
+					<xs:documentation>nano (10-9)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="micro">
+				<xs:annotation>
+					<xs:documentation>micro (10-6)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m">
+				<xs:annotation>
+					<xs:documentation>milli (10-3)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="c">
+				<xs:annotation>
+					<xs:documentation>centi (10-2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="d">
+				<xs:annotation>
+					<xs:documentation>deci (10-1)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>1 (100)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="da">
+				<xs:annotation>
+					<xs:documentation>deca (101)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="h">
+				<xs:annotation>
+					<xs:documentation>hecto (102)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="k">
+				<xs:annotation>
+					<xs:documentation>kilo (103)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M">
+				<xs:annotation>
+					<xs:documentation>mega (106)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="G">
+				<xs:annotation>
+					<xs:documentation>giga (109)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="T">
+				<xs:annotation>
+					<xs:documentation>tera (1012)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation>petra (1015)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation>exa (1018)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Z">
+				<xs:annotation>
+					<xs:documentation>zetta (1021)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Y">
+				<xs:annotation>
+					<xs:documentation>yotta (1024)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnitSymbolKind">
+		<xs:annotation>
+			<xs:documentation>This identifies the units of measure based on the NIST Special Publication 811 2008 edition -- Guide for the Use of the International System of Units (SI). Note that these reference document supports SI units as well as common units of measurements in practice including CGS units.
+
+Only VA, W, var, VAh, Wh, varh, Btu, J, therm, BtuPerh, g, gPerM3, gPerS, m, mPerS, WPerM2, rad, sb, pa, and degK are normative for the FSGIM standard.  The enumerated values of VA, W, var, VAh, Wh, and varh were changed from their original NAESB values of vA, w, vAr, vAH, wH, and vArH to make them consistent with the standard SI abbreviations for these units.  The enumerated values of Btu and BtuPerh were changed from their original NAESB values of btu and btuPerH to make them consistent with the standard abbreviations for British thermal units and hours.
+
+Note:  The abbreviation MBtu is often used to represent thousands of Btu's (where M represents the Roman numeral for 1000).  The FSGIM always uses the SI prefixes listed in the SiScaleCodeType enumeration and not the prefixes based on Roman numerals.  This means that 1000 Btu's would be represented in the FSGIM as EnergyThermalQuantity.quantity = 1, EnergyThermalType.itemUnits = Btu, and EnergyThermalType.siScaleCode = k, not EnergyThermalType.siScaleCode = M.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="m">
+				<xs:annotation>
+					<xs:documentation>Length,meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="g">
+				<xs:annotation>
+					<xs:documentation>Mass,gram</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="a">
+				<xs:annotation>
+					<xs:documentation>Current,ampere</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="degK">
+				<xs:annotation>
+					<xs:documentation>Temperature,Kelvin (Note: the unit "degrees" is implied)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mol">
+				<xs:annotation>
+					<xs:documentation>Amount of substance,mole</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cd">
+				<xs:annotation>
+					<xs:documentation>Luminous intensity,candela</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s">
+				<xs:annotation>
+					<xs:documentation>Time,second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rad">
+				<xs:annotation>
+					<xs:documentation>Plane angle,Radian (m/m)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sr">
+				<xs:annotation>
+					<xs:documentation>Solid angle,Steradian (m2/m2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gy">
+				<xs:annotation>
+					<xs:documentation>Absorbed dose,Gray (J/kg)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bq">
+				<xs:annotation>
+					<xs:documentation>Radioactivity,Becquerel (1/s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="degC">
+				<xs:annotation>
+					<xs:documentation>Relative temperature,degrees Celsius</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sv">
+				<xs:annotation>
+					<xs:documentation>Dose equivalent,Sievert (J/kg)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="f">
+				<xs:annotation>
+					<xs:documentation>Electric capacitance,Farad (C/V)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="c">
+				<xs:annotation>
+					<xs:documentation>Electric charge,Coulomb (Amp second)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="h">
+				<xs:annotation>
+					<xs:documentation>Electric inductance,Henry (Wb/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="v">
+				<xs:annotation>
+					<xs:documentation>Electric potential,Volt (W/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ohm">
+				<xs:annotation>
+					<xs:documentation>Electric resistance,Ohm (V/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="J">
+				<xs:annotation>
+					<xs:documentation>Energy joule,(N·m = C·V = W·s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="n">
+				<xs:annotation>
+					<xs:documentation>Force newton,(kg m/s²)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hz">
+				<xs:annotation>
+					<xs:documentation>Frequency,Cycles per second or (1/s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lx">
+				<xs:annotation>
+					<xs:documentation>Illuminance lux,(lm/m²)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lm">
+				<xs:annotation>
+					<xs:documentation>Luminous flux,lumen (cd sr)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wb">
+				<xs:annotation>
+					<xs:documentation>Magnetic flux,Weber (V s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="t">
+				<xs:annotation>
+					<xs:documentation>Magnetic flux density,Tesla (Wb/m2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="W">
+				<xs:annotation>
+					<xs:documentation>Real power,Watt. By definition, one Watt equals one Joule per second. Electrical power may have real and reactive components. The real portion of electrical power (I²R) or VIcos?, is expressed in Watts. (See also apparent power and reactive power.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pa">
+				<xs:annotation>
+					<xs:documentation>Pressure,Pascal (N/m²) (Note: the absolute or relative measurement of pressure is implied with this entry. See below for more explicit forms.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="siemens">
+				<xs:annotation>
+					<xs:documentation>Electric Conductance,Siemens (A / V = 1 / O)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="paA">
+				<xs:annotation>
+					<xs:documentation>Pressure,Pascal, absolute pressure</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="paG">
+				<xs:annotation>
+					<xs:documentation>Pressure,Pascal, gauge pressure</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kat">
+				<xs:annotation>
+					<xs:documentation>Catalytic activity,katal = mol / s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="revPerS">
+				<xs:annotation>
+					<xs:documentation>Rotational speed,rotations per second (Note: compare to cycles per second, Hz)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m2">
+				<xs:annotation>
+					<xs:documentation>Area,square meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m3">
+				<xs:annotation>
+					<xs:documentation>Volume,cubic meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mPerS">
+				<xs:annotation>
+					<xs:documentation>Velocity,meter per second (m/s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mPerS2">
+				<xs:annotation>
+					<xs:documentation>Acceleration,meter per second squared</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m3PerS">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,cubic meters per second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mPerM3">
+				<xs:annotation>
+					<xs:documentation>Fuel efficiency,meter / cubic meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gM">
+				<xs:annotation>
+					<xs:documentation>Moment of mass,kilogram meter (kg·m) (first moment of mass) (Note: users must supply the "k" prefix to obtain "kg m".)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gPerM3">
+				<xs:annotation>
+					<xs:documentation>Density,gram/cubic meter (Note: users must supply the prefix multiplier "k" to form kg/ m³)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m2PerS">
+				<xs:annotation>
+					<xs:documentation>Viscosity,meter squared / second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wPerMK">
+				<xs:annotation>
+					<xs:documentation>Thermal conductivity,Watt/meter Kelvin</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="jPerK">
+				<xs:annotation>
+					<xs:documentation>Heat capacity,Joule/Kelvin</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="radPerS">
+				<xs:annotation>
+					<xs:documentation>Angular velocity,radians per second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VA">
+				<xs:annotation>
+					<xs:documentation>Apparent power,Volt Ampere (See also real power and reactive power.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="var">
+				<xs:annotation>
+					<xs:documentation>Reactive power,Volt Ampere reactive. The "reactive" or "imaginary" component of electrical power (VISin?). (See also real power and apparent power).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vS">
+				<xs:annotation>
+					<xs:documentation>Volt seconds,Volt seconds (Ws/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="v2">
+				<xs:annotation>
+					<xs:documentation>Volts squared,Volt squared (W2/A2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="aS">
+				<xs:annotation>
+					<xs:documentation>Amp seconds,Amp seconds</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="a2">
+				<xs:annotation>
+					<xs:documentation>Amps squared,Amp squared</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="a2S">
+				<xs:annotation>
+					<xs:documentation>Amps squared time,square Amp second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VAh">
+				<xs:annotation>
+					<xs:documentation>Apparent energy,Volt Ampere hours</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Wh">
+				<xs:annotation>
+					<xs:documentation>Real energy,Watt hours</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="varh">
+				<xs:annotation>
+					<xs:documentation>Reactive energy,Volt Ampere reactive hours</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vPerHz">
+				<xs:annotation>
+					<xs:documentation>Magnetic flux,Volt per Hertz</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hzPerS">
+				<xs:annotation>
+					<xs:documentation>Rate of change of frequency,Hertz per second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gM2">
+				<xs:annotation>
+					<xs:documentation>Moment of mass,kg m2 (Second moment of mass, commonly called the moment of inertia) (Note: users must supply the "k" prefix to obtain "kg m2".)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wPerS">
+				<xs:annotation>
+					<xs:documentation>Ramp rate,Watt per second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lPerS">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,liters per second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q">
+				<xs:annotation>
+					<xs:documentation>Quantity power,Q</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="qh">
+				<xs:annotation>
+					<xs:documentation>Quantity energy,Qh</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ohmM">
+				<xs:annotation>
+					<xs:documentation>resistivity,Ohm meter, ? (rho)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="aPerM">
+				<xs:annotation>
+					<xs:documentation>A/m,magnetic field strength, Ampere per meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="v2H">
+				<xs:annotation>
+					<xs:documentation>volt-squared hour,Volt-squared-hours</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="a2H">
+				<xs:annotation>
+					<xs:documentation>ampere-squared hour,Ampere-squared hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="aH">
+				<xs:annotation>
+					<xs:documentation>Ampere-hours,Ampere-hours</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wHPerM3">
+				<xs:annotation>
+					<xs:documentation>Wh/m3,energy per volume</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="timeStamp">
+				<xs:annotation>
+					<xs:documentation>Timestamp,time and date per ISO 8601 format</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wHPerRev">
+				<xs:annotation>
+					<xs:documentation>Kh-Wh,active energy metering constant</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vArHPerRev">
+				<xs:annotation>
+					<xs:documentation>Kh-VArh,reactive energy metering constant</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vAHPerRev">
+				<xs:annotation>
+					<xs:documentation>Kh-Vah,apparent energy metering constant</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m3PerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,cubic meter per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m3CompensatedPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,compensated cubic meter per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m3UncompensatedPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,uncompensated cubic meter per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,liter per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lUncompensatedPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,liter (uncompensated) per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lCompensatedPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,liter (compensated) per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q45">
+				<xs:annotation>
+					<xs:documentation>Quantity power,Q measured at 45º</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q60">
+				<xs:annotation>
+					<xs:documentation>Quantity power,Q measured at 60º</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q45H">
+				<xs:annotation>
+					<xs:documentation>Quantity energy,Qh measured at 45º</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q60H">
+				<xs:annotation>
+					<xs:documentation>Quantity energy,Qh measured at 60º</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="jPerKg">
+				<xs:annotation>
+					<xs:documentation>Specific energy,Joule / kg</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m3Uncompensated">
+				<xs:annotation>
+					<xs:documentation>Volume,cubic meter, with the value uncompensated for weather effects.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m3Compensated">
+				<xs:annotation>
+					<xs:documentation>Volume,cubic meter, with the value compensated for weather effects.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m1">
+				<xs:annotation>
+					<xs:documentation>Wavenumber,reciprocal meter, (1/m)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m3PerKg">
+				<xs:annotation>
+					<xs:documentation>Specific volume,cubic meter per kilogram, v</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="paS">
+				<xs:annotation>
+					<xs:documentation>Dynamic viscosity,Pascal second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nM">
+				<xs:annotation>
+					<xs:documentation>Moment of force,Newton meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nPerM">
+				<xs:annotation>
+					<xs:documentation>Surface tension,Newton per meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="radPerS2">
+				<xs:annotation>
+					<xs:documentation>Angular acceleration,radian per second squared</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WPerM2">
+				<xs:annotation>
+					<xs:documentation>Heat flux density, irradiance,Watt per square meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="jPerKgK">
+				<xs:annotation>
+					<xs:documentation>Specific heat capacity, specific entropy,Joule per kilogram kelvin</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="jPerM3">
+				<xs:annotation>
+					<xs:documentation>energy density,Joule per cubic meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vPerM">
+				<xs:annotation>
+					<xs:documentation>electric field strength,Volt per meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cPerM3">
+				<xs:annotation>
+					<xs:documentation>electric charge density,Coulomb per cubic meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cPerM2">
+				<xs:annotation>
+					<xs:documentation>surface charge density,Coulomb per square meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fPerM">
+				<xs:annotation>
+					<xs:documentation>permittivity,Farad per meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hPerM">
+				<xs:annotation>
+					<xs:documentation>permeability,Henry per meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="jPerMol">
+				<xs:annotation>
+					<xs:documentation>molar energy,Joule per mole</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="jPerMolK">
+				<xs:annotation>
+					<xs:documentation>molar entropy, molar heat capacity,Joule per mole kelvin</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cPerKg">
+				<xs:annotation>
+					<xs:documentation>exposure (x rays),Coulomb per kilogram</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gyPerS">
+				<xs:annotation>
+					<xs:documentation>absorbed dose rate,Gray per second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wPerSr">
+				<xs:annotation>
+					<xs:documentation>radiant intensity,Watt per steradian</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wPerM2Sr">
+				<xs:annotation>
+					<xs:documentation>radiance,Watt per square meter steradian</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="katPerM3">
+				<xs:annotation>
+					<xs:documentation>catalytic activity concentration,katal per cubic meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="min">
+				<xs:annotation>
+					<xs:documentation>Time,minute = 60 s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hr">
+				<xs:annotation>
+					<xs:documentation>Time,hour = 60 min = 3600 s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="d">
+				<xs:annotation>
+					<xs:documentation>Time,day = 24 h = 86400 s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="deg">
+				<xs:annotation>
+					<xs:documentation>Plane angle,degree</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="angleMin">
+				<xs:annotation>
+					<xs:documentation>Plane angle,minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="angleSec">
+				<xs:annotation>
+					<xs:documentation>Plane angle,second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ha">
+				<xs:annotation>
+					<xs:documentation>Area,hectare</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="l">
+				<xs:annotation>
+					<xs:documentation>Volume,liter= dm3 = m3/1000.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tonne">
+				<xs:annotation>
+					<xs:documentation>mass,"tonne" or "metric ton" (1000 kg = 1 Mg)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>N/A,none (not applicable)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cosTheta">
+				<xs:annotation>
+					<xs:documentation>Power factor,dimensionless</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bel">
+				<xs:annotation>
+					<xs:documentation>Logrithmic ratio,Bel, Note: users must combine this unit with the multiplier prefix "d" to form decibels (dB)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="status">
+				<xs:annotation>
+					<xs:documentation>State,status, where:"1" = "true", "live", "on", "high", "set";"0" = "false", "dead", "off", "low", "cleared"Note: A Boolean value is preferred but other values may be supported</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="count">
+				<xs:annotation>
+					<xs:documentation>Amount of substance,Counter value</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bm">
+				<xs:annotation>
+					<xs:documentation>Logrithmic ratio of signal strength,Bel-mW, normalized to 1mW. Note: to form "dBm" combine "Bm" with multiplier "d".</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="code">
+				<xs:annotation>
+					<xs:documentation>Application Value,Encoded value</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="meCode">
+				<xs:annotation>
+					<xs:documentation>EndDeviceEvent,Value to be interpreted as a EndDeviceEventCode</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lPerL">
+				<xs:annotation>
+					<xs:documentation>Concentration,The ratio of the volume of a solute divided by the volume of the solution. (Note: Users may need use a prefix such a 'µ' to express a quantitye such as 'µL/L')</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gPerG">
+				<xs:annotation>
+					<xs:documentation>Concentration,The ratio of the mass of a solute divided by the mass of the solution. (Note: Users may need use a prefix such a 'µ' to express a quantity such as 'µg/g')</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="molPerM3">
+				<xs:annotation>
+					<xs:documentation>Concentration,The amount of substance concentration, (c), the amount of solvent in moles divided by the volume of solution in m³.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="molPerMol">
+				<xs:annotation>
+					<xs:documentation>Concentration,Molar fraction, the ratio of the molar amount of a solute divided by the molar amount of the solution.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="molPerKg">
+				<xs:annotation>
+					<xs:documentation>Concentration,Molality, the amount of solute in moles and the amount of solvent in kilograms.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mPerM">
+				<xs:annotation>
+					<xs:documentation>Length,Ratio of length</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sPerS">
+				<xs:annotation>
+					<xs:documentation>Time,Ratio of time (Note: Users may need to supply a prefix such as 'µ' to show rates such as 'µs/s')</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hzPerHz">
+				<xs:annotation>
+					<xs:documentation>Frequency,Rate of frequency change (Note: Users may need to supply a prefix such as 'm' to show rates such as 'mHz/Hz')</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vPerV">
+				<xs:annotation>
+					<xs:documentation>Voltage,Ratio of voltages (Note: Users may need to supply a prefix such as 'm' to show rates such as 'mV/V')</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="aPerA">
+				<xs:annotation>
+					<xs:documentation>Current,Ratio of Amperages (Note: Users may need to supply a prefix such as 'm' to show rates such as 'mA/A')</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wPerVA">
+				<xs:annotation>
+					<xs:documentation>Power factor,PF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rev">
+				<xs:annotation>
+					<xs:documentation>Amount of rotation,Revolutions</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wPerW">
+				<xs:annotation>
+					<xs:documentation>Signal Strength,Ratio of power (Note: Users may need to supply a prefix such as 'm' to show rates such as 'mW/W')</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="refractiveIndexN">
+				<xs:annotation>
+					<xs:documentation>Refractive Index,n</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="relativePermeabilityMur">
+				<xs:annotation>
+					<xs:documentation>Relative Permeability,µr</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="np">
+				<xs:annotation>
+					<xs:documentation>Logarithmic ratio,neper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="eV">
+				<xs:annotation>
+					<xs:documentation>energy,electronvolt (1 eV = 1.602 176 x 10-19J)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="da">
+				<xs:annotation>
+					<xs:documentation>mass,dalton (1 Da = 1.660 538 x 10-27kg)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="u">
+				<xs:annotation>
+					<xs:documentation>mass,unified atomic mass unit (1u = 1 Da)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ua">
+				<xs:annotation>
+					<xs:documentation>length,astronomical unit (1ua = 1.495 978 x1011m)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="c0">
+				<xs:annotation>
+					<xs:documentation>speed,natural unit of speed (speed of light in a vacuum) 299 792 458 m/s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nuH">
+				<xs:annotation>
+					<xs:documentation>action,natural unit of action (reduced planck constant) 1.054 571 X 10-34J s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nuMe">
+				<xs:annotation>
+					<xs:documentation>mass,natural unit of mass (electron mass) 9.109 382 x 10-31 kg</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nuHPerNuMeC02">
+				<xs:annotation>
+					<xs:documentation>time,natural unit of time</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="auE">
+				<xs:annotation>
+					<xs:documentation>charge,atomic units of charge (elementary charge) 1.602 176 x 10-19 C</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="auMe">
+				<xs:annotation>
+					<xs:documentation>mass,atomic units of mass (electron mass) 9.109 382 x 10-31 kg</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="auH">
+				<xs:annotation>
+					<xs:documentation>action,atomic unit of action (reduced planck constant) 1.054 571 X 10-34J s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="auA0">
+				<xs:annotation>
+					<xs:documentation>length,atomic unit of length, bohr ( Bohr radius) 0.529 177 x 10-10 m</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="auEh">
+				<xs:annotation>
+					<xs:documentation>energy,atomic unit of energy, hartree 4.359 744</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="auHPerAuEh">
+				<xs:annotation>
+					<xs:documentation>time,atomic unit of time</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="char">
+				<xs:annotation>
+					<xs:documentation>Number of characters,characters</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="charPerSec">
+				<xs:annotation>
+					<xs:documentation>Data rate,characters per second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="money">
+				<xs:annotation>
+					<xs:documentation>Monetary unit,Generic money (Note: Specific monetary units are identified the currency class).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ft3">
+				<xs:annotation>
+					<xs:documentation>Volume,cubic foot</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ft3Compensated">
+				<xs:annotation>
+					<xs:documentation>Volume,cubic foot compensated for weather</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ft3Uncompensated">
+				<xs:annotation>
+					<xs:documentation>Volume,cubic foot uncompensated for weather</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ft3PerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,cubic foot per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ft3CompensatedPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,compensated cubic feet per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ft3UncompensatedPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,uncompensated cubic feet per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="uSGal">
+				<xs:annotation>
+					<xs:documentation>Volume,US gallon (1 gal = 231 in3 = 128 fl oz.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="uSGalPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,US gallon per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="impGal">
+				<xs:annotation>
+					<xs:documentation>Volume,Imperial gallon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="impGalPerH">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate,Imperial gallon per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Btu">
+				<xs:annotation>
+					<xs:documentation>Energy, British Thermal Unit ref: 59 degrees F</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BtuPerH">
+				<xs:annotation>
+					<xs:documentation>Power,BTU per hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="psiA">
+				<xs:annotation>
+					<xs:documentation>Pressure,Pound per square inch, absolute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="psiG">
+				<xs:annotation>
+					<xs:documentation>Pressure,Pound per square inch, gauge</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lUncompensated">
+				<xs:annotation>
+					<xs:documentation>Volume,Liter, with the value uncompensated for weather effects.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lCompensated">
+				<xs:annotation>
+					<xs:documentation>Volume,Liter, with the value compensated for weather effects.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="therm">
+				<xs:annotation>
+					<xs:documentation>Energy,Therm</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bar">
+				<xs:annotation>
+					<xs:documentation>Pressure,bar (1 bar = 100 kPa)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mmHg">
+				<xs:annotation>
+					<xs:documentation>Pressure,millimeter of mercury (1 mmHg ˜ 133.3 Pa)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="angstrom">
+				<xs:annotation>
+					<xs:documentation>Length,ångström (1Å = 10-10m)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nmi">
+				<xs:annotation>
+					<xs:documentation>Length,nautical mile (1 M = 1852 m)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="barn">
+				<xs:annotation>
+					<xs:documentation>Area,barn (1 b = 100 fm2 = 10-28 m2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kn">
+				<xs:annotation>
+					<xs:documentation>Speed,knot (1 kn = 1852/3600) m/s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ci">
+				<xs:annotation>
+					<xs:documentation>Activity,curie (1 Ci = 3.7 x 1010Bq)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="r">
+				<xs:annotation>
+					<xs:documentation>exposure,roentgen (1 R = 2.58 x 10-4 C/kg)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="doseRad">
+				<xs:annotation>
+					<xs:documentation>absorbed dose,rad (1 rd = 1 cGy)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rem">
+				<xs:annotation>
+					<xs:documentation>dose equivalent,rem (1 rem = 10-2 Sv)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="in">
+				<xs:annotation>
+					<xs:documentation>length,inch</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ft">
+				<xs:annotation>
+					<xs:documentation>length,foot (1 ft = 12 in)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rod">
+				<xs:annotation>
+					<xs:documentation>length,rod (1 rod = 16.5 ft)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fur">
+				<xs:annotation>
+					<xs:documentation>length,furlong (1 fur = 660 ft)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mi">
+				<xs:annotation>
+					<xs:documentation>length,mile (1 statute mile = 8 fur = 80 chains = 320 rods = 5280 feet)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ft2">
+				<xs:annotation>
+					<xs:documentation>area,square foot (1 ft2 = 144 in2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="yd2">
+				<xs:annotation>
+					<xs:documentation>area,square yard (1 yd2 = 9 ft2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rod2">
+				<xs:annotation>
+					<xs:documentation>area,square rod (1 rod2 = 272.25 ft2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="acre">
+				<xs:annotation>
+					<xs:documentation>area,acre (1 acre = 160 rd2 = 43 560 ft2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mi2">
+				<xs:annotation>
+					<xs:documentation>area,square mile (1 mi2 = 640 acres)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sectionOfLand">
+				<xs:annotation>
+					<xs:documentation>area,section of land (1 mi2 = 1 section of land)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="township">
+				<xs:annotation>
+					<xs:documentation>area,township (1 township = 6 miles square)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="yd3">
+				<xs:annotation>
+					<xs:documentation>Volume,cubic yard (1 yd3 = 27 ft3)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="li">
+				<xs:annotation>
+					<xs:documentation>length,link (1 li = 0.66 ft)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ch">
+				<xs:annotation>
+					<xs:documentation>length,chain (1 ch = 100 links = 4 rods = 66 ft)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="uSLiqPt">
+				<xs:annotation>
+					<xs:documentation>Volume,US liquid pint (1 pt = 28.875 in3 = 128 fl dr)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="uSLiqQt">
+				<xs:annotation>
+					<xs:documentation>Volume,US liquid quart (1 qt = 2 pt)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="flDrAp">
+				<xs:annotation>
+					<xs:documentation>Volume,Apothecaries fluid dram</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="flOzAp">
+				<xs:annotation>
+					<xs:documentation>Volume,Apothecaries fluid ounce (1 fl oz ap = 8 fl dr ap)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="usDryPt">
+				<xs:annotation>
+					<xs:documentation>Volume,US dry pint (1 pt = 67.2 in3)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="usDryQt">
+				<xs:annotation>
+					<xs:documentation>Volume,US dry quart (1 qt = 2 pints)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="usPk">
+				<xs:annotation>
+					<xs:documentation>Volume,US peck (1 pk = 8 qt)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="usBu">
+				<xs:annotation>
+					<xs:documentation>Volume,US bushel (1 bu = 4 pk)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gr">
+				<xs:annotation>
+					<xs:documentation>Mass,grain (1 grain = 1/7000 avdp lb) Note: The "grain" is the same in the avoirdupois, troy, and apothecaries units of mass.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="avdpDr">
+				<xs:annotation>
+					<xs:documentation>Mass,Avoirdupois dram (1 Avdp dr = 27-11/32 gr) Note: The abbreviation "dr" may be used if there is no chance of confusing the avoirdupois dram with the troy or apothecaries dram.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="avdpOz">
+				<xs:annotation>
+					<xs:documentation>Mass,Avoirdupois ounce (1 Avdp oz = 16 Avdp dr) Note: The abbreviation "oz" may be used if there is no chance of confusing the avoirdupois ounce with the troy or apothecaries ounce.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="avdpLb">
+				<xs:annotation>
+					<xs:documentation>Mass,Avoirdupois pound (1 lb = 16 oz) Note: Although the term "pound" is commonly used in many countries simply as "pound (lb)", the historical term "avoirdupois" is added to provide context and distinguish it in this setting from the troy and apothecaries systems of measure which use the same names. The abbreviation "lb" may be used instead of "avdp lb" if no confusion is possible with the pound named in these other systems.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="shortCwt">
+				<xs:annotation>
+					<xs:documentation>Mass,Avoirdupois hundredweight (1 cwt = 100 lbs)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="shortTon">
+				<xs:annotation>
+					<xs:documentation>Mass,Avoirdupois ton (1 short ton = 2000 lbs)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="longCwt">
+				<xs:annotation>
+					<xs:documentation>Mass,Avoirdupois gross or long hundredweight (1 long cwt = 112 lbs)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="longTon">
+				<xs:annotation>
+					<xs:documentation>Mass,Avoirdupois gross or long ton (1 long ton = 20 long cwt)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dwt">
+				<xs:annotation>
+					<xs:documentation>Mass,Troy pennyweight (1 dwt = 24 grains)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ozT">
+				<xs:annotation>
+					<xs:documentation>Mass,Troy ounce (1 oz t = 20 dwt)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lbT">
+				<xs:annotation>
+					<xs:documentation>Mass,Troy pound (1 lb t = 12 oz t)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sAp">
+				<xs:annotation>
+					<xs:documentation>Mass,Apothecaries scruple (1 s ap = 20 grains)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="drAp">
+				<xs:annotation>
+					<xs:documentation>Mass,Apothecaries dram (1 dr ap = 3 s ap)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ozAp">
+				<xs:annotation>
+					<xs:documentation>Mass,Apothecaries ounce (1 oz ap = 8 dr ap)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lbAp">
+				<xs:annotation>
+					<xs:documentation>Mass,Apothecaries pound (1 lp ap = 12 oz ap)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mpgImp">
+				<xs:annotation>
+					<xs:documentation>Fuel economy,mile per imperial gallon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mpgUS">
+				<xs:annotation>
+					<xs:documentation>Fuel economy,mile per US gallon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mPGeUS">
+				<xs:annotation>
+					<xs:documentation>Fuel economy,mile per US gallon equivalent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lPer100km">
+				<xs:annotation>
+					<xs:documentation>Fuel economy,liter per 100 km</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wHPerMi">
+				<xs:annotation>
+					<xs:documentation>Fuel economy,watt-hour per mile (Note: users must supply the "k" prefix to create "kWh/mi")</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wHPer100Mi">
+				<xs:annotation>
+					<xs:documentation>Fuel economy,watt-hour per 100 mile (Note: users must supply the "k" prefix to create "kWh/(100 mi)")</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="degF">
+				<xs:annotation>
+					<xs:documentation>Temperature,degrees Fahrenheit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="erg">
+				<xs:annotation>
+					<xs:documentation>Energy,erg (1 erg = 10-7 J)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dyn">
+				<xs:annotation>
+					<xs:documentation>Force,dyne (1 dyn = 10-5 N)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="p">
+				<xs:annotation>
+					<xs:documentation>Dynamic viscosity,poise (1 P = 0.1 Pa s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="st">
+				<xs:annotation>
+					<xs:documentation>Kinematic viscosity,stokes (1 St = 1 cm2/s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sb">
+				<xs:annotation>
+					<xs:documentation>Luminance,stilb (1 sb = 104 cd/m2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ph">
+				<xs:annotation>
+					<xs:documentation>Illuminance,phot (1 ph = 104 lx)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gal">
+				<xs:annotation>
+					<xs:documentation>Acceleration,gal (1 Gal = 10-2 m s-2) Note: This "Gal" is an abbreviation for "Galileo" not "gallon"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mx">
+				<xs:annotation>
+					<xs:documentation>Magnetic flux,Maxwell (1 Mx = 10-8 Wb)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gauss">
+				<xs:annotation>
+					<xs:documentation>Magnetic flux density,Gauss (1 G = 10-4 T)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="oe">
+				<xs:annotation>
+					<xs:documentation>Magnetic field,Œrsted (1 Oe = (103/4p) A/m)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gPerS">
+				<xs:annotation>
+					<xs:documentation>Mass flow rate, g/s</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WeekdayType">
+		<xs:annotation>
+			<xs:documentation>An enumerated list of day of the week.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="sunday">
+				<xs:annotation>
+					<xs:documentation>Sunday</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="monday">
+				<xs:annotation>
+					<xs:documentation>Monday</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tuesday">
+				<xs:annotation>
+					<xs:documentation>Tuesday</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wednesday">
+				<xs:annotation>
+					<xs:documentation>Wednesday</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="thursday">
+				<xs:annotation>
+					<xs:documentation>Thursday</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="friday">
+				<xs:annotation>
+					<xs:documentation>Friday</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="saturday">
+				<xs:annotation>
+					<xs:documentation>Saturday</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

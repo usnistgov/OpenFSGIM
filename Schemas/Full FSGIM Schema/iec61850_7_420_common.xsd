@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>These are Common Data Classes (CDC)s defined in part 7-420.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="iec61850_7_420_daenums.xsd"/>
+	<xs:element name="ChargeStatusENS" type="ChargeStatusENS"/>
+	<xs:complexType name="ChargeStatusENS">
+		<xs:annotation>
+			<xs:documentation>The ChargeStatusENS class is an FSGIM class derived from the 61850 ENS class. The ChargeStatusENS class attributes are exactly the same as those in the ENS class except the status value attribute references the DRCS.ChaSt.ING enumeration class rather than the ENS class.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Textual description of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="quality" type="X.q.X" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the attribute(s) representing the value of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="DRCS.ChaSt.ING" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Enumerated values for the status.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timeOfLastChange" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change in one of the attribute(s) representing the value of the data or in the quality attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ConnectionTypeENS" type="ConnectionTypeENS"/>
+	<xs:complexType name="ConnectionTypeENS">
+		<xs:annotation>
+			<xs:documentation>Type of electrical connection between the generator and the facility's electrical distribution system. This class is an FSGIM class derived from the 61850 ENS class. The ConnectTypeENS class attributes are exactly the same as those in the ENS class except the status value attribute references another derived FSGIM enumeration named ConnectionTypeEnumeration.  The ConnectionTypeEnumeration class is an explicitly defined enumeration in FSGIM.  In 61850, this enumeration is represented by a single value.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Textual description of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="quality" type="X.q.X" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the attribute(s) representing the value of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="ConnectionTypeEnumeration" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Enumerated values for the status.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timeOfLastChange" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change in one of the attribute(s) representing the value of the data or in the quality attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GeneratorOperationStatusENS" type="GeneratorOperationStatusENS"/>
+	<xs:complexType name="GeneratorOperationStatusENS">
+		<xs:annotation>
+			<xs:documentation>The GeneratorOperationStatusENS class is an FSGIM class derived from the 61850 ENS class. The GeneratorOperationStatusENS class attributes are exactly the same as those in the ENS class except the status value attribute references another derived FSGIM enumeration named GeneratorOperationStatusEnumeration.  The GeneratorOperationStatusEnumeration class is an explicitly defined enumeration in FSGIM.  In 61850, this enumeration is represented by a single value.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Textual description of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="quality" type="X.q.X" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the attribute(s) representing the value of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="GeneratorOperationStatusEnumeration" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Enumerated values for the status.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timeOfLastChange" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change in one of the attribute(s) representing the value of the data or in the quality attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SCR" type="SCR"/>
+	<xs:complexType name="SCR">
+		<xs:annotation>
+			<xs:documentation>The SCR class defines the common data class definition for a "Relative Time Schedule Setting".   This class provides a means for defining a relative time array of setting values, such as schedules, where the time interval between points may be variable.  It has an array of value elements that is characterized by a set of parameters including the number of elements in each array, an array of times between each value and an indication how to ramp between consecutive values, units, multiplier, and a description.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cur" type="CurrencyKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Currency as per ISO 4217.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="d" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Textual description of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="multiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Units multiplier of the attribute valUnits.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numPts" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of points used to define a curve or a histogram. This contains the dimension of array attributes val, rmpTyp, and tmsOffset.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="occPer" type="X.occPer.SCR" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Repeat period (Hour, Day, Week, Month, Year).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rmpTyp" type="X.rmpTyp.X" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Array of ramp types defining how to interpret the transition from one value to the next.
+
+ARRAY 1..numPts OF the enumeration X.rmpTyp.X ( 1=Fixed, 2=Ramp, 3=Average)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tmsOffset" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>ARRAY 1..numPts OF Integer time offsets in seconds</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="val" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>ARRAY 1..numPts OF REAL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="valD" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of val.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="valEq" type="X.valEq.X" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Equation for val:
+1 = SI units.
+2 = Currency as per ISO 4217 per SI unit.
+3 = SI unit per currency.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="valUnits" type="UnitSymbolKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>SI Units.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SequenceDirectionENS" type="SequenceDirectionENS"/>
+	<xs:complexType name="SequenceDirectionENS">
+		<xs:annotation>
+			<xs:documentation>The SequenceDirectionENS class is an FSGIM class derived from the 61850 ENS class. The SequenceDirectionENS class attributes are exactly the same as those in the ENS class except the status value attribute references another derived FSGIM enumeration named SequenceDirectionEnumeration.  The SequenceDirectionEnumeration class is an explicitly defined enumeration in FSGIM.  In 61850, this enumeration is represented by a single value.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Textual description of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="quality" type="X.q.X" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the attribute(s) representing the value of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="SequenceDirectionEnumeration" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Enumerated values for the status.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timeOfLastChange" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change in one of the attribute(s) representing the value of the data or in the quality attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

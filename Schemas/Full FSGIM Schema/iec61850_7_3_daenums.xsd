@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This package contains explicit definition of enumerated types used in IEC 61850-7-3. Except for two of them, not explicitly defined in the standard.
+
+Note: Annex D in the original defines one type per data object, so there is some repetition.</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="AngleReferenceKind">
+		<xs:annotation>
+			<xs:documentation>An enumeration defining the quantity that is used as reference for the phase angles. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Va">
+				<xs:annotation>
+					<xs:documentation>Angle reference is V phase a.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vb">
+				<xs:annotation>
+					<xs:documentation>Angle reference is V phase b.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vc">
+				<xs:annotation>
+					<xs:documentation>Angle reference is V phase c.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Aa">
+				<xs:annotation>
+					<xs:documentation>Angle reference is Amps phase a.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ab">
+				<xs:annotation>
+					<xs:documentation>Angle reference is Amps phase b.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ac">
+				<xs:annotation>
+					<xs:documentation>Angle reference is Amps phase c.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vab">
+				<xs:annotation>
+					<xs:documentation>Angle reference is Volts phase a-b.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vbc">
+				<xs:annotation>
+					<xs:documentation>Angle reference is Volts phase b-c.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vca">
+				<xs:annotation>
+					<xs:documentation>Angle reference is Volts phase c-a.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vother">
+				<xs:annotation>
+					<xs:documentation>Angle reference is Volts other.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Aother">
+				<xs:annotation>
+					<xs:documentation>Angle reference is Amps other.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Synchrophasor">
+				<xs:annotation>
+					<xs:documentation>Reference of the angle is as defined in IEEE C37.118, clause 4.2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ControlOutputKind">
+		<xs:annotation>
+			<xs:documentation>An enumeration defining the kind of control output provided.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="pulse">
+				<xs:annotation>
+					<xs:documentation>Control output is a pulse output.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="persistent">
+				<xs:annotation>
+					<xs:documentation>Control output is a persistent output.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CtlModelKind">
+		<xs:annotation>
+			<xs:documentation>An enumeration defining the kind of control mechanism provided.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="status-only">
+				<xs:annotation>
+					<xs:documentation>The object is not controllable, only the services that apply to a status object are supported. The attribute 'ctlVal' does not exist.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="direct-with-normal-security">
+				<xs:annotation>
+					<xs:documentation>Direct control with normal security according to IEC 61850-7-2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sbo-with-normal-security">
+				<xs:annotation>
+					<xs:documentation>SBO (select before operate) control with normal security according to IEC 61850-7-2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="direct-with-enhanced-security">
+				<xs:annotation>
+					<xs:documentation>Direct control with enhanced security according to IEC 61850-7-2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sbo-with-enhanced-security">
+				<xs:annotation>
+					<xs:documentation>SBO control with enhanced security according to IEC 61850-7-2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HvReferenceKind">
+		<xs:annotation>
+			<xs:documentation>Reference for harmonic values.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="fundamental">
+				<xs:annotation>
+					<xs:documentation>Fundamental frequency.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rms">
+				<xs:annotation>
+					<xs:documentation>RMS frequency.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="absolute">
+				<xs:annotation>
+					<xs:documentation>Absolute frequency.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OriginatorCategoryKind">
+		<xs:annotation>
+			<xs:documentation>An enumeration specifying the category of the originator that caused a change of a value.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="not-supported">
+				<xs:annotation>
+					<xs:documentation>Originator category not supported.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bay-control">
+				<xs:annotation>
+					<xs:documentation>Control operation issued from an operator using a client located at bay level.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="station-control">
+				<xs:annotation>
+					<xs:documentation>Control operation issued from an operator using a client located at station level.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="remote-control">
+				<xs:annotation>
+					<xs:documentation>Control operation from a remote operator outside the substation (for example network control center).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="automatic-bay">
+				<xs:annotation>
+					<xs:documentation>Control operation issued from an automatic function at bay level.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="automatic-station">
+				<xs:annotation>
+					<xs:documentation>Control operation issued from an automatic function at station level.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="automatic-remote">
+				<xs:annotation>
+					<xs:documentation>Control operation issued from an automatic function outside of the substation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="maintenance">
+				<xs:annotation>
+					<xs:documentation>Control operation issued from a maintenance/service tool.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="process">
+				<xs:annotation>
+					<xs:documentation>Status change occurred without control action (for example external trip of a circuit breaker or failure inside the breaker).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RangeKind">
+		<xs:annotation>
+			<xs:documentation>An enumeration that indicates the relationship of a measured value against configured settings.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="normal">
+				<xs:annotation>
+					<xs:documentation>Range of value is normal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="high">
+				<xs:annotation>
+					<xs:documentation>Range of value is high.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="low">
+				<xs:annotation>
+					<xs:documentation>Range of value is low.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="high-high">
+				<xs:annotation>
+					<xs:documentation>Range of value exceeds high-high limit.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="low-low">
+				<xs:annotation>
+					<xs:documentation>Range of value is lower than low-low limit.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SIUnitKind">
+		<xs:annotation>
+			<xs:documentation>An enumeration of SI units, derived from ISO 1000.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Dimensionless</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m">
+				<xs:annotation>
+					<xs:documentation>Length</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kg">
+				<xs:annotation>
+					<xs:documentation>Mass</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s">
+				<xs:annotation>
+					<xs:documentation>Time</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation>Current</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="K">
+				<xs:annotation>
+					<xs:documentation>Temperature</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mol">
+				<xs:annotation>
+					<xs:documentation>Amount of substance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cd">
+				<xs:annotation>
+					<xs:documentation>Luminous intensity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="deg">
+				<xs:annotation>
+					<xs:documentation>Plane angle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rad">
+				<xs:annotation>
+					<xs:documentation>Plane angle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sr">
+				<xs:annotation>
+					<xs:documentation>Solid angle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Gy">
+				<xs:annotation>
+					<xs:documentation>Absorbed dose (J/kg)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Bq">
+				<xs:annotation>
+					<xs:documentation>Activity (1/s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="°C">
+				<xs:annotation>
+					<xs:documentation>Relative temperature</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Sv">
+				<xs:annotation>
+					<xs:documentation>Dose equivalent (J/kg)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F">
+				<xs:annotation>
+					<xs:documentation>Electric capacitance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C">
+				<xs:annotation>
+					<xs:documentation>Electric charge (A S)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="S">
+				<xs:annotation>
+					<xs:documentation>Electric conductance (A/V)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="H">
+				<xs:annotation>
+					<xs:documentation>Electric inductance (Wb/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="V">
+				<xs:annotation>
+					<xs:documentation>Electric potential (W/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ohm">
+				<xs:annotation>
+					<xs:documentation>Electric resistance (V/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="J">
+				<xs:annotation>
+					<xs:documentation>Energy (N m)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>Force (kg m / s2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Hz">
+				<xs:annotation>
+					<xs:documentation>Frequency (1/s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lx">
+				<xs:annotation>
+					<xs:documentation>Illuminance (Lm/m2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Lm">
+				<xs:annotation>
+					<xs:documentation>Luminous flux (cd sr)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Wb">
+				<xs:annotation>
+					<xs:documentation>Magnetic flux (V s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="T">
+				<xs:annotation>
+					<xs:documentation>Magnetic flux density (Wb / m2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="W">
+				<xs:annotation>
+					<xs:documentation>Power (J/s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pa">
+				<xs:annotation>
+					<xs:documentation>Pressure (N / m2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m²">
+				<xs:annotation>
+					<xs:documentation>Area</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m³">
+				<xs:annotation>
+					<xs:documentation>Volume</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m/s">
+				<xs:annotation>
+					<xs:documentation>Velocity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m/s²">
+				<xs:annotation>
+					<xs:documentation>Acceleration</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m³/s">
+				<xs:annotation>
+					<xs:documentation>Volumetric flow rate</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m/m³">
+				<xs:annotation>
+					<xs:documentation>Fuel efficiency</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M">
+				<xs:annotation>
+					<xs:documentation>Moment of mass (kg m)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kg/m³">
+				<xs:annotation>
+					<xs:documentation>Density</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="m²/s">
+				<xs:annotation>
+					<xs:documentation>Viscosity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="W/m K">
+				<xs:annotation>
+					<xs:documentation>Thermal conductivity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="J/K">
+				<xs:annotation>
+					<xs:documentation>Heat capacity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ppm">
+				<xs:annotation>
+					<xs:documentation>Concentration</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1/s">
+				<xs:annotation>
+					<xs:documentation>Rotational speed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rad/s">
+				<xs:annotation>
+					<xs:documentation>Angular velocity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="W/m²">
+				<xs:annotation>
+					<xs:documentation>Insolation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="J/m²">
+				<xs:annotation>
+					<xs:documentation>Insolation energy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="S/m">
+				<xs:annotation>
+					<xs:documentation>Electric conductivity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="K/s">
+				<xs:annotation>
+					<xs:documentation>Temperature change rate</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pa/s">
+				<xs:annotation>
+					<xs:documentation>Pressure change rate</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="J/kg K">
+				<xs:annotation>
+					<xs:documentation>Specific heat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VA">
+				<xs:annotation>
+					<xs:documentation>Apparent power</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Watts">
+				<xs:annotation>
+					<xs:documentation>Real power (I2 R)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VAr">
+				<xs:annotation>
+					<xs:documentation>Reactive power (V I sinTheta)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phi">
+				<xs:annotation>
+					<xs:documentation>Phase angle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cos(phi)">
+				<xs:annotation>
+					<xs:documentation>Power factor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vs">
+				<xs:annotation>
+					<xs:documentation>Volt second (Ws/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="V²">
+				<xs:annotation>
+					<xs:documentation>Volt squared (W2/A2)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="As">
+				<xs:annotation>
+					<xs:documentation>Amp second</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A²">
+				<xs:annotation>
+					<xs:documentation>Amp squared</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A²t">
+				<xs:annotation>
+					<xs:documentation>Amps squared time</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VAh">
+				<xs:annotation>
+					<xs:documentation>Apparent energy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Wh">
+				<xs:annotation>
+					<xs:documentation>Real energy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VArh">
+				<xs:annotation>
+					<xs:documentation>Reactive energy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="V/Hz">
+				<xs:annotation>
+					<xs:documentation>Magnetic flux</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Hz/s">
+				<xs:annotation>
+					<xs:documentation>Rate of change of frequency</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="char">
+				<xs:annotation>
+					<xs:documentation>Number of characters</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="char/s">
+				<xs:annotation>
+					<xs:documentation>Baud</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kgm²">
+				<xs:annotation>
+					<xs:documentation>Turbine inertia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dB">
+				<xs:annotation>
+					<xs:documentation>Sound pressure level</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="J/Wh">
+				<xs:annotation>
+					<xs:documentation>Heat rate</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="W/s">
+				<xs:annotation>
+					<xs:documentation>Ramp rate</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="l/s">
+				<xs:annotation>
+					<xs:documentation>Flow rate</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dBm">
+				<xs:annotation>
+					<xs:documentation>Power level relative to 1mW</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

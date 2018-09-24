@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The EnergyRouter concept is used to handle situations where loads can receive power from more than one source.  When this occurs, the Energy Manager Component must be able to determine which power source or combination of power sources are driving the loads in order for it to properly make energy management decisions.  Examples of where this might occur include loads that can be powered by the grid or a backup generator, switchgear capable of selecting between two utility feeds, configurations that allow photovoltaic arrays to supplement power from the grid, or configurations that allow photovoltaic arrays to send excess power to the grid.  Specializations of the EnergyRouter are provided to handle each of these scenarios by providing the Energy Manager Component with the knowledge that it needs in order to determine the resulting power flows.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:element name="BidirectionalCombiner" type="BidirectionalCombiner"/>
+	<xs:complexType name="BidirectionalCombiner">
+		<xs:annotation>
+			<xs:documentation>This class is used to model bidirectional combiner boxes, which are devices that allow two sources of energy to be connected to one or more loads in a way that allows energy to flow from the onsite generation source to the utility grid but not from the utility grid to the onsite generation source.  The effect of the constraints that are placed on this class results in the following behavior for the bidirectional combiner box:
+	- If the amount of power available from the onsite generation side of the combiner box is less than the amount of power consumed by the equipment connected to load side of the combiner box, then the amount of power drawn from utility grid side of combiner box is the difference between the amount of power drawn from load side of the combiner box and the amount of power injected into the onsite generation side of the combiner box. 
+	- If the amount of power available from the onsite generation side of the combiner box is greater than the amount of power consumed by the equipment connected to load side of the combiner box, then the amount of power sent back to the grid is the amount of power available from the onsite generation side of the combiner box minus the amount of power drawn from load side of the combiner box.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="EnergyRouter">
+				<xs:sequence>
+					<xs:element name="aggregationRuleset" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The rulesest that defines how an Aggegation.aggregateQuantity is influenced by an EnergyRouter</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="connector" type="RouterConnectionPoint" minOccurs="3" maxOccurs="3">
+						<xs:annotation>
+							<xs:documentation>The connection points that are a part of this EnergyRouter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="ConnectionPointState">
+		<xs:annotation>
+			<xs:documentation>This enumeration is used to specify the present configuration of a ConnectionPoint.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="input">
+				<xs:annotation>
+					<xs:documentation>This RouterConnectionPoint is currently configured as an input which allows energy to flow into, but not out of, the EnergyRouter.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="output">
+				<xs:annotation>
+					<xs:documentation>This RouterConnectionPoint is currently configured as an input which allows energy to flow out of, but not into, the EnergyRouter.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bidirectional">
+				<xs:annotation>
+					<xs:documentation>This RouterConnectionPoint is currently configured as an input which allows energy to flow into and out of the EnergyRouter.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="disconnected">
+				<xs:annotation>
+					<xs:documentation>This RouterConnectionPoint is currently disconnected from the EnergyRouter.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="EnergyRouter" type="EnergyRouter"/>
+	<xs:complexType name="EnergyRouter" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This class is used to model the various devices that are capable of connecting a load to more than one source of energy.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="aggregationRuleset" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The rulesest that defines how an Aggegation.aggregateQuantity is influenced by an EnergyRouter</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="connector" type="RouterConnectionPoint" minOccurs="3" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>The connection points that are a part of this EnergyRouter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GridTransferSwitch" type="GridTransferSwitch"/>
+	<xs:complexType name="GridTransferSwitch">
+		<xs:annotation>
+			<xs:documentation>This class is used to model switchgear that are used to allow a load to be switched between two utility feeds without allowing the two utility feeds to be connected together through the switchgear.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="EnergyRouter">
+				<xs:sequence>
+					<xs:element name="aggregationRuleset" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The rulesest that defines how an Aggegation.aggregateQuantity is influenced by an EnergyRouter</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="connector" type="RouterConnectionPoint" minOccurs="3" maxOccurs="3">
+						<xs:annotation>
+							<xs:documentation>The connection points that are a part of this EnergyRouter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RouterConnectionPoint" type="RouterConnectionPoint"/>
+	<xs:complexType name="RouterConnectionPoint">
+		<xs:annotation>
+			<xs:documentation>This class is used to model the input/output characteristics of connections from an EnergyRouter to a source or sink of energy.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ConnectionPoint">
+				<xs:sequence>
+					<xs:element name="mayBeBidirectional" type="xs:boolean" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This RouterConnectionPoint may be used as a connection that allows energy to flow into and out of the EnergyRouter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mayBeDisconnected" type="xs:boolean" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This RouterConnectionPoint may be used as a connection that may be disconnected from the EnergyRouter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mayBeInput" type="xs:boolean" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This RouterConnectionPoint may be used as a connection that allows energy to flow into, but not out of, the EnergyRouter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mayBeOutput" type="xs:boolean" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This RouterConnectionPoint may be used as a connection that allows energy to flow out of, but not into, the EnergyRouter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="presentState" type="ConnectionPointState" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The present state of this RouterConnectionPoint .  The allowable states for this particular RouterConnectionPoint are determined by the boolean attributes of this class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TransferSwitch" type="TransferSwitch"/>
+	<xs:complexType name="TransferSwitch">
+		<xs:annotation>
+			<xs:documentation>This class is used to model transfer switches, which are devices that allow a load or set of loads to be switched between two power sources without allowing the two power sources to be connected together.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="EnergyRouter">
+				<xs:sequence>
+					<xs:element name="aggregationRuleset" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The rulesest that defines how an Aggegation.aggregateQuantity is influenced by an EnergyRouter</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="connector" type="RouterConnectionPoint" minOccurs="3" maxOccurs="3">
+						<xs:annotation>
+							<xs:documentation>The connection points that are a part of this EnergyRouter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="UnidirectionalCombiner" type="UnidirectionalCombiner"/>
+	<xs:complexType name="UnidirectionalCombiner">
+		<xs:annotation>
+			<xs:documentation>This class is used to model unidirectional combiner boxes, which are devices that allow two sources of energy to be connected to one or more loads in a way that does not allow energy to flow from one source to another.  The effect of the constraints that are placed on this class results in the following behavior for the unidirectional combiner box:
+	- If the amount of power available from the onsite generation side of the combiner box is less than the amount of power consumed by the equipment connected to load side of the combiner box, then the amount of power drawn from utility grid side of the combiner box  is the difference between the amount of power drawn from load side of the combiner box and the amount of power injected into the onsite generation side of the combiner box. 
+	- If the amount of power available from the onsite generation side of the combiner box is greater than the amount of power consumed by the equipment connected to load side of the combiner box , then the amount of power drawn from utility grid side of the combiner box is zero and the amount of power actually injected into the onsite generation side of the combiner box  is equal to the amount of power drawn from load side of the combiner box.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="EnergyRouter">
+				<xs:sequence>
+					<xs:element name="aggregationRuleset" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The rulesest that defines how an Aggegation.aggregateQuantity is influenced by an EnergyRouter</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="connector" type="RouterConnectionPoint" minOccurs="3" maxOccurs="3">
+						<xs:annotation>
+							<xs:documentation>The connection points that are a part of this EnergyRouter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

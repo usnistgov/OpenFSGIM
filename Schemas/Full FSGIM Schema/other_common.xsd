@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The package contains common classes and types that are used within the Facility Smart Grid Information Model other than primitive or measurement related classes and types .</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:element name="Circuit" type="Circuit"/>
+	<xs:complexType name="Circuit">
+		<xs:annotation>
+			<xs:documentation>This class is used to model electrical circuits.  All ConnectionPoints that are electrically tied together will point to the same instance of this class.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ConnectionPoint" type="ConnectionPoint"/>
+	<xs:complexType name="ConnectionPoint">
+		<xs:annotation>
+			<xs:documentation>This class is used to model the physical connections from Generators, Loads, Meters, and Energy Routers to sources or sinks of energy.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="connectedTo" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Circuit to which this ConnectionPoint is electrically connected.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="logicalEMUsagePoint" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Logical point on a network at which consumption or production for this ConnectionPoint is either measured (e.g., metered) or estimated (e.g., unmetered street lights).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GridCircuit" type="GridCircuit"/>
+	<xs:complexType name="GridCircuit">
+		<xs:annotation>
+			<xs:documentation>This class is used to model electrical circuits that are part of the utility grid.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Circuit">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MonetaryQuantity" type="MonetaryQuantity"/>
+	<xs:complexType name="MonetaryQuantity">
+		<xs:annotation>
+			<xs:documentation>A monetary quantity used to express the cost or value of something in some currency.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="currency" type="CurrencyKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The code indicating the type of currency for this monetary quantity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="quantity" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The amount of currency for this monetary quantity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PiecewiseLinearSegment" type="PiecewiseLinearSegment"/>
+	<xs:complexType name="PiecewiseLinearSegment">
+		<xs:annotation>
+			<xs:documentation>The PiecewiseLinearSegment class defines the attributes needed to specify a single straight line segment for a piecewise linear curve.  Each straight line segment is specified by two X-axis coordinates, percentOFFullRatedOutputBegin and percentOFFullRatedOutputEnd; and by two Y-axis coordinates, percentOFFullRatedInputPowerDrawnBegin and percentOFFullRatedInputPowerDrawnEnd. 
+
+The entire piecewise linear curve is defined by the runningProfile attribute; where the 'percent of full rated input power' is a function of the 'percent of full rated output'.  That is, as the output varies between 0 and 100 percent; the function maps to the percentage of input power (0..100) required to achieve the specified output.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="desiredFractionOfFullRatedOutputBegin" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the starting x-coordinate of the straight line segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="desiredFractionOfFullRatedOutputEnd" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the ending x-coordinate of the straight line segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="requiredFractionOfFullRatedInputPowerDrawnBegin" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the starting y-coordinate of the straight line segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="requiredFractionOfFullRatedInputPowerDrawnEnd" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the ending y-coordinate of the straight line segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

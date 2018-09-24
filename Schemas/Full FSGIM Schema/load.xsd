@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The Load Component is the portion of the FSGIM that provides an abstract representation of all devices that consume electricity. This includes devices powered from the electrical grid, powered from an alternate source, or battery powered devices. Some loads can only be switched on and off. Other loads can be modified to manage peaks or in response to pricing or other grid interactions.
+
+The Load Component contains classes that support the ability to forecast demand, energy consumption, or both.  It also contains classes that support some types of protection to prevent damage of physical equipment, however real devices may need additional safety constraints that are not captured in the model.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="power_meas.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="eiclasses.xsd"/>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:element name="CurtailableLoad" type="CurtailableLoad"/>
+	<xs:complexType name="CurtailableLoad">
+		<xs:annotation>
+			<xs:documentation>The CurtailableLoad class defines the attributes that are unique to devices whose electrical consumption can be curtailed. The attributes define the information needed to represent curtailment policies based on criteria including load priorities, cost constraints, protection of physical equipment, and safety considerations. The CurtailableLoad class also provides attributes for restoration of curtailed loads.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Load">
+				<xs:sequence>
+					<xs:element name="actualCurtailedDemand" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the amount of demand presently curtailed for this load (as measured by the present subinterval demand) as measured within the PowerMeasurementsSet for this load.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="curtailmentCost" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the monetary value of the fixed and variable cost associated with curtailing the load (when positive) or the savings associated by curtailing the load (when negative) on a per unit of power basis.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="curtailmentCyclesInPeriod" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the number of times the load has been curtailed since this attribute was last reset. This attribute shall be increased by one each time a two-state load is curtailed, or a multi-state load is curtailed from one curtailment state to another.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="curtailmentRatingsLevel" type="CurtailmentArrayElement" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the array of curtailment amounts when the requestedCurtailmentLevel.signalType equals 'level'.  This array transforms the level requested by the Energy Manager as specified by the attribute requestedCurtailmentLevel.level into the fixed demand to which the load shall be controlled.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="curtailmentStatus" type="CurtailmentStatusType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute indicates whether the load is presently curtailed and, if curtailed, is in compliance with the curtailment request received.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="eligibleCurtailableDemand" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the amount of load still eligible to be curtailed for two-state and multi-state curtailable loads. 
+For two-state loads this value will either be the value of maximumLoad as defined in the Load class or zero depending on whether the load is presently curtailed. For multi-state curtailable loads this value is the total remaining load that can be curtailed as defined in the curtailmentRatings attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="lastCurtailmentDateTime" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the date and time on which the load was last curtailed.  For multistage curtailable loads, each time a multistage curtailable load is curtailed, this attribute shall be updated.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="maximumCurtailableDemand" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the maximum amount of demand curtailable for this load as measured in PowerMeasurementsSet.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="maximumCurtailmentsCyclesInPeriod" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the maximum number of times this load may be curtailed within the specified period. When the curtailmentCyclesInPeriod reaches this attribute's value, the loadStatus attribute will be set to maxCyclesThisPeriod rendering the load ineligible for curtailment until the period information is reset.   The duration of the period and the resetting of this attribute is a local matter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="maximumCurtailTime" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the maximum number of seconds that a load may be curtailed before it shall be released from its curtailment state.   This duration is often used to maintain comfort levels, or meet safety code requirements.  It is used to set the queueTimeRemaining attribute when placing the load in the maxCurtailQueue state. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="minimumCurtailTime" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the minimum number of seconds that a load shall be curtailed before it may be released from its curtailment state. This duration is used to protect the load's hardware from excess cycling. However, it may also be used to maintain comfort levels, or meet safety code requirements.
+It is used to set the QueueTimeRemaining attribute when placing the load in the minCurtailQueue state.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="overridden" type="xs:boolean" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute is typically controlled by an external entity to affect eligibility of the load. For example, an Energy Manager may override this load if the present price of energy is falls within a defined economic threshold. If the present price of energy exceeds the threshold, the Energy Manager might toggle this attribute to allow the load to be curtailed.
+This attribute differs from the loadLocked attribute in that this attribute is meant to be connected to an automation system and only persists while the override is in effect. The loadLocked attribute persists indefinitely and meant to be set by manual intervention.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="priceThreshold" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the marginal operational cost per unit of power basis for this load.  The priority is not created within the load; this is a placeholder for the Energy Manager. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="priority" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the curtailment priority which defines the order upon which curtailment occurs across a set of loads.  A priority value of 1 is considered a critical load that may not be shed except during a critical event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="queueTimeRemaining" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the duration that a controlled load has been on a queue. As the load transitions from the minCurtailQueue to the maxCurtailQueue and the releaseQueue this attribute is set to its maximum extent upon entry in the queue and counts down to zero on the queue when it transitions off the queue.  This attribute should be updated at least once each 60 seconds.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="releaseTime" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the number of seconds that a load shall be released from curtailment before it is again eligible for curtailment. This duration is used to protect the load's hardware from excess cycling.  However, it may also be used to restore comfort levels, or meet safety code requirements. It is used to set the queueTimeRemaining attribute when placing the load in the releaseQueue state.
+If this attribute is not present, the releaseTime shall be considered to be zero (0) and immediately become available for curtailment.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="requestedCurtailmentLevel" type="FSGIMEventSignalType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the demand level the Energy Manager is requesting the load to operate.  The request by the Energy Manager is always a curtailment amount; however, the load will compare this curtailment requested amount to the present demand of the load and may then a) curtail it more, b) restore it more or c) leave the load at its present demand state.
+
+The request is made in one of four ways defined by the value requestedCurtailmentLevel.signalType :
+
+1)  When the requestedCurtailmentLevel.signalType attribute is set to 'setpoint', the requestedCurtailmentLevel.currentValue attribute describes the fixed amount of demand to which the load should operate. currentValue must be a positive number or zero. The currentValue is compared against the actualCurtailableAmount and maximumCurtailmentAmount to determine the curtailment or restoration needed to meet the request.  
+a) If currentValue equals the actualCurtailedAmount, no further curtailment or restoration will occur. The curtailmentStatus will be set to curtailmentCompliant.
+b)  If currentValue is less than the actualCurtailedAmount, then if the load has surpassed its minCurtailTime but has not yet reached the maxCurtailTime, the load will be considered for early release.  The load may be released in its entirety for a two-state load or partially for a multistate load until the actualCurtailedAmount reaches currentValue's value. If the load cannot be released to exactly match the request, the load will be released as close as possible as it can be released without exceeding the request. The curtailmentStatus will remain as curtailmentCompliant. 
+c)  If currentValue is greater than the actualCurtailedAmount, the load may be further curtailed as possible upwards to the maximumCurtailmentAmount. The curtailmentStatus attribute will then be adjusted to reflect whether the curtailment is curtailmentCompliant or curtailmentNoncompliant.
+d)  If currentValue is greater than the maximumCurtailableAmount, the load will be completely curtailed and the curtailmentStatus will be set to curtailmentNoncompliant.
+Stated mathematically, 
+assure
+0 &lt;= currentValue &lt;= maximumCurtailmentAmount
+And if
+	currentValue &gt;= actualCurtailableAmount; amount to curtail = currentValue - actualCurtailableAmount
+else if
+	currentValue &lt; actualCurtailableAmount; amount to restore = actualCurtailableAmount - currentValue.
+
+
+2) When the requestedCurtailmentLevel.signalType attribute is set to 'delta', the requestedCurtailmentLevel.currentValue attribute describes the relative amount of demand to which the load should be adjusted. currentValue may be a positive or negative number. The sum of currentValue and actualCurtailedAmount, is compared against zero and maximumCurtailmentAmount to determine if curtailment or restoration is needed to meet the request.
+a) If the value of currentValue is zero no further curtailment or restoration will occur. The curtailmentStatus will be set to curtailmentCompliant.
+b)  If currentValue is positive, the load will be further curtailed as possible upwards to the maximumCurtailmentAmount. If the sum of currentValue and actualCurtailedAmount is greater than maximumCurtailmentAmount, the load will be completely curtailed and the curtailmentStatus will be set to curtailmentNoncompliant otherwise it will be set to curtailment Compliant.
+c)  If currentValue is negative, then if the load has surpassed its minCurtailTime but has not yet reached the maxCurtailTime, the load will be considered for early release.  The load may be released in its entirety for a two-state load or partially for a multistate load until the currentValue value is reached or actualCurtailableAmount is zero. If the sum of currentValue and actualCurtailedAmount is less than zero, the load will be completely released and the curtailmentStatus will be set to curtailmentNoncompliant otherwise it will be set to curtailment Compliant.
+Stated mathematically, 
+assure
+0 &lt;= currentValue+ actualCurtailableAmount &lt;= maximumCurtailmentAmount
+And if
+	currentValue &gt;= 0, amount to curtail = currentValue
+else if
+	currentValue &lt; 0, amount to restore = currentValue.
+
+
+3) When the requestedCurtailmentLevel.signalType attribute is set to 'multiplier', the requestedCurtailmentLevel.currentValue attribute divided by 100 describes the percentage of the maximumCurtailableAmount value to which the load should be adjusted. currentValue must be a positive number in the range of 0 to 100. The calculated value of product of currentValue/100 and maximumCurtailmentAmount is compared to the actualCurtailedAmount to determine the curtailment or restoration needed to meet the request.
+a) If this calculated value is equal to actualCurtailedAmount, then no further curtailment or restoration will occur. The curtailmentStatus will be set to curtailmentCompliant.
+b)  If this calculated value is less the actualCurtailedAmount, then if the load has surpassed its minCurtailTime but has not yet reached the maxCurtailTime the load will be considered for early release.  The load may be released in its entirety for a two-state load or partially for a multistate load until the actualCurtailedAmount reaches the calculated value.. The curtailmentStatus will remain as curtailmentCompliant.
+c)  If the calculated value is greater than the actualCurtailedAmount, the load will be further curtailed as possible upwards to the maximumCurtailmentAmount. The curtailmentStatus attribute will then be adjusted to reflect whether the curtailment is curtailmentCompliant or curtailmentNoncompliant.
+Stated mathematically, 
+If
+(currentValue/100)*maximumCurtailmentAmount &gt;= actualCurtailableAmount; amount to curtail = ((currentValue/100)*maximumCurtailmentAmount) - actualCurtailableAmount
+else if
+(currentValue/100)*maximumCurtailmentAmount &lt; actualCurtailableAmount; amount to release = actualCurtailableAmount-((currentValue/100)*maximumCurtailmentAmount) 
+
+4)  When the requestedCurtailmentLevel.signalType attribute is set to 'level', requestedCurtailmentLevel.currentValue attribute describes the predefined level to which the load will be adjusted. currentValue must be a positive number within the range of 1 to n, where n is defined as the number of entries in the curtailmentRatingsLevel array. When the request is received, the load will adjust its curtailment to the level defined by curtailmentRatingsLevel(currentValue).curtailmentAmount
+a) If curtailmentAmount equals the actualCurtailedAmount, no further curtailment or restoration will occur. The curtailmentStatus will be set to curtailmentCompliant.
+b)  If curtailmentAmount is less than the actualCurtailedAmount, then if the load has surpassed its minCurtailTime but has not yet reached the maxCurtailTime, the load will be considered for early release.  The load may be released in its entirety for a two-state load or partially for a multistate load until the actualCurtailedAmount reaches curtailmentAmount's value. The curtailmentStatus will remain as curtailmentCompliant. 
+c)  If curtailmentAmount is greater than the actualCurtailedAmount, the load may be further curtailed as possible upwards to the maximumCurtailmentAmount. The curtailmentStatus attribute will then be adjusted to reflect whether the curtailment is curtailmentCompliant or curtailmentNoncompliant.
+Stated mathematically, 
+if
+curtailmentRatingsLevel(currentValue).curtailmentAmount &gt;= actualCurtailableAmount; amount to curtail = curtailmentRatingsLevel(currentValue). - actualCurtailableAmount
+else if
+curtailmentRatingsLevel(currentValue).curtailmentAmount &lt; actualCurtailableAmount; amount to release = actualCurtailableAmount -curtailmentRatingsLevel(currentValue). 
+
+NOTE:  A load that may be curtailed multiple times can be curtailed only when in the eligible, minCurtailQueue or maxCurtailQueue states. Upon additional curtailments, the curtailment timers may or may not be reset as a local matter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CurtailmentArrayElement" type="CurtailmentArrayElement"/>
+	<xs:complexType name="CurtailmentArrayElement">
+		<xs:annotation>
+			<xs:documentation>This class defines a single array element of the curtailmentRatingsLevel attribute. Each array element defines the fixed demand to which the load shall be controlled as a function of the stated level. The array is ordered by the curtailmentRatingsLevel.levelIndex attribute.  </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="curtailmentAmount" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the absolute demand to be achieved upon receipt of a request from an energy manager as specified in the requestedCurtailmentLevel.currentValue attribute.  When deployed in the curtailmentRatingsLevel array, this attribute defines the absolute demand the load should target for each of the defined levels. When deployed in the curtailmentRatingsPercent array, this attribute defines the absolute demand the load should target for each of the defined percents.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="levelIndex" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the level or percentage index when used in the curtailmentRatingsLevel or curtailmentRatingsMultiplier attributes respectively.  When used in the curtailmentRatingsLevel array , this attribute is matched to the requestedCurtailmentLevel.currentValue as supplied by the Energy Manager to transform the level request to the absolute demand requested. When used in the curtailmentRatingsMultiplier array, this attribute is matched to the requestedCurtailmentLevel.currentValue as supplied by the Energy Manager to transform the multiplier (percentage) request to the absolute demand requested.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CurtailmentStatusType">
+		<xs:annotation>
+			<xs:documentation>This enumeration indicates if the load is presently curtailed and if curtailed is in compliance with the curtailment request received.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="curtailmentInactive">
+				<xs:annotation>
+					<xs:documentation>This load is not presently curtailed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="curtailmentRequestPending">
+				<xs:annotation>
+					<xs:documentation>The curtailment request has been processed and is pending.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="curtailmentCompliant">
+				<xs:annotation>
+					<xs:documentation>The curtailment request has been processed. The load is compliant with the request.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="curtailmentNoncompliant">
+				<xs:annotation>
+					<xs:documentation>The curtailment request has been processed. The load is not compliant with the request.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="CurtailmentValueType" type="CurtailmentValueType"/>
+	<xs:complexType name="CurtailmentValueType">
+		<xs:annotation>
+			<xs:documentation>This class contains the signal type and curtailment information requested by an energy manager during an event.  It provides a 'union' of the various signaling types and curtailment information into a single attribute.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="PayloadBaseType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute provides the means to 'union' the differing curtailmentValues into a single attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FSGIMPayloadBaseType" type="FSGIMPayloadBaseType"/>
+	<xs:complexType name="FSGIMPayloadBaseType">
+		<xs:annotation>
+			<xs:documentation>This class is the union of the different classes used to define the needed curtailment of an individual load.  </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMPayloadFloatType" type="FSGIMPayloadFloatType"/>
+	<xs:complexType name="FSGIMPayloadFloatType">
+		<xs:annotation>
+			<xs:documentation>The curtailment request is of the form of either an absolute or relative demand curtailment value from the present baseline demand.  This class requires the use of a 'setpoint' or 'delta' signal type. This class is based on the EIClasses::PayloadFloatType Class but includes metadata that the Energy Interoperation model captures elsewhere.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMPayloadBaseType">
+				<xs:sequence>
+					<xs:element name="value" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines an absolute amount of demand to curtail or release in units defined by the PowerMeasurementsSet. For values greater than zero, the load will attempt to curtail this specified amount.  For values less than zero, the load will attempt to release control of the specified amount.  The latter functionality facilitates the ancillary services market.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMPayloadLevelType" type="FSGIMPayloadLevelType"/>
+	<xs:complexType name="FSGIMPayloadLevelType">
+		<xs:annotation>
+			<xs:documentation>The curtailment request is of the form of a predefined level of curtailment. This curtailment level's range is specified by the array size of the curtailmentRatingsLevelIndex attribute. The value of the integer requestedCurtailmentLevel.curtailmentValue.patloadBase.level is the index into the curtailmentRatingsLevel  array. This class supports the 'level' signal type.  This class is identical to the EIClasses::PayloadLevelType Class.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMPayloadBaseType">
+				<xs:sequence>
+					<xs:element name="level" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines an index into the CurtailableLoad.curtailmentRatingsLevel array. When directed to be curtailed by 'level', the load will curtail the demand as specified by curtailmentRatingsLevel[level].</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMPayloadQuantityType" type="FSGIMPayloadQuantityType"/>
+	<xs:complexType name="FSGIMPayloadQuantityType">
+		<xs:annotation>
+			<xs:documentation>The curtailment request is in the form of a percentage of the present baseline demand. This class requires the use of a 'multiplier' signal type. This class is identical to the EIClasses::PayloadQuantityType Class.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMPayloadBaseType">
+				<xs:sequence>
+					<xs:element name="quantity" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines a relative amount of demand to curtail the load in the units defined in PowerMeasurementsSet. The relative amount is a percentage of the present demand baseline.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Load" type="Load"/>
+	<xs:complexType name="Load">
+		<xs:annotation>
+			<xs:documentation>The Load Class is the central class of the Load Component.  It contains, directly through its attributes and indirectly through its associations, the information elements that support the functionality of a load.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ComponentElement">
+				<xs:sequence>
+					<xs:element name="actualDemand" type="PowerMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the power being consumed by the device (as measured by the present subinterval demand) at the present time in units specified by PowerMeasurementsSet.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="demandLimits" type="PowerRatings" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The operational demand characteristics and their associated end points for the load.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="downRamp" type="PowerRampSegmentType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the reduction in power over time when a load being partially or fully de-energized has a complex load reduction profile. For each element of the Load.downRamp array, the downRamp[n].rate defines the amount of power decrease and the downRamp[n].duration defines the length of time in seconds upon which the decrease is in effect. If the downRamp[n].beginRamp attribute is defined for a ramp segment, this is the initial value of the ramp segment; if it is not present the initial value of the ramp equals the ending value of the previous ramp segment.
+Although the downRamp attribute name implies that the rise is monotonically decreasing, individual array elements may have slopes less than, greater than, or equal to 0.  However, the overall trend of the function shall be decreasing.
+The downRamp function shall measure the time from the load being fully energized until the power is completely depleted. If downRamp is not present, the power decrease to 0 shall be instantaneous.
+When a curtailable load is partially curtailed (less than the maximumCurtailableDemand) and curtailment is increased, the power will decrease starting at n-th downRamp of the sum from 0 to n of the downRamp[n].rate that is closest to the actualCurtailedDemand.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="locked" type="xs:boolean" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines whether the load is locked and therefore ineligible for curtailment; or unlocked and available for curtailment.  
+Load locking behavior changes depending on the load's curtailmentStatus attribute value at the time the load was locked. If the Load.locked attribute is set to TRUE and the:
+
+1)  load is not curtailable, the load is immediately locked. The behavior of this operation is a local matter;
+2)  curtailmentStatus is curtailmentInactive, the load will immediately be locked out from curtailment eligibility;
+
+3) curtailmentStatus is curtailmentNoncompliant, the load will cycle to its curtailmentInactive state then immediately be locked out of curtailment eligibility;
+
+4) If the CurtailableLoad supports multi-stage curtailment, the load will cycle to its curtailmentInactive state for the present curtailment stage and then be locked out of any further curtailment eligibility.
+5) curtailmentStatus is curtailmentNoncompliant, the load will cycle to its curtailmentInactive state then immediately be locked out of curtailment eligibility;
+
+6) If the CurtailableLoad supports multi-stage curtailment, the load will cycle to its curtailmentInactive state for the present curtailment stage and then be locked out of any further curtailment eligibility.
+Loads that are locked will remain in the locked state indefinitely until the Load.locked attribute is reset to FALSE. The mechanism used to unlock the load is a local matter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="status" type="LoadStatusType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the current status of the load. For non-curtailable loads, it provides the present communication status and reliability of the data.  For curtailable loads, it also defines if the load is eligible for curtailment or why it is ineligible for curtailment.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="upRamp" type="PowerRampSegmentType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the increase in power over time when a load being partially or fully energized has a complex demand restoration profile. For each element of the Load.upRamp array, the upRamp[n].rate defines the amount of power increase and the upRamp[n].duration defines the length of time in seconds upon which the increase is in effect. If the upRamp[n].beginRamp attribute is defined for a ramp segment, this is the initial value of the ramp segment; if it is not present the initial value of the ramp equals the ending value of the previous ramp segment.
+Although the upRamp attribute name implies that the rise is monotonically increasing, individual array elements may have slopes less than, greater than, or equal to 0.  However, the overall trend of the function shall be increasing.
+The upRamp function shall measure the time from the load being fully de-energized until the power is completely restored as defined by Load.maximumDemand. If this attribute is not present, the power increase upon restoration shall be instantaneous.
+When a curtailable load is partially curtailed (less than the maximumCurtailableDemand) and curtailment is reduced, the power will increase starting at n-th recoveryRamp of the sum from 0 to n of the upRamp[n].rate that is closest to the actualCurtailedDemand.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="input" type="ConnectionPoint" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="LoadStatusType">
+		<xs:annotation>
+			<xs:documentation>This enumeration provides the present overall state of the load.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NA">
+				<xs:annotation>
+					<xs:documentation>Not applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="eligible">
+				<xs:annotation>
+					<xs:documentation>The load is presently communicating properly and its data values are correct. In addition, for curtailable loads this load is presently eligible to be curtailed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="loadLocked">
+				<xs:annotation>
+					<xs:documentation>The load is ineligible for curtailment since it has been locked.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="loadOverridden">
+				<xs:annotation>
+					<xs:documentation>An external process has set this override attribute prohibiting curtailment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lostCommunication">
+				<xs:annotation>
+					<xs:documentation>The load presently cannot be accessed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="maxCurtailQueue">
+				<xs:annotation>
+					<xs:documentation>The load is in curtailment and presently being timed for the maximum curtailment time.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="maxCyclesThisPeriod">
+				<xs:annotation>
+					<xs:documentation>The load has been cycled the maximum number of times this period.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="minCurtailQueue">
+				<xs:annotation>
+					<xs:documentation>The load is in curtailment and presently being timed for the minimum curtailment time.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pointNotConsumingEnergy">
+				<xs:annotation>
+					<xs:documentation>The load is ineligible for curtailment since the point associated with the load is already shut off and not consuming any energy.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pointUnreliable">
+				<xs:annotation>
+					<xs:documentation>The load is ineligible for curtailment since the point associated with the load is unreliable. 'Unreliable' is an error condition when the present value of a point is questioned due to some hardware or software failure. When a point is unreliable, it still may present a value (e.g., Space Temp Present Value = 67 DegF) but carries along a second attribute that indicates this value is suspect. When a point is in the unreliable state, it shall not be curtailed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ramping">
+				<xs:annotation>
+					<xs:documentation>The load is ramping.  That is, it is a transitional state and is either starting up or shutting down.  While in this temporary state, it is not eligible for curtailment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="releaseQueue">
+				<xs:annotation>
+					<xs:documentation>The load is ineligible for curtailment. The load has completed its curtailment and is presently timing down the restore time before it is again eligible for curtailment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unlocked">
+				<xs:annotation>
+					<xs:documentation>The load has recently been unlocked. It will analyze all conditions and set its present eligibility state after analysis completes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="PowerRampSegmentType" type="PowerRampSegmentType"/>
+	<xs:complexType name="PowerRampSegmentType">
+		<xs:annotation>
+			<xs:documentation>The PowerRampSegmentType data structure is used to define a single array element of the recoveryRamp and stagingRamp array of the Load class. Each array element defines the beginning demand for the line segment and the rate of rise or drop. These attributes combined with the duration completely forms a line segment defining a portion of the ramp.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="beginRamp" type="PowerMeasurementsSet" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The attribute defines the quantity of power at the start of the ramp segment. If this attribute is not defined in the segment, the start of the ramp is assumed to be the end of the ramp of the previous segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The attribute defines the time horizon in seconds upon which the associated rise or drop is valid.  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rampToCompletion" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The attribute defines whether the ramping up or down of this load may be halted in midstream (false) or once started must complete through all segments of the ramp (true). As an example, a multistate fan may only use a portion of the ramp, as it sequences from low to medium to high speed levels (false); whereas, a production line, once started, may need to run through its complete set of ramp segments (true). If the attribute is not defined it is assumed to be false.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rate" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The attribute defines rate of rise (positive value) in demand or the rate of drop (negative value) in demand when a load either powers up or shuts down respectively.  Its sister attribute, duration, defines the time frame upon which the rate is defined.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

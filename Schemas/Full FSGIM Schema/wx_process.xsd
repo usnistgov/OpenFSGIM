@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Describes the process used to produce weather observations and reports.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="ReportProcess" type="ReportProcess"/>
+	<xs:complexType name="ReportProcess">
+		<xs:annotation>
+			<xs:documentation>The process related to the distribution or collection of weather reports</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="reportProcess" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the report process.
+Note:  This is a temporary addition for the demo based on discussions with NIST. The long-term solution is to go back to the original model and examine how this was being used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

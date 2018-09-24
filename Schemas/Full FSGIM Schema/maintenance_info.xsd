@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This package supports the provision of metadata related to the scope and frequency of maintenance for a resource or of metadata about a resource in a single class,</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="MD_ScopeCode">
+		<xs:annotation>
+			<xs:documentation>Class of information to which the referencing entity applies.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="attribute">
+				<xs:annotation>
+					<xs:documentation>Information applies to the attribute class.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="attributeType">
+				<xs:annotation>
+					<xs:documentation>Information applies to the attribute type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="collectionHardware">
+				<xs:annotation>
+					<xs:documentation>Information applies to  the collection hardware class.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="collectionSession">
+				<xs:annotation>
+					<xs:documentation>Information applies to  the collection session.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dataset">
+				<xs:annotation>
+					<xs:documentation>Information applies to the attribute class.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dimensionGroup">
+				<xs:annotation>
+					<xs:documentation>Information applies to a dimension group.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="feature">
+				<xs:annotation>
+					<xs:documentation>Information applies to a feature.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="featureType">
+				<xs:annotation>
+					<xs:documentation>Information applies to a feature type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fieldSession">
+				<xs:annotation>
+					<xs:documentation>Information applies to a field session.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="model">
+				<xs:annotation>
+					<xs:documentation>Information applies to a model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nonGeographicDataset">
+				<xs:annotation>
+					<xs:documentation>Information applies to non-geographic data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="propertyType">
+				<xs:annotation>
+					<xs:documentation>Information applies to a  property type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="series">
+				<xs:annotation>
+					<xs:documentation>Information applies to the series.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="service">
+				<xs:annotation>
+					<xs:documentation>Information applies to a service.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="software">
+				<xs:annotation>
+					<xs:documentation>Information applies to software.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tile">
+				<xs:annotation>
+					<xs:documentation>Information applies to a tile.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

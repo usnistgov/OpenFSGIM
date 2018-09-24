@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The Device represents a physical entity that is then modeled using the remaining classes within the FSGIM.  This portion of the model also includes classes that are used to name and tag these physical devices and the logical roles that these physical devices assume.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:element name="ComponentElement" type="ComponentElement"/>
+	<xs:complexType name="ComponentElement" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This class is an abstract class representing the top level class of one of the four FSGIM model components or a Collection of these top level classes. Note that the parts of a Collection instance inherit the tag attribute values of its parent collection ComponentElement instance.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="tags" type="Name" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute may contain a set of strings to be used at the configuration phase of installation such as "hallway", "3rd Floor", "Critical", ... These strings may be optionally qualified with a NameType and NameTypeAuthority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Device" type="Device"/>
+	<xs:complexType name="Device">
+		<xs:annotation>
+			<xs:documentation>This is the class that represents a physical device in the facility</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="deviceType" type="MasterFormatType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines an unique code (as specified in Master Format 2012) that uniquely identifies the device installed.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="extendedInfo" type="ExtendedInfoType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute references extended information about the device.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="status" type="DeviceStatus" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational state of a device within a facility.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="deviceNameplate" type="DPL" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The nameplate associated with this device.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="DeviceStatus">
+		<xs:annotation>
+			<xs:documentation>The general indication of the health of a Device.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Normal">
+				<xs:annotation>
+					<xs:documentation>Device is in a normal operating condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Warning">
+				<xs:annotation>
+					<xs:documentation>Some type of abnormal condition that does not constitute an alarm has been detected.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Alarm">
+				<xs:annotation>
+					<xs:documentation>A serious abnormal condition has been detected.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="DPL" type="DPL"/>
+	<xs:complexType name="DPL">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to identify entities like primary equipment or physical devices.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="altitude" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Geographical position of device in WGS84 coordinates – altitude.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ePSName" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of electric power system the device is connected to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hwRev" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Hardware revision.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="latitude" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Geographical position of device in WGS84 coordinates – latitude.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="location" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Location where the equipment is installed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="longitude" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Geographical position of device in WGS84 coordinates – longitude.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="model" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Vendor specific product name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mrID" type="GlobalID" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Master resource ID – unique identification of an asset or device.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name of the IED (if DPL is used in the context of a LPHD) or of a device like a circuit breaker (if used for the data EEName).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="owner" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Owner of the device.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="primeOper" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Primary operator of the device.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="secondOper" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Secondary operator of the device.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="serNum" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Serial number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="swRev" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Software revision.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vendor" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the vendor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="EFacilitySystem">
+		<xs:annotation>
+			<xs:documentation>This enumeration is used to define the subsystem to which the ComponentElement is associated within the facility. ComponentElements that cross subsystems should use the 'general' category. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="athletic">
+				<xs:annotation>
+					<xs:documentation>The load is associated with athletic equipment including exercise equipment, gymnasium equipment, pool heaters, saunas, steam rooms and scoreboards.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="audioVisual">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Audio-Visual equipment including projection screens, fixed projection screens, portable projection screens, rear projection screens, projectors, movie projectors, slide projectors, overhead projectors, opaque projectors, video projectors, players, recorders and information centers (kiosks).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="banking">
+				<xs:annotation>
+					<xs:documentation>The load is associated with a banking subsystem including safe deposit boxes, safes vault ventilators, teller equipment, automatic banking systems, money handling equipment, detention pass-thru doors and depositories.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="disposal">
+				<xs:annotation>
+					<xs:documentation>The load is associated with a disposal subsystem including packaged incinerators, recycling equipment, facility waste compactors, composting equipment, facility waste shredders, and facility waste balers.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="elevators">
+				<xs:annotation>
+					<xs:documentation>The load is associated with an elevator or escalator subsystem.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="entertainment">
+				<xs:annotation>
+					<xs:documentation>The load is associated with an entertainment subsystem including lighting rigging systems, scenery rigging systems, curtain systems, and voice amplifiers.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="exterior">
+				<xs:annotation>
+					<xs:documentation>The load is associated with exterior equipment including automatic flagpoles, fountains, decorative lighting, pest control devices, deicers and signage.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fire">
+				<xs:annotation>
+					<xs:documentation>This load is associated with Fire subsystem including fire panels, smoke detection devices, strobes, evacuation equipment, fire fighter control panels, smoke control and automatic sprinkler systems.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="foodservice">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Foodservice equipment including refrigerated food storage cases, walk-In coolers, walk-In freezers, food preparation appliances, food preparation surfaces, food delivery carts, food delivery conveyors, commercial ranges, commercial ovens, bar equipment, service line equipment, soda fountain equipment, coffee and espresso equipment, ice machines, disposal equipment and commercial dishwashers.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="general">
+				<xs:annotation>
+					<xs:documentation>This load is associated to multiple subsystems none of which is primary.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="healthcare">
+				<xs:annotation>
+					<xs:documentation>The load is associated with healthcare equipment including medical sterilizing equipment, refrigeration units, examination equipment, treatment equipment, patient care equipment, dental equipment, optical equipment, operating room equipment, radiology equipment and mortuary equipment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hospitality">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Hospitality equipment including registration equipment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HVAC">
+				<xs:annotation>
+					<xs:documentation>The load is associated with a heating ventilation and air conditioning (HVAC)  subsystem including chillers, ice storage, boilers, electric heaters, heat pumps, air handlers, packaged units, pumps, air distribution systems, air handlers, air compressors, variable air volume controllers, fan coils, humidifiers, dehumidifiers, thermostats, humidistats and facility management systems (FMS).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IT">
+				<xs:annotation>
+					<xs:documentation>The load is associated with information technology (IT) equipment including servers, CRAC units, network switches, hubs, routers, firewalls, access points, telephone switches and other MDF/IDF closet equipment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="laboratory">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Laboratory equipment including fume hoods, incubators, equipment washers, sterilizers, environment cabinets, emergency safety appliances, service fittings and accessories biological safety cabinets.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="laundry">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Laundry equipment including dry cleaning equipment; drying and conditioning equipment; finishing equipment; commercial ironing equipment; commercial washers; driers; coin-operated laundry equipment and hanging garment conveyors.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lighting">
+				<xs:annotation>
+					<xs:documentation>The load is associated with a lighting subsystem including lighting panels; lighting circuits; floor and task lighting; emergency lighting; lava lamps; and shade control.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="maintenance">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Maintenance equipment including; floor and wall cleaning equipment; housekeeping carts; vacuum cleaning systems; façade access equipment; window washing systems; welders; drill presses and lathes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="merchantile">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Mercantile equipment including cash registers; checking equipment; vending machines; checkroom equipment; weighing and wrapping equipment; barbering and beauty equipment. </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="office">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Office equipment including telephones, computers, printers, copiers, facsimile machines and white noise generators.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pedestrian">
+				<xs:annotation>
+					<xs:documentation>The load is associated to a pedestrian equipment, including pedestrian gates, rotary gates turnstiles, money changing machines, fare collection equipment, pedestrian detection equipment, electronic detection and counting systems and pedestrian security equipment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="parking">
+				<xs:annotation>
+					<xs:documentation>The load is associated with parking equipment including parking card control units; parking ticket dispensers, parking meters, parking fee collection equipment and parking gates.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="production">
+				<xs:annotation>
+					<xs:documentation>The load is associated with a production subsystems including assembly line equipment, robots, part picking equipment, stocking equipment, inventory control equipment, assembly, quality testing and production control equipment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="recreational">
+				<xs:annotation>
+					<xs:documentation>The load is associated with recreational equipment including game room equipment, video games, and pinball machines.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="residential">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Residential equipment including lights, bathroom appliances, kitchen appliances, laundry appliances, televisions, stereo equipment and fans.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="security">
+				<xs:annotation>
+					<xs:documentation>The load is associated with a physical security subsystem including video surveillance, door control, building access, tamper monitoring, terrorist activity monitoring, radio communications, asset tracking, personnel tracking and video analytics.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="shipping">
+				<xs:annotation>
+					<xs:documentation>The load is associated with Shipping equipment including airport luggage handlers, conveyor belts, packaging, dock levelers, forklifts and postal equipment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vehicle">
+				<xs:annotation>
+					<xs:documentation>The load is associated to a vehicle, including servicing, lubrication, tire changing, battery charging and washing equipment.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation>The load is associated to a subsystem that is not listed in this enumeration.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ExtendedInfoType" type="ExtendedInfoType"/>
+	<xs:complexType name="ExtendedInfoType">
+		<xs:annotation>
+			<xs:documentation>This class defines an reference external from this model that can be used to gain additional information about the device.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExtendedInfoReference" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines a string reference to additional information about the device.  This reference may be any string reference such as a URL, URI, or other identifying information.  This attribute is only the reference to the extended information, it shall not hold the extended information directly.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FSGIMIdentifiedObject" type="FSGIMIdentifiedObject"/>
+	<xs:complexType name="FSGIMIdentifiedObject">
+		<xs:annotation>
+			<xs:documentation>A standard representation of the identifier used to distinguish key object instances in the FSGIM.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the name type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the name type authority.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MasterFormatType" type="MasterFormatType"/>
+	<xs:complexType name="MasterFormatType">
+		<xs:annotation>
+			<xs:documentation>This class defines a string attribute with specific constraints to map into the Master Format 2012 numbering system. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute is an eleven character string that defines a coded identifier for the device defined. The identifier is defined in the Master Format (2012) Numbers and Titles document.  The Master Format is a near exhaustive list of building components maintained by the construction industry. Each component has an assigned unique immutable identifier taking the form of NNSNNSNNPXX where: 
+space = ' '
+period = '.'
+number = '0','1','2','3','4','5','6','7','8','9'
+N = number
+S = space
+P = (period, space)
+X = (0..9, space)
+For example, a portable dehumidifier uses code '23 84 13.33'; a room air-conditioner uses code '23 81 16   '.
+A value of "99 99 99 99" shall be used to model an unknown load.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Name" type="Name"/>
+	<xs:complexType name="Name">
+		<xs:annotation>
+			<xs:documentation>The Name class provides the means to define any number of human readable names for an object. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Any free text that name the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NameType" type="NameType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Type of this name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="NameType" type="NameType"/>
+	<xs:complexType name="NameType">
+		<xs:annotation>
+			<xs:documentation>Type of name. Possible values for attribute 'name' are implementation dependent but standard profiles may specify types. An enterprise may have multiple information technology systems each having its own local name for the same object, e.g., a planning system may have different names from an energy management system. An object may also have different names within the same system. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the name type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NameTypeAuthority" type="NameTypeAuthority" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Authority responsible for managing names of this type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="NameTypeAuthority" type="NameTypeAuthority"/>
+	<xs:complexType name="NameTypeAuthority">
+		<xs:annotation>
+			<xs:documentation>Authority responsible for creation and management of names of a given type; typically an organization or an enterprise system.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the name type authority.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

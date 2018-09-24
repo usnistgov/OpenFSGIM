@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Additional core weather measurements.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="measures.xsd"/>
+	<xs:element name="AirTemperature" type="AirTemperature"/>
+	<xs:complexType name="AirTemperature">
+		<xs:annotation>
+			<xs:documentation>Air temperature.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Temperature">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CloudHeight" type="CloudHeight"/>
+	<xs:complexType name="CloudHeight">
+		<xs:annotation>
+			<xs:documentation>Cloud height.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="VerticalDistance">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Depth" type="Depth"/>
+	<xs:complexType name="Depth">
+		<xs:annotation>
+			<xs:documentation>Depth.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="VerticalDistance">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="HorizontalDistance" type="HorizontalDistance"/>
+	<xs:complexType name="HorizontalDistance">
+		<xs:annotation>
+			<xs:documentation>Horizontal distance.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Distance">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="HorizontalVisibilityDistance" type="HorizontalVisibilityDistance"/>
+	<xs:complexType name="HorizontalVisibilityDistance">
+		<xs:annotation>
+			<xs:documentation>Restricts HorizontalDistance to an integer value greater than or equal to zero.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="HorizontalDistance">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="VerticalDistance" type="VerticalDistance"/>
+	<xs:complexType name="VerticalDistance">
+		<xs:annotation>
+			<xs:documentation>Vertical distance.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Distance">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="VerticalVisibilityDistance" type="VerticalVisibilityDistance"/>
+	<xs:complexType name="VerticalVisibilityDistance">
+		<xs:annotation>
+			<xs:documentation>Restricts VerticalDistance to an integer value greater than or equal to zero.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="VerticalDistance">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WindDirection" type="WindDirection"/>
+	<xs:complexType name="WindDirection">
+		<xs:annotation>
+			<xs:documentation>WindDirection is a Bearing expressed as an integer.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Bearing">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WindGust" type="WindGust"/>
+	<xs:complexType name="WindGust">
+		<xs:annotation>
+			<xs:documentation>Wind gust.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Speed">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="WindSpeed" type="WindSpeed"/>
+	<xs:complexType name="WindSpeed">
+		<xs:annotation>
+			<xs:documentation>Restriction of Speed to an integer value greater than or equal to one.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Speed">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

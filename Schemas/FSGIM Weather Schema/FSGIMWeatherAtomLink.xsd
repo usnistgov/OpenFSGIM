@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:include schemaLocation="fsgimweather.xsd"/>
+	<xs:include schemaLocation="wx_phenombase.xsd"/>
+	<xs:include schemaLocation="wx_cloud.xsd"/>
+	<xs:element name="FSGIMWeatherAtomLink" type="FSGIMWeatherAtomLink"/>
+	<xs:complexType name="FSGIMWeatherAtomLink" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This class exists solely for the purpose of giving us a class that can have an association to all of the atom resources that are in the weather model.  This allows us to generate a schema for the package that this class is in and automatically get a schema for the whole weather model.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CloudCondition" type="CloudCondition" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FSGIMPrecipitation" type="FSGIMPrecipitation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FSGIMWeatherArea" type="FSGIMWeatherArea" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FSGIMWeatherBase" type="FSGIMWeatherBase" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FSGIMWeatherForecast" type="FSGIMWeatherForecast" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FSGIMWeatherObservation" type="FSGIMWeatherObservation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FSGIMWeatherReport" type="FSGIMWeatherReport" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FSGIMWeatherTrend" type="FSGIMWeatherTrend" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="WxCondition" type="WxCondition" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

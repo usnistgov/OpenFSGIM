@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Enumeration of the character coding standard used in the resource.</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="MD_CharacterSetCode">
+		<xs:annotation>
+			<xs:documentation>Character set code list.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="(reservedforfutureuse)">
+				<xs:annotation>
+					<xs:documentation>Reserved for future use.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ucs2">
+				<xs:annotation>
+					<xs:documentation>16-bit fixed size Universal Character Set, based on ISO/IEC 10646.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ucs4">
+				<xs:annotation>
+					<xs:documentation>32-bit fixed size Universal Character Set, based on ISO/IEC 10646.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="utf7">
+				<xs:annotation>
+					<xs:documentation>7-bit variable size UCS Transfer Format, based on ISO/IEC 10646.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="utf8">
+				<xs:annotation>
+					<xs:documentation>8-bit variable size UCS Transfer Format, based on ISO/IEC 10646.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="utf16">
+				<xs:annotation>
+					<xs:documentation>16-bit variable size UCS Transfer Format, based on ISO/IEC 10646.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part1">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-1, Information technology - 8-bit single byte coded graphic character sets - Part 1Â : Latin alphabet No.1.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part2">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-2, Information technology - 8-bit single byte coded graphic character sets - Part 2Â : Latin alphabet No.2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part3">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-3, Information technology - 8-bit single byte coded graphic character sets - Part 3Â : Latin alphabet No.3.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part4">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-4, Information technology - 8-bit single byte coded graphic character sets - Part 4Â : Latin alphabet No.4.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part5">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-5, Information technology - 8-bit single byte coded graphic character sets - Part 5Â : Latin/Cyrillic alphabet.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part6">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-6, Information technology - 8-bit single byte coded graphic character sets - Part 6Â : Latin/Arabic alphabet.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part7">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-7, Information technology - 8-bit single byte coded graphic character sets - Part 7Â : Latin/Greek alphabet.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part8">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-8, Information technology - 8-bit single byte coded graphic character sets - Part 8Â : Latin/Hebrew alphabet.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part9">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-9, Information technology - 8-bit single byte coded graphic character sets - Part 9Â : Latin alphabet No.5.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part10">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-10, Information technology - 8-bit single byte coded graphic character sets - Part 10Â : Latin alphabet No.6.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part11">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-11, Information technology - 8-bit single byte coded graphic character sets - Part 11Â : Latin/Thai alphabet.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part13">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-13, Information technology - 8-bit single byte coded graphic character sets - Part 13Â : Latin alphabet No.7.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part14">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-14, Information technology - 8-bit single byte coded graphic character sets - Part 14Â : Latin alphabet No.8 (Celtic).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part15">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-15, Information technology - 8-bit single byte coded graphic character sets - Part 15Â : Latin alphabet No.9.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8859part16">
+				<xs:annotation>
+					<xs:documentation>ISO/IEC 8859-16, Information technology - 8-bit single byte coded graphic character sets - Part 16Â : Latin alphabet No.10.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="jis">
+				<xs:annotation>
+					<xs:documentation>japanese code set used for electronic transmission.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="shiftJIS">
+				<xs:annotation>
+					<xs:documentation>japanese code set used on MS-DOS machines.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="eucJP">
+				<xs:annotation>
+					<xs:documentation>japanese code set used on UNIX based machines.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="usAscii">
+				<xs:annotation>
+					<xs:documentation>United States ASCII code set (ISO 646 US).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ebcdic">
+				<xs:annotation>
+					<xs:documentation>IBM mainframe code set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="eucKR">
+				<xs:annotation>
+					<xs:documentation>Korean code set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="big5">
+				<xs:annotation>
+					<xs:documentation>traditional Chinese code set used in Taiwan, Hong Kong of China and other areas.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GB2312">
+				<xs:annotation>
+					<xs:documentation>simplified Chinese code set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

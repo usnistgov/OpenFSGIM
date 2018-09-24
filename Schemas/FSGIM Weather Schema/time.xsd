@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This package contains reusable classes to express time-related concepts, such as date, time, duration, etc.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:element name="DateTimeInterval" type="DateTimeInterval"/>
+	<xs:complexType name="DateTimeInterval" abstract="true">
+		<xs:annotation>
+			<xs:documentation>An abstract class representing an interval of date and time.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:simpleType name="DstRule">
+		<xs:annotation>
+			<xs:documentation>Enumeration of the rules for Daylight Savings Time transitions.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="dayOfMonth">
+				<xs:annotation>
+					<xs:documentation>DST starts/ends on this day of the month.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onOrAfter">
+				<xs:annotation>
+					<xs:documentation>DST starts/ends on the Day of the Week that is on or after the Day of the Month</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="firstOccurance">
+				<xs:annotation>
+					<xs:documentation>DST starts/ends on the first occurrence of the Day of the Week in a month</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="secondOccurence">
+				<xs:annotation>
+					<xs:documentation>DST starts/ends on the second occurrence of the Day of the Week in a month.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="thirdOccurence">
+				<xs:annotation>
+					<xs:documentation>DST starts/ends on the third occurrence of the Day of the Week in a month.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fourthOccurrence">
+				<xs:annotation>
+					<xs:documentation>DST starts/ends on the forth occurrence of the Day of the Week in a month.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fifthOccurrence">
+				<xs:annotation>
+					<xs:documentation>DST starts/ends on the fifth occurrence of the Day of the Week in a month.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="last">
+				<xs:annotation>
+					<xs:documentation>DST starts/ends on the last occurrence of the Day of the Week in a month.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="DstTransitionRule" type="DstTransitionRule"/>
+	<xs:complexType name="DstTransitionRule">
+		<xs:annotation>
+			<xs:documentation>Rules for DST transition.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dayofmonth" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Day of the month 0 = not applicable, 1 - 31</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dow" type="WeekdayType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Day of week at which DST transition occurs: 0 = not applicable, 1 - 7 (Monday = 1).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hours" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Hour at which DST transition occurs 0-23.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="month" type="MonthType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Month at which DST transition occurs 1-12.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rule" type="DstRule" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Rule by which DST transition is determined.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="seconds" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Seconds at which transition occurs 0-3599.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="LocalDateTime">
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:element name="LocalDateTimeInterval" type="LocalDateTimeInterval"/>
+	<xs:complexType name="LocalDateTimeInterval">
+		<xs:annotation>
+			<xs:documentation>An interval of date and time where the start and end times are expressed in local time.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DateTimeInterval">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of time for this interval. If duration is specified, it must be greater than zero.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="end" type="LocalDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The date and time at which this interval terminates.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="start" type="LocalDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The date and time at which this interval begins.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="LocalTimeParameters" type="LocalTimeParameters"/>
+	<xs:complexType name="LocalTimeParameters">
+		<xs:annotation>
+			<xs:documentation>Contains attributes related to the configuration of the time service.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="dstEndRule" type="DstTransitionRule" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Rule to calculate end of daylight savings time in the current year.  </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dstOffset" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Daylight savings time offset from local standard time in seconds.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dstStartRule" type="DstTransitionRule" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Rule to calculate start of daylight savings time in the current year.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tzid" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time Zone Database ID as per IANA https://www.iana.org/time-zones. This optional attribute can be used to retrieve the IANA database and construct the values for the other attributes of this class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tzOffset" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Local time zone offset from UTCTime in seconds. Does not include any daylight savings time offsets.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="UTCDateTime">
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:element name="UTCDateTimeInterval" type="UTCDateTimeInterval"/>
+	<xs:complexType name="UTCDateTimeInterval">
+		<xs:annotation>
+			<xs:documentation>Interval of date and time.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DateTimeInterval">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The duration of this interval, in seconds</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="end" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Date and time that this interval ended.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="start" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Date and time that this interval started.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

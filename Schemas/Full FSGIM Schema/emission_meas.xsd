@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This package contains the classes that are defined for the purpose of modeling emissions measurements.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="naesb_pap10_eui.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="measurements.xsd"/>
+	<xs:element name="EmissionsConcentrationQuantity" type="EmissionsConcentrationQuantity"/>
+	<xs:complexType name="EmissionsConcentrationQuantity">
+		<xs:annotation>
+			<xs:documentation>Quantity/metadata pair used to represent the measurement of a specific type of emissions that is measured by concentration.  Note:  The determination of which instances of EmissionsConcentrationQuantity are required in a given application is a local matter that may be within the purview of a local regulatory authority.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmissionsConcentrationQuantityRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsConcentrationQuantityRestrictions" type="EmissionsConcentrationQuantityRestrictions"/>
+	<xs:complexType name="EmissionsConcentrationQuantityRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="EmissionsQuantityType">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="EmissionsConcentrationType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with an EmissionsConcentrationQuantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsConcentrationType" type="EmissionsConcentrationType"/>
+	<xs:complexType name="EmissionsConcentrationType">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with an emissions measurement whose quantity indicates the concentration of the emission. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="EmissionsItemType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsItemType" type="EmissionsItemType"/>
+	<xs:complexType name="EmissionsItemType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with an emissions measurement.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="MeasurementMetadataType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMassQuantity" type="EmissionsMassQuantity"/>
+	<xs:complexType name="EmissionsMassQuantity">
+		<xs:annotation>
+			<xs:documentation>Quantity/metadata pair used to represent the measurement of a specific type of emissions that is measured by mass. Note:  The determination of which instances of EmissionsMassQuantity are required in a given application is a local matter that may be within the purview of a local regulatory authority.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmissionsMassQuantityRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMassQuantityRestrictions" type="EmissionsMassQuantityRestrictions"/>
+	<xs:complexType name="EmissionsMassQuantityRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="EmissionsQuantityType">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="EmissionsMassType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with an EmissionsMassQuantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMassRateQuantity" type="EmissionsMassRateQuantity"/>
+	<xs:complexType name="EmissionsMassRateQuantity">
+		<xs:annotation>
+			<xs:documentation>Quantity/metadata pair used to represent the measurement of a specific type of emissions that is measured by mass rate.  Note:  The determination of which instances of EmissionsMassRateQuantity are required in a given application is a local matter that may be within the purview of a local regulatory authority.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmissionsMassRateQuantityRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMassRateQuantityRestrictions" type="EmissionsMassRateQuantityRestrictions"/>
+	<xs:complexType name="EmissionsMassRateQuantityRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="EmissionsQuantityType">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="EmissionsMassRateType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with an EmissionsMassQuantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMassRateType" type="EmissionsMassRateType"/>
+	<xs:complexType name="EmissionsMassRateType">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with an emissions measurement whose quantity indicates the rate of mass of the emission.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="EmissionsItemType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMassType" type="EmissionsMassType"/>
+	<xs:complexType name="EmissionsMassType">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with an emissions measurement whose quantity indicates the total mass of the emission.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="EmissionsItemType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMeasurementsSet" type="EmissionsMeasurementsSet"/>
+	<xs:complexType name="EmissionsMeasurementsSet">
+		<xs:annotation>
+			<xs:documentation>A container class used to hold zero to one of each type of emissions quantity measurement that could be made for a given location and time.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmissionsMeasurementsSetRestrictions">
+				<xs:sequence>
+					<xs:element name="quantityCO2" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityNO2" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantitySO2" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityPM2_5" type="EmissionsConcentrationQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantitySF6" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityPFC" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityCO" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityCO2e" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityPb" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityCH4" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityO3" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityPM10" type="EmissionsConcentrationQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="quantityHg" type="EmissionsMassQuantity" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMeasurementsSetRestrictions" type="EmissionsMeasurementsSetRestrictions"/>
+	<xs:complexType name="EmissionsMeasurementsSetRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="MeasurementSet">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsQuantityType" type="EmissionsQuantityType"/>
+	<xs:complexType name="EmissionsQuantityType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Quantity/metadata pair used to represent types of emissions measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="MeasurementQuantity">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="EmissionsItemType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with an EmissionsQuantityType.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsRateMeasurementsSet" type="EmissionsRateMeasurementsSet"/>
+	<xs:complexType name="EmissionsRateMeasurementsSet">
+		<xs:annotation>
+			<xs:documentation>A container class used to hold zero to one of each type of emissions rate measurement that could be made for a given location and time.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmissionsMeasurementsSetRestrictions">
+				<xs:sequence>
+					<xs:element name="ratePFC" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="rateCO" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="rateO3" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="rateSO2" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="rateCO2e" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="rateCO2" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="rateCH4" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="rateHg" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="ratePb" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="rateSF6" type="EmissionsMassRateQuantity" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

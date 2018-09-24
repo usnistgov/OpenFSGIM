@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Facilities will need to record and report total values for energy related quantities such as energy used, net demand, or emissions. Facility managers will want to identify and manage collections of entities within the facility that contribute to these total values.  
+
+There are three major concepts involved:
+	- Collection – a set of entities that is identified as a group because the members share some trait;
+	- Ruleset – an expression of directives and constraints used to filter a Collection or derive an aggregated value; and
+	- Aggregation – a value derived by combining several other values according to a Ruleset.
+
+Some examples of Collections and Aggregations include:
+	- At the facility level: total demand for all of the equipment in the facility;
+	- At the building level: the energy output from the photovoltaic arrays for the day; and
+	- At the floor level: total energy used by loads on the fourth floor during the month.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="measurements.xsd"/>
+	<xs:element name="Aggregation" type="Aggregation"/>
+	<xs:complexType name="Aggregation">
+		<xs:annotation>
+			<xs:documentation>An aggregation allows the assembly of statistics of interest arrived at through defined algorithms applied to other parts of the model.  The description of an aggregation includes all of the inputs that comprise the algorithms as well as the outputs of the algorithm.  An aggregation instance represents one or more aggregateQuantities that are computed by applying aggregation rules for each quantity against a Collection or FilteredCollection of Components.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="aggregateQuantity" type="Measurement" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The resulting measurement quantity values for an Aggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AllResourcesInEMDomain" type="AllResourcesInEMDomain"/>
+	<xs:complexType name="AllResourcesInEMDomain">
+		<xs:annotation>
+			<xs:documentation>The AllResourcesInEMDomain collection describes the set of all of the loads, generators, meters, and EMs that are directly managed by the energy manager.  Contributions of loads, generators, meters, and EMs that are indirect subordinates of a given energy manager are proxied by the standard aggregations that are contained in the direct subordinate energy managers.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="Collection">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObjectReduced to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The name is any free human readable and possibly non unique text naming the object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Collection" type="Collection"/>
+	<xs:complexType name="Collection">
+		<xs:annotation>
+			<xs:documentation>This class defines a set of entities that is identified as a group because the members share some trait.  A Collection can contain other Collections.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ComponentElement">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FilteredCollection" type="FilteredCollection"/>
+	<xs:complexType name="FilteredCollection">
+		<xs:annotation>
+			<xs:documentation>A FilteredCollection "filters" one or more inputCollections according to a set of filteringRules to produce a new instance of a Collection with the subset defined by the Ruleset.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Collection">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RuleSet" type="RuleSet"/>
+	<xs:complexType name="RuleSet">
+		<xs:annotation>
+			<xs:documentation>A Ruleset contains a set of ordered rules that defines how the value of an AggregateQuantity is derived or how the members of a FilteredCollection are selected. The text in Ruleset.rules is meant to convey the intent of the set of rules. It is not meant to imply requirements for a parsable Ruleset language. The exact format used for the rules in the Ruleset is a local matter.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="rules" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The rules attribute contains a set of strings that specifies the rules contained in the ruleset.  These rules should be interpreted in the order listed.  In the standards document, the rules are shown in the Ruleset subclass notes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

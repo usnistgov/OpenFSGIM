@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Classes corresponding to types and elements provided by GML that do not simply implement existing ISO 19100 classes from the Harmonized Model. 
+See ISO 19136 Annex D.3. </xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="coordinate_geometry.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:element name="AbstractFeature" type="AbstractFeature"/>
+	<xs:complexType name="AbstractFeature" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstract class representing all classes stereotyped &lt;&lt;FeatureType&gt;&gt; i.e., classes that realize GF_FeatureType, representing features of all types from all application schemas. This class may be used as a "wildcard" when it is necessary to refer to a feature of any type. 
+
+N.B. Any class stereotyped &lt;&lt;FeatureType&gt;&gt; is implicitly substitutable for AnyFeature. 
+
+Implemented by gml:AbstractFeature (gml 3.2) or gml:_Feature (earlier versions). </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="boundedBy" type="GM_Envelope" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Bounding envelope of feature.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Text description of object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="position" type="DirectPosition" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The point location of the feature.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

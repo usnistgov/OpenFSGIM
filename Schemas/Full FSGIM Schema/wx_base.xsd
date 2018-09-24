@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Weather schema that builds upon a GML 3.2 base.
+    </xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="coordinate_geometry.xsd"/>
+	<xs:element name="ExtentOf" type="ExtentOf"/>
+	<xs:complexType name="ExtentOf">
+		<xs:annotation>
+			<xs:documentation>Defines the extent of a feature.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="boundedBy" type="GM_Envelope" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Envelope defining the extent of the phenomenon.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

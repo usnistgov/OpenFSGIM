@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This package contains CDC specialisations through enumeration or transient. Not explicitly defined in the standard.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="cdcstatusset.xsd"/>
+	<xs:include schemaLocation="cdcstatusinfo.xsd"/>
+	<xs:include schemaLocation="cdccontrol.xsd"/>
+	<xs:element name="ENCBehaviourMode" type="ENCBehaviourMode"/>
+	<xs:complexType name="ENCBehaviourMode">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'stVal', 'ctlVal', 'subVal', 'minVal', 'maxVal' are restricted by enumeration. Used for: Mod.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENC">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ENGCalcIntervalType" type="ENGCalcIntervalType"/>
+	<xs:complexType name="ENGCalcIntervalType">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'setVal', 'minVal', 'maxVal' are restricted by enumeration. Used for: ClcIntvTyp, ClcRfTyp.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENG">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ENGCalcMethod" type="ENGCalcMethod"/>
+	<xs:complexType name="ENGCalcMethod">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'setVal', 'minVal', 'maxVal' are restricted by enumeration. Used for: ClcMth.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENG">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ENGCalcMode" type="ENGCalcMode"/>
+	<xs:complexType name="ENGCalcMode">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'setVal', 'minVal', 'maxVal' are restricted by enumeration. Used for: ClcMod.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENG">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ENGPfSign" type="ENGPfSign"/>
+	<xs:complexType name="ENGPfSign">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'setVal', 'minVal', 'maxVal' are restricted by enumeration. Used for: PFSign.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENG">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ENGSTotalCalcMethod" type="ENGSTotalCalcMethod"/>
+	<xs:complexType name="ENGSTotalCalcMethod">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'setVal', 'minVal', 'maxVal' are restricted by enumeration. Used for: ClcTotVA.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENG">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ENSAdjustment" type="ENSAdjustment"/>
+	<xs:complexType name="ENSAdjustment">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'stVal', 'subVal' are restricted by enumeration. Used for: AdjSt.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENS">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ENSBehaviourMode" type="ENSBehaviourMode"/>
+	<xs:complexType name="ENSBehaviourMode">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'stVal', 'subVal' are restricted by enumeration. Used for: Beh, Mod.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENS">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ENSHealth" type="ENSHealth"/>
+	<xs:complexType name="ENSHealth">
+		<xs:annotation>
+			<xs:documentation>Possible values for 'stVal', 'subVal' are restricted by enumeration. Used for: EEHealth, Health, PhyHealth, MechHealth.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ENS">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SPCTransient" type="SPCTransient"/>
+	<xs:complexType name="SPCTransient">
+		<xs:annotation>
+			<xs:documentation>An SPC whose 'stVal' is transient.
+Not explicitly defined in the standard.
+
+Transient Data - the status of data with this designation is momentary and must be logged or reported to provide evidence of their momentary state.  The transient property of data only applies to boolean process data attributes (FC=ST) of that data. Transient data is identical to normal data, except that for the process state change from TRUE to FALSE no event is generated for reporting and for logging.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="SPC">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SPSTransient" type="SPSTransient"/>
+	<xs:complexType name="SPSTransient">
+		<xs:annotation>
+			<xs:documentation>An SPS whose 'stVal' is transient.
+Not explicitly defined in the standard.
+
+Transient Data - the status of data with this designation is momentary and must be logged or reported to provide evidence of their momentary state. The transient property of data only applies to boolean process data attributes (FC=ST) of that data. Transient data is identical to normal data, except that for the process state change from TRUE to FALSE no event may be generated for reporting and for logging.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="SPS">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

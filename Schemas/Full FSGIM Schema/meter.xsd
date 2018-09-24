@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The Meter Component is the portion of the FSGIM that provides an abstract representation of the function of measuring power, energy, and emissions.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="energy_meas.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="emission_meas.xsd"/>
+	<xs:include schemaLocation="power_meas.xsd"/>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:element name="ElectricMeter" type="ElectricMeter"/>
+	<xs:complexType name="ElectricMeter">
+		<xs:annotation>
+			<xs:documentation>The ElectricMeter Class is a subclass of the Meter Class. It is an abstract representation of devices that measure real and reactive power or energy. These devices optionally measure other electrical parameters such as apparent power, apparent energy, present subinterval demand or power quality.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Meter">
+				<xs:sequence>
+					<xs:element name="input" type="ConnectionPoint" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="output" type="ConnectionPoint" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="intervalEnergyReading" type="EnergyMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The energy measurement set for a given location over the interval defined by Measurement.timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="accumulatedEnergyReading" type="EnergyMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The accumulated energy measurement set for a given location at the timestamp defined by Measurement.timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerReading" type="PowerMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The power measurement set for a given location.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsMeter" type="EmissionsMeter"/>
+	<xs:complexType name="EmissionsMeter">
+		<xs:annotation>
+			<xs:documentation>The EmissionsMeter Class is a subclass of the Meter Class which is used to represent devices that are capable of measuring pollution emissions.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Meter">
+				<xs:sequence>
+					<xs:element name="emissionsReading" type="EmissionsMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The emissions measurement set for a given location.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="emissionsRateReading" type="EmissionsRateMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The emissions rate measurement set for a given location.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Meter" type="Meter"/>
+	<xs:complexType name="Meter">
+		<xs:annotation>
+			<xs:documentation>The Meter Class is the central class of the Meter Component.  It contains, directly through its attributes and indirectly through its associations, the information elements that support the functionality of a meter.  A meter measures electricity or pollution emissions.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ComponentElement">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

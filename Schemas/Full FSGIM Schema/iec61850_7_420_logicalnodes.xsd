@@ -1,0 +1,1027 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>These Logical Nodes comprise the details of information modeling of distributed energy resources for IEC 61850-7-420.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="cdcanalogueinfo.xsd"/>
+	<xs:include schemaLocation="cdcstatusinfo.xsd"/>
+	<xs:include schemaLocation="cdccontrol.xsd"/>
+	<xs:include schemaLocation="iec61850_7_420_daenums.xsd"/>
+	<xs:include schemaLocation="cdcanalogueset.xsd"/>
+	<xs:include schemaLocation="cdcstatusset.xsd"/>
+	<xs:include schemaLocation="iec61850_7_420_common.xsd"/>
+	<xs:include schemaLocation="lngroupl.xsd"/>
+	<xs:element name="DERCostParameters" type="DERCostParameters"/>
+	<xs:complexType name="DERCostParameters">
+		<xs:annotation>
+			<xs:documentation>Economic drivers of operating the DER unit – operating cost, carbon rate cost, ramp cost, … (61850 Logical Node = DCCT).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="CarbonRatesCost" type="SCR" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Incremental carbon emission curve costs.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContractualAncillary" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Ability to provide ancillary services.
+0 = N/A / Unknown.
+1 = Load following.
+2 = Immediate reserve (i.e., spinning reserve).
+3 = Operational reserve (i.e., nonspinning reserve).
+4 = Base load.
+5 = Black start.
+99 = Other.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContractualExportWLimit" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Contractual limit on export energy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContractualHighV" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Contractual voltage high limit.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContractualImportWLimit" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Contractual limit on import energy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContractualLowV" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Contractual voltage low limit.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContractualPowerFactor" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Contractual power factor to be provided by DER.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Currency" type="CUG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>ISO 4217 currency 3-character code.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="HeatRateCost" type="SCR" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Incremental heat rate piecewise linear curve costs.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperatingCost" type="CUG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Marginal operational cost per hour.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperatingWhCost" type="CUG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Marginal operational cost per kWh.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PriceCode" type="ING" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Price code for the pricing signal.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RampCost" type="CUG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Cost to ramp DER per kW per minute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StartCost" type="CUG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Cost to start up DER.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StopCost" type="CUG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Cost to stop DER.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DERDeviceControllerCharacteristics" type="DERDeviceControllerCharacteristics"/>
+	<xs:complexType name="DERDeviceControllerCharacteristics">
+		<xs:annotation>
+			<xs:documentation>Setpoints for control characteristics and capabilities – max ramp rate, start delay time, stop delay time, …. (61850 Logical Node = DRCT)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="CalcualtionTotalVA" type="ENG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Calculation method used for total apparent power calculation (Vector | Arithmetic).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERNumber" type="ING" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Number of DER units connected to controller.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERType" type="DRCT.DERtyp.ING" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Type of DER unit: Enumerated. See DRCT.DERtyp.ING.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadRampRate" type="ING" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Nominal ramp load or unload rate, power versus time.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumRampRate" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maximum ramp rate as percentage of nominal maximum ramp rate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumVArLimit" type="ASG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Nominal max output reactive power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumWLimitPercent" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Nominal max output power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MiniumumReservePercent" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for minimum reserve for storage, as a percentage of the nominal maximum storage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutputVarNominal" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Reactive power in percent of VarMax </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PowerFactorSignConvention" type="ENG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Power factor convention: IEC=1 IEEE=2.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PowerReference" type="ASG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Reference active power with the default set equal to Wmax.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StartDelayTimeSeconds" type="ING" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Nominal time delay before starting or restarting.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StopDelayTimeSeconds" type="ING" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Nominal time delay before stopping.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VAChargerMaximum" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maximum apparent charging power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VAMaximum" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maximum apparent power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VArAction" type="ENC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Var action on change between charging and discharging: switch=1, remain=2.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VArMaximum" type="ASG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maximum reactive power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VMaximum" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maximum voltage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VMinimum" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for minimum voltage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VReference" type="ASG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Reference voltage for functions using grid voltage as input.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VReferenceOffset" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Reference offset voltage for functions using grid voltage as input.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WChargerGradient" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maximum charging ramp rate: percentage of WChaMax.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WChargerMaximum" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maximum active charging power and reference value for functions.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WGradient" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Gradient: percentage of delta power per Hertz.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WMaximum" type="ASG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maximum active power and reference value for functions.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DERGeneratorRatings" type="DERGeneratorRatings"/>
+	<xs:complexType name="DERGeneratorRatings">
+		<xs:annotation>
+			<xs:documentation>Information on the nameplate ratings and other identifying data of the generation/storage unit.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="ConnectionType" type="ConnectionTypeENS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>0 N/A.
+1 Single phase.
+2 Split phase.
+3 2-phase.
+4 3-phase delta.
+5 3-phase wye.
+6 3-phase wye grounded.
+7 3-phase / 3-wire (inverter type).
+8 3-phase / 4-wire (inverter type).
+99 Other.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CurrentRating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Current rating under nominal voltage under nominal power factor.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERType" type="DRCT.DERtyp.ING" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Type of Distributed Energy Resource.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DisconnectLevelW" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Generator disconnect level.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EfficiencyRatingPercent" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Efficiency at rated capacity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EmergencyMaximumWOutput" type="CSG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max watt output - emergency limits for different minutes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EmergencyMinimumWOutput" type="CSG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Min watt output - emergency limits for different minutes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EmergencyRampRate" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Emergency ramp rate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FaultARating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max fault current rating.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FaultDurationTimeInSeconds" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Exposure to fault rates as percent.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FaultRatingPercent" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max fault current rating.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FrequencyRating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Nominal frequency.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GroundZ" type="CMV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Grounding impedance.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LowerLoadSetpointRate" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Lower baseload setpoint rate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumFaultRating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max fault duration rating.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumLoadRamp" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>max load ramp rate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumUnloadRamp" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>max unload ramp rate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumVarOutput" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max VAR output.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumWOutput" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max watt output - continuous.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinimumWOutput" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Min watt output - continuous.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RaiseLoadSetpointRate" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Raise baseload setpoint rate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SelfPowerFactor" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Self-service nominal power factor.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SelfV" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Self-service voltage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SelfVRange" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Self-service acceptable voltage range.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SelfW" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Self-service nominal power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SequenceDirection" type="SequenceDirectionENS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sequence (direction): ABC or CBA.
+0 ABC.
+1 CBA.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TemperatureRating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max temperature rating.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VARating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max volt-amps rating (apparent power).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VarRating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max VAR rating (reactive power).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VRating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Voltage rating of storage device.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WHRating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Energy rating of storage device.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WRating" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Max watt rating (real power).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DEROperationalModeControls" type="DEROperationalModeControls"/>
+	<xs:complexType name="DEROperationalModeControls">
+		<xs:annotation>
+			<xs:documentation>Operating mode at the ECP.
+Control of the operational modes of the DER (e.g., constant watts, constant vars.) More than one mode can be set simultaneously for certain logical combinations (61850 Logical Node = DOPM).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="OperationalModeConstantW" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - constant watts.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeConstantPowerFactor" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - constant power factor.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeConstantV" type="SPG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - constant voltage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeConstantVAr" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - constant vars.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeExportImport" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - constant export/import.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeIslanded" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - islanded at the ECP.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeMaximumVAr" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - maximum vars.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModePeak" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - peak demand reduction.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModePM" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation – driven by energy source (e.g., solar, water flow) so generation level is constrained by availability of that energy source.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeVOverride" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operation - voltage override.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RampTimeSeconds" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Ramp time (in seconds) for moving from the present operational mode settings to new operational mode settings.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RevertTimeSeconds" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Timeout period (in seconds), after which the device will revert to its default status, such as closing the switch to reconnect to the grid.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WindowTimeSeconds" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time window (in seconds) within which to randomly execute a command.  If the time window is zero, the command will be executed immediately.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DERThermalStorage" type="DERThermalStorage"/>
+	<xs:complexType name="DERThermalStorage">
+		<xs:annotation>
+			<xs:documentation>This logical node describes the characteristics of the thermal storage. This LN applies both to heat storage and to coolant storage, and is used for measurements of heat exchanges.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="ThermalCapacityPercent" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Remaining actual thermal energy capacity as percent of total available capacity</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ThermalCapacityTotal" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Total available thermal energy capacity</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ThermalInput" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Instantaneous thermal energy input into storage</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ThermalLost" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Thermal energy lost or dumped</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ThermalOutput" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Instantaneous thermal energy output from storage</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ThermalOutputEstimated" type="SCR" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Estimated instantaneous thermal energy output over time (using
+time offsets)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ThermalStorageType" type="ENG" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>0 Not applicable / Unknown
+1 For heating with storage
+2 For heating without storage
+3 For cooling with storage
+4 For cooling without storage
+99 Other</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DERUnitControlActions" type="DERUnitControlActions"/>
+	<xs:complexType name="DERUnitControlActions">
+		<xs:annotation>
+			<xs:documentation>Basic control operations – start / stop, test mode, …. (61850 Logical Node = DRCC).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="AutoManualControl" type="SPC" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets operations mode to automatic or manual.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DCPowerStatus" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True = DC power control.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DeratedRatePercent" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Derated load target as percent.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERStart" type="SPC" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True = Start DER unit or sequencer.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERStop" type="SPC" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True = Stop DER unit or sequencer.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EmergencyStop" type="DPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Remote emergency stop.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FaultAcknowledge" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True = Acknowledge fault clearing.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorSynchronization" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True = Starts synchronizing generator to EPS.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ImportExportSetting" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maintaining constant import/export energy at ECP.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadModeAvailable" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets "available": True = for connection to load.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadModeBase" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets "base load" : True = load mode.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadModeFixedExport" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets "fixed export" True = Load mode.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadModeFollowing" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets "load following": True = load mode.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadRamp" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Ramp load or unload rate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadShareRamp" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Load share/Do not share.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadShutDown" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Load shut down: Stop/Do not stop.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadWPercent" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Percent load power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LocalRemoteControl" type="SPC" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets operations mode to remote or local.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumVArLimit" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Derated max output reactive power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaximumWLimitPercent" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Percent of reference active power watts as maximum allowed watts output - in ING.
+* setVal = percentage value between minVal and maxVal.
+* minVal = 0% or greater.
+* maxVal = 100% of less.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeAvailable" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets operational mode: True = is available.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeOff" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets operational mode: True = off-line.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationModeTest" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sets operational mode: True = test mode.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationTimeReset" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True = Reset operational time.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutputHzSetting" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maintaining fixed frequency offset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutputPowerFactorSetting" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Setpoint for maintaining fixed power factor: negative power factor is leading and positive power factor is lagging.
+OutPFSet is specified with CDC: APC in the -420 spec and CDC: ING and in the v15 document. APC v. ING is under investigation at the working group level.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutputVArNominal" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Reactive power in percent of Wmax.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutputVArSetting" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Output target reactive power setpoint.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutputVSetting" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Voltage setpoint for maintaining fixed voltage level in percent offset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutputWRate" type="ASG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode of operations / setpoint for charge/discharge rate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OutputWSetting" type="APC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Output target power setpoint.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PowerFactorExcitation" type="SPG" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Power Factor excitation: Underexcited = True; Overexcited = False.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StartDelayTimeSeconds" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time delay before starting.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StopDelayTimeSeconds" type="ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time delay before stopping.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DERUnitGenerator" type="DERUnitGenerator"/>
+	<xs:complexType name="DERUnitGenerator">
+		<xs:annotation>
+			<xs:documentation>More detailed status of DER unit – operation time, operation counts, …. (61850 Logical Node = DGEN).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="AutomaticVoltageRegulatorPercentDutyCycle" type="MV" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Automatic voltage regulator percent duty cycle.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DCPowerStatus" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>DC Power On/Off Status.
+True = On.
+False = Off.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorBlocked" type="SPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Set generator as blocked.  True = blocked from being turned on.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorControl" type="DPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Starts or stops the generator: True = Start, False = Stop, other states indicate error condition.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorCoolDownTime" type="MV" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Timer for generator to cool down; min = minimum time for cool down.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorHarmonics" type="HMV" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Generator harmonics.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorOnCount" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The number of times that the generator has been turned on: count of "generator on" times, since the last time the counter was reset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorOperationStatus" type="GeneratorOperationStatusENS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Generation operational state.
+0 = N/A.
+1 = Not operating.
+2 = Operating.
+3 = Starting-up. 
+4 = Shutting-down.
+5 = At disconnect level.
+6 = Ramping (power).
+7 = Ramping (reactive power).
+99 = Other.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorOperationTime" type="BCR" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Elapsed time as the generator becomes ready after the GenOnOff command was issued.
+Max = maximum time before issuing a start-failure alarm.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorRaiseLower" type="DPC" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Raises or lowers the generation level by steps: True = Raise, False = Lower, other states indicate error condition.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorStabilizationTime" type="MV" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Timer for stabilization time; max = maximum time before issuing a stabilization-failure alarm.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="GeneratorSynchronization" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Generator is synchronized to EPS, or not.
+True = Synchronized.
+False = Not synchronized.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperatingTimeHours" type="INS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operation time.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperatingTimeSecondsResettable" type="INS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Total time generator has operated - re-settable: accumulated time since the last time the counter was reset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ParallelStatus" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Paralleling Status.
+True = Paralleling.
+False = Standby.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PeriodStartCount" type="BCR" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Count of starts in period since reset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PeriodWh" type="MV" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Energy in period since last reset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RampLoadSwitch" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Ramp Load/Unload Switch.
+True = Ramp Load.
+False = Ramp Unload.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TotalStartCount" type="BCR" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Count of total number of starts.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TotalWh" type="MV" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Total energy delivered.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DERUnitStatus" type="DERUnitStatus"/>
+	<xs:complexType name="DERUnitStatus">
+		<xs:annotation>
+			<xs:documentation>Present status of the DER – current mode, auto/manual state, … (61850 Logical Node = DRCS).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DomainLN">
+				<xs:sequence>
+					<xs:element name="AutoManual" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Automatic or manual mode.
+True = automatic.
+False = manual.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ChargeStatus" type="ChargeStatusENS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Charge status of a storage device.
+1 = Off 
+2 = Fully discharged
+3 = Discharging
+4 = Charging
+5 = Fully charged
+6 = Holding
+7 = Testing</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DCPowerStatus" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>DC Power status.
+True = Power on.
+False = Power not on.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ElectricalConnectionPointConnected" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Electrically connected to the ECP that it is physically connected to.
+True = connected.
+False = not connected.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FaultRatePercent" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Fault rates of DER as percent.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadModeAvailable" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Load mode - True: Available.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadModeBase" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Load mode - True: Base load.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadModeFixedExport" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Load mode - True: fixed export.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LoadModeFollowing" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Load mode - True: Load following.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Local" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Remote or local mode.
+True = remote is allowed.
+False = Local.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeOffAvailable" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational mode - True: Off and available to start.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeOffUnavailable" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational mode: True Off and not available to start.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeOnAvailable" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational mode - True : On and available for connection.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeOnConnected" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational mode - True: on and connected.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeOnUnavailable" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational mode - True: On but not available for connection.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeStartingUp" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Mode is starting up</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeStop" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational mode - True: Stopping/shutting down.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeTest" type="SPS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational mode - True: Test mode.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ModeVAr" type="SPS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Yes/No, VAr management is available.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OperationTimeHours" type="INS" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operation time.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SelfServeWh" type="MV" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Actual self service energy used.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SequencePosition" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Sequence active position or step.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SequencerStatus" type="INS" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Status of the sequencer.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VAChargePercent" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Actual percentage charged based on VAChaMax.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VAPercent" type="MV" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Actual percentage apparent power output based on VAMax.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

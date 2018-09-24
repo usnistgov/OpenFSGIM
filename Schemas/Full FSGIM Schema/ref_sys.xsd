@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Generic identifer class used to associate a reference code with an identification authority.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="citation.xsd"/>
+	<xs:element name="MD_Identifier" type="MD_Identifier"/>
+	<xs:complexType name="MD_Identifier">
+		<xs:annotation>
+			<xs:documentation>Generic identifer class used to associate a reference code with an identification authority.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="authority" type="CI_Citation" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Organization or party responsible for definition and maintenance of the code space or code. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Identifier code or name, often from a controlled list or pattern defined by a code space.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

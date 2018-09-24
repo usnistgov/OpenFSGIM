@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This is a tailored version of the WSCalendard PIM for use in FSGIM.
+
+A PIM is a model of a system designed to be independent of the details needed for particular implementation technologies.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:element name="AttachType" type="AttachType"/>
+	<xs:complexType name="AttachType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This class represents data in the domain of concern over some interval of time.</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="artifact">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation>The artifact is here for use in extending by other specifications, to to allow attributes from other namespaces to be added to ws-calendar-based schemas.</xs:documentation>
+					</xs:annotation>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="AvailabilityType" type="AvailabilityType"/>
+	<xs:complexType name="AvailabilityType">
+		<xs:annotation>
+			<xs:documentation>This class expresses the range of times in which an Interval or Sequence can be Scheduled.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="availInterval" type="DateTimeInterval" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This serves as the template "anchoring" interval that the recurrence rule (stored in rRule) is evaluated against. At instantiation time the choice must be made whether to express the interval as a UTCDateTimeInterval or a LocalDateTimeInterval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="exDate" type="xs:date" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A set of one or more exception dates that override the sequence specified in the rRule attribute, derived from RFC5545, (2009) Section 3.8.5.1</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rRule" type="RecurType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A recurrence rule specification as defined in RFC5545, (2009) Section 3.3.10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="FreqRecurType">
+		<xs:annotation>
+			<xs:documentation>Used to identify the unit of time to be used in specifying the frequency of a recurring event.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SECONDLY">
+				<xs:annotation>
+					<xs:documentation>Used to specify repeating events based on an interval of a second or more.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MINUTELY">
+				<xs:annotation>
+					<xs:documentation>Used to specify repeating events based on an interval of a minute or more.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HOURLY">
+				<xs:annotation>
+					<xs:documentation>Used to specify repeating events based on an interval of an hour or more.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DAILY">
+				<xs:annotation>
+					<xs:documentation>Used to specify repeating events based on an interval of a day or more.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WEEKLY">
+				<xs:annotation>
+					<xs:documentation>Used to specify repeating events based on an interval of a week or more.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MONTHLY">
+				<xs:annotation>
+					<xs:documentation>Used to specify repeating events based on an interval of a month or more.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="YEARLY">
+				<xs:annotation>
+					<xs:documentation>Used to specify repeating events based on an interval of a year or more.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="GluonType" type="GluonType"/>
+	<xs:complexType name="GluonType">
+		<xs:annotation>
+			<xs:documentation>A GluonType influences the serialization of IntervalTypes in a sequence. A GluonType is often used as a pointer to the beginning interval in a sequence, although in general it can point to any interval in a sequence, or simply describe an isolated interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="GluonTypeRestrictions">
+				<xs:sequence>
+					<xs:element name="vavailability" type="VavailabilityType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The specification of the time span and pattern of intervals that defines a sequence.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="GluonTypeRestrictions" type="GluonTypeRestrictions"/>
+	<xs:complexType name="GluonTypeRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="IntervalType">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="instanceUid" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unique identifier to the interval instance.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The time reference for an interval which includes some combination of start, duration, and end.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tolerance" type="ToleranceValueType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The tolerance for the associated timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="IntervalType" type="IntervalType"/>
+	<xs:complexType name="IntervalType">
+		<xs:annotation>
+			<xs:documentation>This class represents an interval of time that attaches to a collection of data pertinent to the interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="instanceUid" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unique identifier to the interval instance.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The time reference for an interval which includes some combination of start, duration, and end.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tolerance" type="ToleranceValueType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The tolerance for the associated timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="attach" type="AttachType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Associates a set of AttachType data with this IntervalType.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Randomization" type="Randomization"/>
+	<xs:complexType name="Randomization">
+		<xs:annotation>
+			<xs:documentation>A specialized version of ToleranceValueType used to indicate the degree of randomization required.  In this use, the startafter and startbefore attributes indicate the range of the starting times.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ToleranceValueType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RelationLink" type="RelationLink"/>
+	<xs:complexType name="RelationLink">
+		<xs:annotation>
+			<xs:documentation>The RelationLink class serves to link a set of intervals together, in support of a linked-list method of creating a sequence. It is also used to link a GluonType instance to a specific interval within a sequence, typically used to point to the beginning interval of a sequence.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="gap" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>An optional attribute to specify a gap in time between one interval and the next. The default interpretation is a value of zero.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="relationship" type="RelationshipType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The kind of link (see the RelationshipType enumeration).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="temporalRelationship" type="TemporalRelationshipType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The specification of the temporal relation of one interval to the interval being linked to. By default, this will be FinishToStart, meaning the next interval immediately begins after the previous interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="RelationshipType">
+		<xs:annotation>
+			<xs:documentation>Specifies the type of hierarchical relationship associated with the calendar component specified by the property. The parameter value can be PARENT, to indicate that the referenced calendar component is a superior of calendar component; CHILD to indicate that the referenced calendar component is a subordinate of the calendar component; or SIBLING to indicate that the referenced calendar component is a peer of the calendar component. If this parameter is not specified on an allowable property, the default relationship type is PARENT.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PARENT">
+				<xs:annotation>
+					<xs:documentation>Indicates that the referenced calendar component is a superior of calendar component - default</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CHILD">
+				<xs:annotation>
+					<xs:documentation>Indicates that the referenced calendar component is a subordinate of the calendar component. For example, a GluonType would have a CHILD relationship with the IntervalType it is pointing to.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SIBLING">
+				<xs:annotation>
+					<xs:documentation>Indicates that the referenced calendar component is a peer of the calendar component. For example, an IntervalType would have a SIBLING relationship with another IntervalType it is pointing to.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TemporalRelationshipType">
+		<xs:annotation>
+			<xs:documentation>The temporal relation of one interval to the interval it is linked to.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FinishToStart">
+				<xs:annotation>
+					<xs:documentation>The next interval immediately begins after the previous interval (the default interpretation).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FinishToFinish">
+				<xs:annotation>
+					<xs:documentation>The next interval ends at the same time as the previous interval.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="StartToFinish">
+				<xs:annotation>
+					<xs:documentation>The next interval finishes immediately before the previous interval (i.e., each interval in a sequence points to the interval immediately preceding it in time).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="StartToStart">
+				<xs:annotation>
+					<xs:documentation>The next interval begins at the same time as the previous interval.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ToleranceValueType" type="ToleranceValueType"/>
+	<xs:complexType name="ToleranceValueType">
+		<xs:annotation>
+			<xs:documentation>A tolerance value is a set of durations which indicate the allowed tolerance for the indicated value. Note that there may be many tolerance values associated with a Duration.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="durationLong" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates by how much the performance Duration may exceed the Duration specified in the information exchange. Duration Long Tolerance SHALL NOT be used when Start and End Tolerances are both specified.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="durationShort" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates by how much the performance Duration may fall short of the Duration specified in the information exchange. Duration Short Tolerance SHALL NOT be used when Start and End Tolerances are both specified.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endAfter" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates how far after the scheduled end time the requested service may commence, for example, if a service that ends at 2:01 is compliant with a request to end at 2:00</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endBefore" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates how far before scheduled end time may end, for example, if a service that ends at 1:57 is compliant with a request to end at 2:00</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="precision" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Whatever the time tolerance above, there is some minimum time that is considered significant. When used in Tolerance, precision defines the tracking and reporting requirements for a service.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="startAfter" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates how far after the requested start time the requested service may commence , for example, if a service that begins at 2:01 is compliant with a request to start at 2:00</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="startBefore" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates how far before the requested start time the requested service may commence, for example if a service that begins at 1:57 is compliant with a request to start at 2:00</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="VavailabilityType" type="VavailabilityType"/>
+	<xs:complexType name="VavailabilityType">
+		<xs:annotation>
+			<xs:documentation>The VavailabilityType class is intended to establish a baseline range of time to scope a sequence. The class can specify a start time and an end time or duration, using the timeRange attribute. If "start" is not present, then the start time is unbounded. If "end" or "duration" is not present, then the end time is unbounded. Within the specified time period, availability defaults to "not available", except for any time periods corresponding to associated AvailabilityType instances.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="granularity" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The finest precision that can be used to define times, such as the value of dtStart or duration</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priority" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Integer value from 1 to 9. Higher numbers have lower priority per RFC5545.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timeRange" type="DateTimeInterval" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The span of time that bounds the associated sequence of intervals defined using one or more AvailabilityType instances. At instantiation time the choice must be made whether to express the interval as a UTCDateTimeInterval or a LocalDateTimeInterval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="availability" type="AvailabilityType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The specification of a single interval, and optionally the rules for the pattern of intervals that constitute a sequence.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="WeekdaySpecType" type="WeekdaySpecType"/>
+	<xs:complexType name="WeekdaySpecType">
+		<xs:annotation>
+			<xs:documentation>Specifies a week day and a recurrence number. For example, within a MONTHLY rule:
+
++1,MO represents the first Monday within the month, whereas -1,MO represents the last Monday of the month.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dow" type="WeekdayType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies a day of the week.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="num" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If present, this indicates the nth occurrence of a specific day within the MONTHLY or YEARLY RecurType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RecurType" type="RecurType"/>
+	<xs:complexType name="RecurType">
+		<xs:annotation>
+			<xs:documentation>This value type is used to identify properties that contain a recurrence rule specification.
+
+From RFC5545 section 3.3.10.  Recurrence Rule.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="byDay" type="WeekdaySpecType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A sequence of  weekdays.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="byHour" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies a sequence of hours within a day -- 0..23.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="byMinute" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies a sequence of minutes within an hour -- 0..59.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="byMonth" type="MonthType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A sequence of month numbers in a year -- 1..12.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="byMonthDay" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies a sequence of day numbers within a month.
+Valid values are 1 to 31 or -31 to -1.  For example, -10 represents the tenth to the last day of the month. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="bySecond" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies a sequence of seconds within a minute -- 0..60.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="bySetPos" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The bysetpos rule part specifies a sequence of values that corresponds to the nth occurrence within the set of recurrence instances specified by the RecurType instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="byWeekNo" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A sequence of week-numbers of a year, based on the definitions in ISO.8601.2004.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="byYearDay" type="xs:integer" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies a sequence of day numbers within a year.
+Valid values are 1 to 3366 or -366 to -1.  For example, -1 represents the last day of the year.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="count" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The COUNT rule part defines the number of occurrences at which to range-bound the recurrence.
+
+Only one of until or count may be used in a single RecurType instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="freq" type="FreqRecurType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The freq rule part identifies the type of recurrence rule.
+
+Valid values include SECONDLY, to specify repeating events based on an interval of a second or more; MINUTELY, to specify repeating events based on an interval of a minute or more; HOURLY, to specify repeating events based on an interval of an hour or more; DAILY, to specify repeating events based on an interval of a day or more; WEEKLY, to specify repeating events based on an interval of a week or more; MONTHLY, to specify repeating events based on an interval of a month or more; and YEARLY, to specify repeating events based on an interval of a year or more.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="interval" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The interval rule part contains a positive integer representing at which intervals the recurrence rule repeats.  The default value is "1", meaning every second for a SECONDLY rule, every minute for a MINUTELY rule, every hour for an HOURLY rule, every day for a DAILY rule, every week for a WEEKLY rule, every month for a MONTHLY rule, and every year for a YEARLY rule. For example, within a DAILY rule, a value of "8" means every eight days.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="until" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The until rule part defines a date/time value that bounds the recurrence rule in an inclusive manner.  If the value specified by until is synchronized with the specified recurrence, this date/time becomes the last instance of the recurrence.
+
+Only one of until or count may be used in a single RecurType instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="wkst" type="WeekdayType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the day on which the workweek starts.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

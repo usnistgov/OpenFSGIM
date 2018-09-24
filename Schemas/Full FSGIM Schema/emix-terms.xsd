@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>EMIX Products can be subject to a number of Terms and Market Requirements. These terms can apply at each transactive state.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="emix.xsd"/>
+	<xs:include schemaLocation="measurements.xsd"/>
+	<xs:include schemaLocation="wscalendarpim.xsd"/>
+	<xs:element name="ArrayOfTerms" type="ArrayOfTerms"/>
+	<xs:complexType name="ArrayOfTerms">
+		<xs:annotation>
+			<xs:documentation>Collection of Emix Terms</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="BaseTermType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A collection of business and performance rules that define the product offering. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AvailabilityScheduleType" type="AvailabilityScheduleType"/>
+	<xs:complexType name="AvailabilityScheduleType">
+		<xs:annotation>
+			<xs:documentation>A Schedule of time windows during which a response may be scheduled. A scheduled Duration must be entirely within a single instance of an availability window.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="vavailability" type="VavailabilityType" minOccurs="1" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Availability communicates acceptable schedule times for Sequences.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="BaseTermType" type="BaseTermType"/>
+	<xs:complexType name="BaseTermType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Type of Abstract extension object for Emix Terms</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="MarketContextNameType" type="MarketContextNameType"/>
+	<xs:complexType name="MarketContextNameType">
+		<xs:annotation>
+			<xs:documentation>A descriptive name applied to any market context through the associated Standard Terms.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="MarketGranularityType" type="MarketGranularityType"/>
+	<xs:complexType name="MarketGranularityType">
+		<xs:annotation>
+			<xs:documentation>Granularity defines the size of a market "bundle". For example, a Market with a granularity of 10 MW, will only accept tenders, process transactions, and pay for delivery of Power in multiples of 10 MW.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="measurementQuantity" type="MeasurementQuantity" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Amount oF a measurement along with its associated metadata.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MaximumConsecutiveDurationsType" type="MaximumConsecutiveDurationsType"/>
+	<xs:complexType name="MaximumConsecutiveDurationsType">
+		<xs:annotation>
+			<xs:documentation>Maximum consecutive Durations in which a notification will be accepted, e.g., it will not accept requests on more than three consecutive days.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="durations" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Number of the durations.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MaximumInvocationsPerDurationType" type="MaximumInvocationsPerDurationType"/>
+	<xs:complexType name="MaximumInvocationsPerDurationType">
+		<xs:annotation>
+			<xs:documentation>Maximum number of requests for response that will be accepted during a Duration.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="starts" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Number of starts.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MaximumNotificationDurationType" type="MaximumNotificationDurationType"/>
+	<xs:complexType name="MaximumNotificationDurationType">
+		<xs:annotation>
+			<xs:documentation>The maximum Duration in advance of a proposed response that a notification will be accepted. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MaximumResponseDurationType" type="MaximumResponseDurationType"/>
+	<xs:complexType name="MaximumResponseDurationType">
+		<xs:annotation>
+			<xs:documentation>The longest Duration for which a request will be accepted.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MaximumRunDurationType" type="MaximumRunDurationType"/>
+	<xs:complexType name="MaximumRunDurationType">
+		<xs:annotation>
+			<xs:documentation>Maximum acceptable Duration for a proposed response</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MinimumDurationBetweenInvocationsType" type="MinimumDurationBetweenInvocationsType"/>
+	<xs:complexType name="MinimumDurationBetweenInvocationsType">
+		<xs:annotation>
+			<xs:documentation>The minimum Duration between successive responses that will be accepted.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MinimumEconomicRequirementType" type="MinimumEconomicRequirementType"/>
+	<xs:complexType name="MinimumEconomicRequirementType">
+		<xs:annotation>
+			<xs:documentation>Minimum net remuneration for any single response.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="price" type="PriceType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Price of the quantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MinimumNotificationDurationType" type="MinimumNotificationDurationType"/>
+	<xs:complexType name="MinimumNotificationDurationType">
+		<xs:annotation>
+			<xs:documentation>The minimum Duration in advance of a proposed response that a notification will be accepted.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MinimumRecoveryDurationType" type="MinimumRecoveryDurationType"/>
+	<xs:complexType name="MinimumRecoveryDurationType">
+		<xs:annotation>
+			<xs:documentation>The minimum Duration after completion of a response before a new response can be begun.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MinimumRemunerationRateType" type="MinimumRemunerationRateType"/>
+	<xs:complexType name="MinimumRemunerationRateType">
+		<xs:annotation>
+			<xs:documentation>Minimum remuneration acceptable per stated Duration of response, e.g., a minimum remuneration of $100 / hour.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="price" type="PriceType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Price of the quantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MinimumResponseDurationType" type="MinimumResponseDurationType"/>
+	<xs:complexType name="MinimumResponseDurationType">
+		<xs:annotation>
+			<xs:documentation>The shortest Duration for which a request will be accepted.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MinimumRunDurationType" type="MinimumRunDurationType"/>
+	<xs:complexType name="MinimumRunDurationType">
+		<xs:annotation>
+			<xs:documentation>Minimum acceptable Duration for a proposed response.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MinimumStartsPerDurationType" type="MinimumStartsPerDurationType"/>
+	<xs:complexType name="MinimumStartsPerDurationType">
+		<xs:annotation>
+			<xs:documentation>The fewest requests that the resource will accept during any Duration.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The length of a scheduled event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="starts" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Number of starts.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="NonStandardTermsHandlingType">
+		<xs:annotation>
+			<xs:documentation>Defines how participants should handle terms not listed in the RuleSet</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="mustAccept">
+				<xs:annotation>
+					<xs:documentation>Participants must accept messages even if they contain rules not listed here that the party does not understand.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ignore">
+				<xs:annotation>
+					<xs:documentation>Participants must ignore any rule not listed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mustUnderstand">
+				<xs:annotation>
+					<xs:documentation>Participants must reject any message containing a rule not listed here unless is it understood.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reject">
+				<xs:annotation>
+					<xs:documentation>Participants in this market will reject all message containing rules not itemized in market rules.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="NotificationScheduleType" type="NotificationScheduleType"/>
+	<xs:complexType name="NotificationScheduleType">
+		<xs:annotation>
+			<xs:documentation>A schedule of time windows during which requests can be made.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element ref="VavailabilityType" minOccurs="1" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Availability communicates acceptable schedule times for Sequences.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RequiredStartupRemunerationType" type="RequiredStartupRemunerationType"/>
+	<xs:complexType name="RequiredStartupRemunerationType">
+		<xs:annotation>
+			<xs:documentation>Minimum remuneration required for initiating a response.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element ref="PriceType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This is the number that quantifies the actual price per unit of the product.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ResponseTimeType" type="ResponseTimeType"/>
+	<xs:complexType name="ResponseTimeType">
+		<xs:annotation>
+			<xs:documentation>Duration required from receipt of a request to supplying the full requested level of response, i.e., notification time plus response time.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Length of time.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="StandardTermsSetType" type="StandardTermsSetType"/>
+	<xs:complexType name="StandardTermsSetType">
+		<xs:annotation>
+			<xs:documentation>A collection of Standard Terms for this market</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="nonStandardTermsHandling" type="NonStandardTermsHandlingType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A string enumeration indicating how to handle terms received that are different than those in the Market Term Set. Permissible values are: Reject (the information artifact), Ignore (the terms), Must Understand, Must Accept. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="side" type="SideType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Some terms may have different interpretation as to side. A Buyer term may indicate "meet or exceed" well a seller expressing the same term may indicate "no worse than".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="ArrayOfTerms" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A collection of business and performance rules that define the product offering.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="VavailabilityType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If present, this defines the period(s) that this RuleSet applies to, i.e., weekdays 9:00-5:00.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="StandardTermsType" type="StandardTermsType"/>
+	<xs:complexType name="StandardTermsType">
+		<xs:annotation>
+			<xs:documentation>Standard Terms express overarching terms for a market context</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="currency" type="CurrencyKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Currency for interactions. If present, becomes the default for all information models.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="granularity" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Temporal granularity of market, i.e., a 5 minute market operates in 5 minute chunks, with a fixed offset from the beginning of availability</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="marketContext" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Terms that define the market context of this transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="MarketContextNameType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Human readable name of the market context.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nonStandardTermsHandling" type="NonStandardTermsHandlingType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A string enumeration indicating how to handle terms received that are different than those in the Market Term Set. Permissible values are: Reject (the information artifact), Ignore (the terms), Must Understand, Must Accept.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="productDescription" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If present in Standard Terms, then it specifies a single Product Description for all products in the market.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="standardTermsSet" type="StandardTermsSetType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Common expectations outside of any single product-related artifact.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tzid" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Time Zone Database ID as per IANA https://www.iana.org/time-zones. This optional attribute can be used to retrieve the IANA database and construct the values for the other attributes of this class.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="UnavailabilityScheduleType" type="UnavailabilityScheduleType"/>
+	<xs:complexType name="UnavailabilityScheduleType">
+		<xs:annotation>
+			<xs:documentation>A schedule of time windows for which no request for response will be accepted. No part of a requested Duration must coincide with an unavailability window.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element ref="VavailabilityType" minOccurs="1" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Availability communicates acceptable schedule times for Sequences.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

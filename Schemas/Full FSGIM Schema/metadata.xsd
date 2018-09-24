@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Description of the base metadata class.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="cultural.xsd"/>
+	<xs:include schemaLocation="maintenance_info.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="citation.xsd"/>
+	<xs:include schemaLocation="id_info.xsd"/>
+	<xs:element name="MD_Metadata" type="MD_Metadata"/>
+	<xs:complexType name="MD_Metadata">
+		<xs:annotation>
+			<xs:documentation>Information about the metadata.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="characterSet" type="MD_CharacterSetCode" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Full name of the ISO character coding standard used for the metadata set.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contact" type="CI_ResponsibleParty" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Party responsible for the metadata information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dataSet" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Identifiable collection of data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateStamp" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Date that the metadata were created or last updated.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fileIdentifier" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unique identifier for this metadata file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hierarchyLevel" type="MD_ScopeCode" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Scope to which the metadata applies (see informative Annex J for more information about metadata heirarchy levels).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hierarchyLevelName" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Name of the hierarchy level.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="language" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Language used for documenting metadata.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="locale" type="PT_Locale" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Locale of the data set.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="metadataStandardName" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the metadata standard used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="metadataStandardVersion" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Version of the metadata standard used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="parentIdentifier" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unique identifier of the parent metadata file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

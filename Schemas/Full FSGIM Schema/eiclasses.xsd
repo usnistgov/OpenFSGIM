@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The Energy Interoperation Component contains classes that support the ability to act upon dynamic price signals, energy market trading, grid reliability events, and grid emergency events. </xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="emix-terms.xsd"/>
+	<xs:include schemaLocation="emix.xsd"/>
+	<xs:include schemaLocation="measurements.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:element name="ApplicationSpecificContextBaseType" type="ApplicationSpecificContextBaseType"/>
+	<xs:complexType name="ApplicationSpecificContextBaseType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>The Application Specific Context Base is an abstract class to exchange invariant or setup information with an Application running on the other side of an interaction. They are not defined in Energy Interoperation, although there are specific conformance rules that must be followed</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ApplicationSpecificExtensionBaseType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ApplicationSpecificExtensionBaseType" type="ApplicationSpecificExtensionBaseType"/>
+	<xs:complexType name="ApplicationSpecificExtensionBaseType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Application Extensions are used to provide hints to or interactions with Applications running on the other side of an interaction. They are not defined in Energy Interoperation, although there are specific conformance rules that must be followed</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="ApplicationSpecificPayloadBaseType" type="ApplicationSpecificPayloadBaseType"/>
+	<xs:complexType name="ApplicationSpecificPayloadBaseType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>The Application Specific Payload Base is an abstract class to exchange feedback with an Application running on the other side of an interaction. They are not defined in Energy Interoperation, although there are specific conformance rules that must be followed</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ApplicationSpecificExtensionBaseType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ArrayOfSignals" type="ArrayOfSignals"/>
+	<xs:complexType name="ArrayOfSignals">
+		<xs:annotation>
+			<xs:documentation>Collection of Signal Base derived elements</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="eiEventBaseline" type="EiEventBaselineType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This type is used for describing baseline for the event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eiEventSignal" type="EiEventSignalType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This type is used for describing the signal type communications.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CurrentValueType" type="CurrentValueType"/>
+	<xs:complexType name="CurrentValueType">
+		<xs:annotation>
+			<xs:documentation>This class contains the common information, at the time of an event, in an Energy Interoperation signal.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="PayloadBaseType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Common information in all streams. This commonality is derived from the commonality of a request for performance (Signal), a report of performance (Report and Delivery), projections of performance (Projection), and a baseline of performance (Baseline).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="EiEventBaselineType" type="EiEventBaselineType"/>
+	<xs:complexType name="EiEventBaselineType">
+		<xs:annotation>
+			<xs:documentation>This type is used for describing baseline for the event.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="baselineID" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Reference identifier of a baseline.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="baselineInterval" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>One or more baseline intervals indicate comparable times that may be used as a baseline. Information for the baseline intervals is not conveyed in this type, and the interval may be past, present, or future.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="baselineName" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Human readable name of the baseline.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currentValue" type="CurrentValueType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The present value (as of the signal creation) of the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eventInterval" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Identifies the time interval to which the event baseline applies.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="itemBase" type="ItemBaseType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This indicates the units of the signal. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="resourceID" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Unique identifier of the resource being baselined.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="EiEventSignalType" type="EiEventSignalType"/>
+	<xs:complexType name="EiEventSignalType">
+		<xs:annotation>
+			<xs:documentation>This type is used for describing the signal type communications.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EventSignalTypeBase">
+				<xs:sequence>
+					<xs:element name="eiTarget" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>A set of elements that collectively name which Parties should participate in an event. A Target can include Service Areas, named Groups, Resources, and other standard identifiers.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element ref="ItemBaseType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Enumerates what is being measured, and perhaps paid for, by the signal.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marketContext" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Market Context is the overall market or program rules that govern this event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="schemaVersion" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Version number of the schema used in the signal.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="signalID" type="refID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Reference identifier of this signal.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="signalName" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Human readable name of the signal.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EiEventType" type="EiEventType"/>
+	<xs:complexType name="EiEventType">
+		<xs:annotation>
+			<xs:documentation>Core element of event-based demand response that specifies the duration and applicability of an Event. Some deadlines, time periods, and transitions may not be applicable to all products or services.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="eiActivePeriod" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Duration that encompasses the event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="ArrayOfSignals" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The detailed information about the schedule for an event</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eiTarget" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A set of elements that collectively names the parties participating in an event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eventDescriptor" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A description of the type of event being requested, indicating the market context and priority of the event as well as when the event was created, modified, and is scheduled to become active.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="refID" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Reference ID for the EI Event instance</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="schemaVersion" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Version number of the schema used in the event signal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="EiExtensionTokenType">
+		<xs:annotation>
+			<xs:documentation>Pattern used for extending string enumeration, where allowed</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="x-\S.*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="EiMarketContextType" type="EiMarketContextType"/>
+	<xs:complexType name="EiMarketContextType">
+		<xs:annotation>
+			<xs:documentation>Terms that define the market context of this transaction.  The Market Context is the overall market or program rules that govern this event.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="applicationSpecificContextBase" type="ApplicationSpecificContextBaseType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Invariant or setup information with an Application running on the other side of an interaction. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="createdDateTime" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates when this artifact was created. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="envelopeContents" type="EnvelopeContentsType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The extrinsic information that may distinguish the product from being a pure commodity. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="marketContext" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Terms that define the market context of this transaction.  The Market Context is the overall market or program rules that govern this event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="marketName" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name associated with the Market Context</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reportSpecifier" type="ReportSpecifierType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specification of what reports are being requested.  It includes granularity, reporting interval, market context, and a specifier payload.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="schemaVersion" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Version number of the schema used in the event signal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="SimpleLevelContextType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>An agreement-based interaction abstracted away from expressions of value or actual amounts. Simple Levels define levels of energy scarcity and abundance, at an agreed upon granularity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="standardTerms" type="StandardTermsType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Common expectations outside of any single product-related artifact.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="EiTargetType" type="EiTargetType"/>
+	<xs:complexType name="EiTargetType">
+		<xs:annotation>
+			<xs:documentation>A set of elements to that collectively name who is participating or should participate in an EI interactions</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="groupName" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Name of a group which may be the target of an event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EventDescriptorType" type="EventDescriptorType"/>
+	<xs:complexType name="EventDescriptorType">
+		<xs:annotation>
+			<xs:documentation>A description of the type of event being requested, indicating the market context and priority of the event as well as when the event was created, modified, and is scheduled to become active.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="createdDateTime" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Indicates when this artifact was created.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element ref="EiMarketContextType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Market Context is the overall market or program rules that govern this event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="eventStatus" type="EventStatusType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Indicates the present status of an event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="modificationDateTime" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The date and time a modification takes effect.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="modificationNumber" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Used to indicate if the event has been modified and is incremented each time the event is modified.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="modificationReason" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The reason the event is being cancelled or modified.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="operatingDay" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Date of Start of Event </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="priority" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This is the priority of this event relative to other events. The lower the number higher the priority. A value of zero (0) indicates NO priority and in essence is the lowest priority by default.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="testEvent" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>testEvent can be treated as a boolean by either not including it (= = false) or using the null string.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="vtnComment" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Additional Event information provided by the Operator.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EventSignalTypeBase" type="EventSignalTypeBase"/>
+	<xs:complexType name="EventSignalTypeBase" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This class conveys the kind of demand response event being signaled and the desired resulting load or generation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="currentValue" type="CurrentValueType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The present value (as of the signal creation) of the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eventInterval" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Identifies the time interval to which the event signal applies.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="signalType" type="SignalTypeType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Type of signal (delta, multiplier, level, price, product, or set-point) being conveyed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="EventStatusEnumeratedType">
+		<xs:annotation>
+			<xs:documentation>Indicates the present status of an event. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>No event pending</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="far">
+				<xs:annotation>
+					<xs:documentation>event pending in the far future. The exact definition of how far in the future this refers is dependent upon the market context, but typically means the next day.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="near">
+				<xs:annotation>
+					<xs:documentation>event pending in the near future. The exact definition of how near in the future the pending event is active is dependent on the market context</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="active">
+				<xs:annotation>
+					<xs:documentation>The event has been initiated and is active.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="completed">
+				<xs:annotation>
+					<xs:documentation>The event has completed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cancelled">
+				<xs:annotation>
+					<xs:documentation>The event has been canceled.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EventStatusType">
+		<xs:annotation>
+			<xs:documentation>Indicates the present status of an event.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="fsgim:EventStatusEnumeratedType fsgim:EiExtensionTokenType"/>
+	</xs:simpleType>
+	<xs:element name="FSGIMEventSignalType" type="FSGIMEventSignalType"/>
+	<xs:complexType name="FSGIMEventSignalType">
+		<xs:annotation>
+			<xs:documentation>This class conveys the kind of demand response event being signaled from an energy manager to a curtailable load or a dispatchable generator. The signal indicates the desired resulting load or generation.
+
+For FSGIMEventSignalType, the multiplicity of eventInterval is 0.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EventSignalTypeBase">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadApplicationSpecificType" type="PayloadApplicationSpecificType"/>
+	<xs:complexType name="PayloadApplicationSpecificType">
+		<xs:annotation>
+			<xs:documentation>This Payload contains the information that changes in each Stream payload.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element ref="ApplicationSpecificPayloadBaseType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>An abstract class to exchange feedback with an Application running on the other side of an interaction.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadBaseType" type="PayloadBaseType"/>
+	<xs:complexType name="PayloadBaseType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>base for information in Signal / Baseline / Report Payloads</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="PayloadEmixType" type="PayloadEmixType"/>
+	<xs:complexType name="PayloadEmixType">
+		<xs:annotation>
+			<xs:documentation>This is the Payload for Signals that require an EMIX Product Description.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element name="productDescription" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The terms of energy tenders and transactions for which time and location are essential characteristics.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadFloatType" type="PayloadFloatType"/>
+	<xs:complexType name="PayloadFloatType">
+		<xs:annotation>
+			<xs:documentation>This is the Payload for Signals that require a Quantity.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Payload quantity expressed as a floating point number.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadLevelType" type="PayloadLevelType"/>
+	<xs:complexType name="PayloadLevelType">
+		<xs:annotation>
+			<xs:documentation>This is the Payload for Signals that convey Simple Levels.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element name="level" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Payload quantity expressed as a simple level.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadPriceMultiplierType" type="PayloadPriceMultiplierType"/>
+	<xs:complexType name="PayloadPriceMultiplierType">
+		<xs:annotation>
+			<xs:documentation>A Price Multiplier that when applied to a reference price produces the actual price. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element name="priceMultiplier" type="PriceMultiplierType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Elements of a price multiplier that when applied to a reference price produces the actual price of a quantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadPriceRelativeType" type="PayloadPriceRelativeType"/>
+	<xs:complexType name="PayloadPriceRelativeType">
+		<xs:annotation>
+			<xs:documentation>A Price Relative is added to a reference price to compute the actual price. Price Relative may be positive or negative. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element name="priceRelative" type="PriceRelativeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A price relative is added to a reference price to compute the actual price. Price relative may be positive or negative. It optionally includes a Market Context for the reference price. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadPriceType" type="PayloadPriceType"/>
+	<xs:complexType name="PayloadPriceType">
+		<xs:annotation>
+			<xs:documentation>This is the Payload for Signals that require a Quantity.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element name="price" type="PriceType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This is the number that quantifies the actual price per unit of the product. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadProductType" type="PayloadProductType"/>
+	<xs:complexType name="PayloadProductType">
+		<xs:annotation>
+			<xs:documentation>This Payload contains the information that changes in each Stream payload.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element name="productDescription" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The terms of energy tenders and transactions for which time and location are essential characteristics.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PayloadQuantityType" type="PayloadQuantityType"/>
+	<xs:complexType name="PayloadQuantityType">
+		<xs:annotation>
+			<xs:documentation>This is the Payload for Signals that require a Quantity.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PayloadBaseType">
+				<xs:sequence>
+					<xs:element name="quantity" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Amount, rate, or number of an item.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="ReadingTypeEnumeratedType">
+		<xs:annotation>
+			<xs:documentation>Indicates metadata about the Readings, i.e., direct measurement or computation.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Allocated">
+				<xs:annotation>
+					<xs:documentation>Meter covers several [resources] and usage is inferred through some sort of pro rata computation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Contract">
+				<xs:annotation>
+					<xs:documentation>Indicates reading is pro forma, i.e., is reported at agreed upon rates</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Derived">
+				<xs:annotation>
+					<xs:documentation>Usage is inferred through knowledge of run-time, normal operation, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Direct Read">
+				<xs:annotation>
+					<xs:documentation>Reading is read from a device that increases monotonically, and usage must be computed from pairs of start and stop readings.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Estimated">
+				<xs:annotation>
+					<xs:documentation>Used when a reading is absent in a series in which most readings are present.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Mean">
+				<xs:annotation>
+					<xs:documentation>Reading is the mean value over the period indicated in Granularity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Net">
+				<xs:annotation>
+					<xs:documentation>Meter or [resource] prepares its own calculation of total use over time.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Hybrid">
+				<xs:annotation>
+					<xs:documentation>If aggregated, refers to different reading types in the aggregate number.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Peak">
+				<xs:annotation>
+					<xs:documentation>Reading is the peak (highest) value over the period indicated in granularity. For some measurements, it may make more sense as the lowest value. It may not be consistent with aggregate readings and is only valid for flow-rate item bases, i.e., power not energy.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Projected">
+				<xs:annotation>
+					<xs:documentation>Indicates reading is in the future, and has not yet been measured.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Summed">
+				<xs:annotation>
+					<xs:documentation>Several meters together provide the reading for this [resource]. This is specifically a different than aggregated, which refers to multiple [resources] in the same payload. See also Hybrid.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReadingTypeType">
+		<xs:annotation>
+			<xs:documentation>SignalType is used in EventSignals to specify the Payload Types in a Signal.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="fsgim:ReadingTypeEnumeratedType fsgim:EiExtensionTokenType"/>
+	</xs:simpleType>
+	<xs:element name="refID" type="refID"/>
+	<xs:complexType name="refID">
+		<xs:annotation>
+			<xs:documentation>Reference ID for a particular instance, transmittal, or artifact. Note: not the same as the native ID of the object being transmitted or shared.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="ReportSpecifierType" type="ReportSpecifierType"/>
+	<xs:complexType name="ReportSpecifierType">
+		<xs:annotation>
+			<xs:documentation>Parameters that define the content of a Report Stream</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="granularity" type="xs:duration" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>How frequently the measurement is to be recorded. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="marketContext" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Market Context is the overall market or program rules that govern this event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reportBackDuration" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Report back with the Report-To-Date each the passing of this Duration during the Report Interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reportInterval" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This is the overall period of reporting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reportSpecifierID" type="refID" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Reference identifier for the Report Specifier for this Request. The Specifier may be known from a previous request, or may be a standard Specifier within this Market Context.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="SpecifierPayloadType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Elements that indicate exactly what is to be in a report. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SignalTypeEnumeratedType">
+		<xs:annotation>
+			<xs:documentation>SignalTypeEnumerated lists the pre-defined Types used to specify the Payload Types and conformance in a Stream</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="delta">
+				<xs:annotation>
+					<xs:documentation>Signal indicates the amount to change (denominated in Itembase or in the EMIX Product) from what one would have used without the Signal. This may or may not be accompanied by a baseline. Payload Type Quantity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="level">
+				<xs:annotation>
+					<xs:documentation>Signal indicates a Program Level. Payload Type is Program Level</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="multiplier">
+				<xs:annotation>
+					<xs:documentation>Signal indicates a multiplier applied to the present rate of  delivery or usage (denominated in Itembase or in the EMIX Product) from what one would have used without the Signal. This may or may not be accompanied by a baseline. Payload Type is Float</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="price">
+				<xs:annotation>
+					<xs:documentation>Signal indicates the Price. Extended Price is the value multiplied by the number of units units (denominated in Itembase or in the EMIX Product). Payload Type is Price</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="priceMultiplier">
+				<xs:annotation>
+					<xs:documentation>Signal indicates the Price. Extended Price is the value multiplied by the number of units units (denominated in Itembase or in the EMIX Product). Payload Type is Price</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="product">
+				<xs:annotation>
+					<xs:documentation>Signal indicates the Product for each interval. Payload Type is an EMIX Product Description</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="setpoint">
+				<xs:annotation>
+					<xs:documentation>Signal indicates a target amount of units (denominated in Itembase or in the EMIX Product). Payload Type is Quantity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="priceRelative">
+				<xs:annotation>
+					<xs:documentation>Signal indicates the Price. Extended Price is the value multiplied by the number of units units (denominated in Itembase or in the EMIX Product). Payload Type is Price</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SignalTypeType">
+		<xs:annotation>
+			<xs:documentation>SignalType is used in EventSignals to specify the Payload Types in a Signal.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="fsgim:SignalTypeEnumeratedType fsgim:EiExtensionTokenType"/>
+	</xs:simpleType>
+	<xs:element name="SimpleLevelContextType" type="SimpleLevelContextType"/>
+	<xs:complexType name="SimpleLevelContextType">
+		<xs:annotation>
+			<xs:documentation>Simple Levels are a set of simple indicators about scarcity and value, in which an ordered set of values indicate energy scarcity is above normal, normal, or below normal. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="levelNormalValue" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The "normal" level indicating normal energy avaiability. Levels below normal indicate surplus, levels above normal indicate increasing scarcity. If levelUpperLimit is 7, the levels are 1-7, and the levelNormalValue might be 3.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="levelUpperLimit" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The upper level for this context. If levelUpperLimit is 5, the levels are 1-5, where 5 indicates the greatest scarcity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SpecifierPayloadType" type="SpecifierPayloadType"/>
+	<xs:complexType name="SpecifierPayloadType">
+		<xs:annotation>
+			<xs:documentation>Payload for use in Report Specifiers.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="itemBase" type="ItemBaseType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Item Base is the core of an EMIX Product Description. Examples of an Item Base denominated value include Real Power, Real Energy, and Voltage.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="readingType" type="ReadingTypeType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Defines what is being measured and reported. Measurements are in units of Item Base unless the Report Type indicates otherwise. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rID" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Identifies this Payload. If only one Payload is requested, the rID should be omitted; if multiple Payloads are requested in the same Report, each should have a rID. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

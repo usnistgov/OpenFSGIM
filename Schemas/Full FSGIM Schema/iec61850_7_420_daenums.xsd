@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>These are enumerations defined for use in the part 7-420 CDCs.</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="ConnectionTypeEnumeration">
+		<xs:annotation>
+			<xs:documentation>Enumerated set of the type of electrical connection between the generator and the electrical distribution system.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NA">
+				<xs:annotation>
+					<xs:documentation>Not Applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SinglePhase">
+				<xs:annotation>
+					<xs:documentation>Single Phase electrical connection.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SplitPhase">
+				<xs:annotation>
+					<xs:documentation>Split Phase electrical connection.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TwoPhase">
+				<xs:annotation>
+					<xs:documentation>Two Phase electrical connection.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ThreePhaseDelta">
+				<xs:annotation>
+					<xs:documentation>Generator connects each winding to one phase of a three phase electrical interconnection.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ThreePhaseWye">
+				<xs:annotation>
+					<xs:documentation>Generator connects each winding from a three phase wire to a common neutral point.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ThreePhaseWyeGrounded">
+				<xs:annotation>
+					<xs:documentation>Generator connects each winding from a three phase wire to a common ground.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ThreePhase_ThreeWire_InverterType">
+				<xs:annotation>
+					<xs:documentation>Three phase generator connected using three-wires with symmetrical voltages between phases.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ThreePhase_FourWire_InverterType">
+				<xs:annotation>
+					<xs:documentation>Three phase generator connected using four-wires with symmetrical voltages between phase and neutral.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Other">
+				<xs:annotation>
+					<xs:documentation>The connection is some other type of electrical connection type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DRCS.ChaSt.ING">
+		<xs:annotation>
+			<xs:documentation>This enumeration indicates the state of charge of a storage unit.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="off">
+				<xs:annotation>
+					<xs:documentation>Charging is off.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fullyDischarged">
+				<xs:annotation>
+					<xs:documentation>The storage unit is fully discharged.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="discharging">
+				<xs:annotation>
+					<xs:documentation>The storage unit is discharging.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="charging">
+				<xs:annotation>
+					<xs:documentation>The storage unit is charging.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fullyCharged">
+				<xs:annotation>
+					<xs:documentation>The storage unit is fully charged.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="holding">
+				<xs:annotation>
+					<xs:documentation>The storage unit is holding.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="testing">
+				<xs:annotation>
+					<xs:documentation>In testing mode.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DRCT.DERtyp.ING">
+		<xs:annotation>
+			<xs:documentation>Distributed energy resource type.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Unknown">
+				<xs:annotation>
+					<xs:documentation>Not applicable / Unknown.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="virtual">
+				<xs:annotation>
+					<xs:documentation>Virtual or mixed DER.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reciprocatingEngine">
+				<xs:annotation>
+					<xs:documentation>Reciprocating engine.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fuelCell">
+				<xs:annotation>
+					<xs:documentation>Fuel cell.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="photoVoltaic">
+				<xs:annotation>
+					<xs:documentation>Photovoltaic system.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="combinedHeatAndPower">
+				<xs:annotation>
+					<xs:documentation>Combined heat and power.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="compressedAir">
+				<xs:annotation>
+					<xs:documentation>Not applicable / Unknown.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pumpedHydroelectric">
+				<xs:annotation>
+					<xs:documentation>Pumped hydroelectric system.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="flywheel">
+				<xs:annotation>
+					<xs:documentation>Fly wheels.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="thermalEnergyStorage">
+				<xs:annotation>
+					<xs:documentation>Thermal energy storage.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="electroChemicalBattery">
+				<xs:annotation>
+					<xs:documentation>Electro chemical battery.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="flowBattery">
+				<xs:annotation>
+					<xs:documentation>Flow batteries.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="capacitor">
+				<xs:annotation>
+					<xs:documentation>Capacitance storage.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="superconductingMagneticEnergy">
+				<xs:annotation>
+					<xs:documentation>Super-conducting magnetic energy storage.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation>Other.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GeneratorOperationStatusEnumeration">
+		<xs:annotation>
+			<xs:documentation>The GeneratorOperationStatusEnumeration class is an FSGIM enumeration defining the operation state of the generator.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NA">
+				<xs:annotation>
+					<xs:documentation>Not Applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NotOperating">
+				<xs:annotation>
+					<xs:documentation>The generator is not operating.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Operating">
+				<xs:annotation>
+					<xs:documentation>The generator is operating.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="StartingUp">
+				<xs:annotation>
+					<xs:documentation>The generator is starting.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ShuttingDown">
+				<xs:annotation>
+					<xs:documentation>The generator is shutting down.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AtDisconnectLevel">
+				<xs:annotation>
+					<xs:documentation>Generator is at disconnect level.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ramping_Power">
+				<xs:annotation>
+					<xs:documentation>Generator is ramping power.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ramping_ReactivePower">
+				<xs:annotation>
+					<xs:documentation>Generator is ramping reactive power.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Other">
+				<xs:annotation>
+					<xs:documentation>The generator is in some other state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MMXN.range.CMV">
+		<xs:annotation>
+			<xs:documentation>Measurement minimum and maximum range thresholds.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="normal">
+				<xs:annotation>
+					<xs:documentation>Normal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="high">
+				<xs:annotation>
+					<xs:documentation>High value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="low">
+				<xs:annotation>
+					<xs:documentation>Low value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="high-high">
+				<xs:annotation>
+					<xs:documentation>High high value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="low-low">
+				<xs:annotation>
+					<xs:documentation>Low low value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ScheduleOperatingModeKind">
+		<xs:annotation>
+			<xs:documentation>Ed. Note: The ScheduleOperatingModeKind is a newly defined enumeration in 61850.  It has not as yet (Sep 2013) been approved by the committee. Hence, this enumeration was cloned from the 61850 working documents and is subject to modification.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NA">
+				<xs:annotation>
+					<xs:documentation>Not applicable/unknown</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="energy">
+				<xs:annotation>
+					<xs:documentation>Energy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="continuousReserve">
+				<xs:annotation>
+					<xs:documentation>Continuous Reserve Spinning</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="continuousReserveSupplemental">
+				<xs:annotation>
+					<xs:documentation>Continuous reserve supplemental</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="energyReserve">
+				<xs:annotation>
+					<xs:documentation>Energy reserve</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="emissionReserve">
+				<xs:annotation>
+					<xs:documentation>Emission reserve</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="energyBalancing">
+				<xs:annotation>
+					<xs:documentation>Energy balancing</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reactivePower">
+				<xs:annotation>
+					<xs:documentation>Reactive power</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="blackStart">
+				<xs:annotation>
+					<xs:documentation>Black start</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="islanding">
+				<xs:annotation>
+					<xs:documentation>Emergency islanding</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation>Other</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SequenceDirectionEnumeration">
+		<xs:annotation>
+			<xs:documentation>The SequenceDirectionEnumeration class is an FSGIM enumeration defining the sequence direction for the generator.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ABC">
+				<xs:annotation>
+					<xs:documentation>The sequence direction is ABC.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CBA">
+				<xs:annotation>
+					<xs:documentation>The sequence direction is CBA.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X.ctlModel.X">
+		<xs:annotation>
+			<xs:documentation>ENUMERATED (status-only | direct-with-normal-security | sbo-with-normal-security | directwith-enhanced-security | sbo-with-enhanced-security).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="status-only">
+				<xs:annotation>
+					<xs:documentation>The object is not controllable, only the services that apply to a status object are supported. The attribute ctlVal does not exist.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="direct-with-normal-security">
+				<xs:annotation>
+					<xs:documentation>Direct control with normal security according to IEC 61850-7-2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sbo-with-normal-security">
+				<xs:annotation>
+					<xs:documentation>SBO control with normal security according to IEC 61850-7-2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="direct-with-enhanced-security">
+				<xs:annotation>
+					<xs:documentation>Direct control with enhanced security according to IEC 61850-7-2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sbo-with-enhanced-security">
+				<xs:annotation>
+					<xs:documentation>SBO control with enhanced security according to IEC 61850-7-2.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X.occPer.SCR">
+		<xs:annotation>
+			<xs:documentation>Repeat period.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Hour">
+				<xs:annotation>
+					<xs:documentation>Hourly.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Day">
+				<xs:annotation>
+					<xs:documentation>Daily.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Week">
+				<xs:annotation>
+					<xs:documentation>Weekly.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Month">
+				<xs:annotation>
+					<xs:documentation>Monthly.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Year">
+				<xs:annotation>
+					<xs:documentation>Yearly.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X.q.X">
+		<xs:annotation>
+			<xs:documentation>Validity component of the complex "quality" attribute with only the following values: good, Invalid, Questionable.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Good">
+				<xs:annotation>
+					<xs:documentation>The value shall be marked good if no abnormal condition of the acquisition function or the information source is detected.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Invalid">
+				<xs:annotation>
+					<xs:documentation>The value shall be marked invalid when an abnormal condition of the acquisition function or the information source (missing or non-operating updating devices) is detected.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Questionable">
+				<xs:annotation>
+					<xs:documentation>The value shall be marked questionable if a supervision function detects an abnormal behaviour, however the value could still be valid.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X.rmpTyp.X">
+		<xs:annotation>
+			<xs:documentation>1=Fixed, 2=Ramp, 3=Average.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Fixed">
+				<xs:annotation>
+					<xs:documentation>1=Fixed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ramp">
+				<xs:annotation>
+					<xs:documentation>2=Ramp.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Average">
+				<xs:annotation>
+					<xs:documentation>3=Average.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X.valEq.X">
+		<xs:annotation>
+			<xs:documentation>1 = SI units.
+2 = Currency as per ISO 4217 per SI unit.
+3 = SI unit per currency.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>1 = SI units.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation>2 = Currency as per ISO 4217 per SI unit.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation>3 = SI unit per currency.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

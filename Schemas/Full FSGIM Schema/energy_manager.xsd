@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The Energy Manager Component is the portion of the FSGIM that provides an abstract representation of energy management system functionality. The functionality may be implemented in any device that performs analysis and/or makes energy-related decisions involving meters, loads, generators, or energy storage devices.  The Energy Manager Component includes a representation of information used to make these decisions, including cost, emissions, and other information. The Energy Manager Component also supports tracking historical energy data, projecting future energy demand, and interfacing to third party sources of energy related information such as weather. 
+
+An energy manager fulfills two roles in a facility:
+
+	1. Managing/monitoring the energy aspects of some portion of a facility and
+	2. interfacing with entities outside a facility.
+
+
+An energy manager that only fulfills the first role is called a "local energy manager" or "local EM." An energy manager that interfaces outside of the facility, regardless of any local energy management functions, is called an "energy services interface energy manager" or "ESI EM."</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="power.xsd"/>
+	<xs:include schemaLocation="power_meas.xsd"/>
+	<xs:include schemaLocation="wscalendarpim.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="eiclasses.xsd"/>
+	<xs:include schemaLocation="measurements.xsd"/>
+	<xs:include schemaLocation="emission_meas.xsd"/>
+	<xs:include schemaLocation="energyrouter.xsd"/>
+	<xs:include schemaLocation="naesb_pap10_eui.xsd"/>
+	<xs:include schemaLocation="key_em_concepts.xsd"/>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:include schemaLocation="resource.xsd"/>
+	<xs:element name="DemandTarget" type="DemandTarget"/>
+	<xs:complexType name="DemandTarget">
+		<xs:annotation>
+			<xs:documentation>This class defines a demand target during a time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="applicableTimePeriod" type="AvailabilityType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The time period during which a demand target applies.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="peakDemandTarget" type="PowerRealType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The targeted peak demand not to be exceeded during the applicableTimePeriod.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="EM" type="EM"/>
+	<xs:complexType name="EM">
+		<xs:annotation>
+			<xs:documentation>The EM Class is the central class of the Energy Manager Component.  It contains indirectly through its associations the information elements that support the functionality of an energy manager. An energy manager reports on and makes decisions involving meters, loads, generators, storage devices, other energy managers, and external information.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ComponentElement">
+				<xs:sequence>
+					<xs:element name="presentAggregationData" type="EMPresentData" minOccurs="1" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The set of data associated with the present (filling) interval. 
+
+Note: All direct subordinate Meters, Loads, Generators, and Energy Managers have one or more ConnectionPoints that link them to a Circuit. There is one set of EMPresentData for each of these Circuits.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="energyRouter" type="EnergyRouter" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The energy router(s) managed by this Energy Manager.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EMGenerationType" type="EMGenerationType"/>
+	<xs:complexType name="EMGenerationType">
+		<xs:annotation>
+			<xs:documentation>This class represents net demand reductions resulting from supply increases. The class supports power ramps that describe the power profile for a generation resource when it is energized (stagingRamps) or de-energized (recoveryRamps). 
+
+For each array element of a generation stagingRamp, the stagingRamp[n].rate defines the amount of power increase and the stagingRamp[n].duration defines the length of time in seconds upon which this increase is in effect. If the stagingRamp[n].beginRamp is defined for a ramp segment, this is the initial value of the ramp segment; if it is not present the initial value of the ramp equals the ending value of the previous ramp segment. Although the generation stagingRamp attribute name implies that the demand is monotonically increasing, individual array elements may have slopes less than, greater than, or equal to 0. However, the overall trend of the function shall be increasing.
+
+For each array element of a generator recoveryRamp, the recoveryRamp[n].rate defines the amount of power decrease and the recoveryRamp[n].duration defines the length of time in seconds upon which this decrease is in effect. If the recoveryRamp[n].beginRamp is defined for a ramp segment, this is the initial value of the ramp segment; if it is not present the initial value of the ramp equals the ending value of the previous ramp segment. Although the generator recoveryRamp attribute name implies that the demand reduction is monotonically decreasing, individual array elements may have slopes less than, greater than, or equal to 0. However, the overall trend of the function shall be increasing.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PowerResponseType">
+				<xs:sequence>
+					<xs:element name="type" type="ResourceTypeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Type and dispatch-ability of generation resource.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedIntervalSupplyChangeBasis" type="EMIntervalData" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This value identifies the affected intervals upon which the grid commitment is made.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="actualIntervalSupplyChangeBasis" type="EMIntervalData" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This value identifies the affected intervals upon which the grid commitment was achieved.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="generatorEmissions" type="EmissionsMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Emissions associated with operating a generator.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedPresentSupplyChangeBasis" type="EMPresentData" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This value provides the technical data provenance upon which the grid commitment was made.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="actualPresentSupplyChangeBasis" type="EMPresentData" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This value provides the technical data provenance upon which the grid commitment was achieved.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EMIntervalData" type="EMIntervalData"/>
+	<xs:complexType name="EMIntervalData">
+		<xs:annotation>
+			<xs:documentation>This class represents data in the domain of concern of an Energy Manager over some complete interval of time. This time interval may be in the past or future.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EMIntervalDataRestrictions">
+				<xs:sequence>
+					<xs:element name="actualIntervalDemandChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute represents the demand profile change in response to a  request from the grid.  The process for calculating this is a local matter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="actualIntervalNetDemandChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute represents the net demand profile change in response to a  request from the grid.  The process for calculating this is a local matter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="actualIntervalSupplyChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute represents the actual supply profile change in response to a request from the grid.  The process for calculating this is a local matter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateAdjustedFullDRDemand" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate demand calculated by applying the AdjustedFullDRDemandRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate demand of loads, with the largest acceptable demand response, directly or indirectly managed by the associated EM, averaged over the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateAdjustedFullDRSupply" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate supply calculated by applying the AdjustedFullDRSupplyRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate supply of generators and electrical storage devices, with the largest acceptable demand response, directly or indirectly managed by the associated EM, averaged over the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateAdjustedNoDRDemand" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate demand calculated by applying the AdjustedNoDRDemandRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate demand of loads, as if no demand response was in effect, directly or indirectly managed by the associated EM, averaged over the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateAdjustedNoDRSupply" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate supply calculated by applying the AdjustedNoDRSupplyRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate demand of generators and electrical storage devices, as if no demand response was in effect, directly or indirectly managed by the associated EM, averaged over the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateDemand" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate demand calculated by applying the DemandRuleset algorithm averaged over the interval referenced by the IntervalDataContainer.  Alternatively, this could be determined by calculating EnergyConsumedAggregation divided by the interval duration.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate demand of loads directly or indirectly managed by the associated EM, averaged over the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateElectricalEnergyStored" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate stored electrical energy calculated by applying the ElectricalEnergyStoredRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate electrical energy stored by electrical storage devices directly or indirectly managed by the associated EM, during the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateEmissionsGenerated" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate generated emissions calculated by applying the EmissionsGeneratedRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate emissions produced by generators and electrical storage devices directly or indirectly managed by the associated EM, during the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateEmissionsGenerationRate" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate emissions generation rate calculated by applying the EmissionsGenerationRateRuleset algorithm averaged over the interval referenced by the IntervalDataContainer.  Alternatively, this could be determined by calculating EmissionsGeneratedAggregation/ divided by the interval duration.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate emissions generation rate of generators and electrical storage devices directly or indirectly managed by the associated EM, averaged over the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateEnergyConsumed" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate consumed energy calculated by applying the EnergyConsumedRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate energy consumed by loads directly or indirectly managed by the associated EM, during the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateEnergySupplied" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate supplied energy calculated by applying the EnergySuppliedRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate energy supplied by generators and electrical storage devices directly or indirectly managed by the associated EM, during the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateNetDemand" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate net demand calculated by applying the NetDemandRuleset algorithm averaged over the interval referenced by the IntervalDataContainer.  Alternatively, this could be determined by calculating NetEnergyConsumedAggregation divided by the interval duration.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate net demand of loads, generators, and electrical storage devices directly or indirectly managed by the associated EM, averaged over the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateNetEnergyConsumed" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate net consumed energy calculated by applying the NetEnergyConsumedRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate net energy consumption of loads, generators, and electrical storage devices directly or indirectly managed by the associated EM, during the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateSupply" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate supply calculated by applying the SupplyRuleset algorithm averaged over the interval referenced by the IntervalDataContainer.  Alternatively, this could be determined by calculating EnergySuppliedAggregation divided by the interval duration.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate supply of generators and electrical storage devices directly or indirectly managed by the associated EM, averaged over the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateThermalEnergyStored" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>For an interval that is not part of a ForecastSequence, this attribute represents the aggregate stored thermal energy calculated by applying the ThermalEnergyStoredRuleset algorithm at the end of the interval referenced by the IntervalDataContainer.
+
+For an interval that is part of a ForecastSequence, the exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate thermal energy stored by thermal storage devices directly or indirectly managed by the associated EM, during the identified time interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedIntervalDemandChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This represents the demand profile change commitment made to the energy provider in response to a curtailment request. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedIntervalNetDemandChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This represents the net demand profile change commitment made to the energy provider in response to a curtailment request. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedIntervalSupplyChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This represents the supply profile change commitment made to the energy provider in response to a dispatch request. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="energySuppliers" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Organizations available to the EM for supplying energy during the interval.
+An EMIntervalData instance for an ESI energy manager will have at least one energySupplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="intervalPowerQualitySummary" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Power quality summary associated with the Interval .</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="intervalWeatherReportMeasured" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The weather associated with the interval.  This weather report is provided by a source internal to the facility</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="intervalWeatherReportProvided" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The weather associated with the interval.  This weather report is provided by an external source.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="intervalWeatherTrendMeasured" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The weather trend associated with the interval.  This weather trend is provided by a source internal to the facility.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="intervalWeatherTrendProvided" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The weather trend associated with the interval.  This weather trend is provided by an external source.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="prices" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Price information for energy consumed during the interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resources" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The set of all of the loads, generators, meters, and EMs that are directly managed by the energy manager during the interval referenced by the IntervalDataContainer through the attach relation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="usageSummary" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Summary data related to energy for the interval(s). Note that this UsageSummary is distinct from any UsageSummary generated by the supplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregationMetadata" type="AggregationProperties" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata that applies to a Circuit for which an aggregation is being computed.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="eiEvents" type="EiEventType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Energy events of interest to this energy manager for this interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="intervalMeasurementQuantity" type="MeasurementQuantity" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>User defined MeasurementQuantity relevant to the EM for the interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="intervalMeasurementSet" type="MeasurementSet" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>User defined MeasurementSet relevent to the EM for the interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EMIntervalDataRestrictions" type="EMIntervalDataRestrictions"/>
+	<xs:complexType name="EMIntervalDataRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="AttachType">
+				<xs:sequence/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EMLoadReductionType" type="EMLoadReductionType"/>
+	<xs:complexType name="EMLoadReductionType">
+		<xs:annotation>
+			<xs:documentation>This class represents demand reductions from Loads in response to a demand response event. The class supports power ramps that describe the power profile for a resource when it is de-energized (stagingRamps) or energized (recoveryRamps). 
+
+For each array element of a stagingRamp, the stagingRamp[n].rate defines the amount of power decrease and the stagingRamp[n].duration defines the length of time in seconds upon which this decrease is in effect. If the stagingRamp[n].beginRamp is defined for a ramp segment, this is the initial value of the ramp segment; if it is not present the initial value of the ramp equals the ending value of the previous ramp segment. Although the stagingRamp attribute name implies that the demand reduction is monotonically decreasing, individual array elements may have slopes less than, greater than, or equal to 0. However, the overall trend of the function shall be decreasing.
+
+For each array element of a recoveryRamp, the recoveryRamp[n].rate defines the amount of power increase and the recoveryRamp[n].duration defines the length of time in seconds upon which this increase is in effect. If the recoveryRamp[n].beginRamp is defined for a ramp segment, this is the initial value of the ramp segment; if it is not present the initial value of the ramp equals the ending value of the previous ramp segment. Although the recoveryRamp attribute name implies that the demand is monotonically increasing, individual array elements may have slopes less than, greater than, or equal to 0. However, the overall trend of the function shall be increasing.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="LoadReductionType">
+				<xs:sequence>
+					<xs:element name="actualIntervalDemandChangeBasis" type="EMIntervalData" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This value identifies the affected intervals upon which the grid commitment was achieved.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedIntervalDemandChangeBasis" type="EMIntervalData" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This value identifies the affected intervals upon which the grid commitment is made.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedPresentDemandChangeBasis" type="EMPresentData" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This value provides the technical data provenance upon which the grid commitment was made.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="actualPresentDemandChangeBasis" type="EMPresentData" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This value provides the technical data provenance upon which the grid commitment was achieved.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EMPowerResponseType" type="EMPowerResponseType"/>
+	<xs:complexType name="EMPowerResponseType">
+		<xs:annotation>
+			<xs:documentation>This class represents net demand reductions resulting from a combination of reductions in demand (EMLoadReductionType) and increases in supply (EMGenerationType).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PowerResponseType">
+				<xs:sequence>
+					<xs:element name="actualIntervalNetDemandChangeBasis" type="EMIntervalData" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This value identifies the affected intervals upon which the grid commitment was achieved.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedIntervalNetDemandChangeBasis" type="EMIntervalData" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This value identifies the affected intervals upon which the grid commitment is made.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="actualPresentNetDemandChangeBasis" type="EMPresentData" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This value provides the technical data provenance upon which the grid commitment was achieved.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="committedPresentNetDemandChangeBasis" type="EMPresentData" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This value provides the technical data provenance upon which the grid commitment was made.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EMPresentData" type="EMPresentData"/>
+	<xs:complexType name="EMPresentData">
+		<xs:annotation>
+			<xs:documentation>The container that directly holds all of the aggregated present data and indirectly holds the associated present context.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="actualPresentDemandChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This represents the actual demand profile change in response to a signal from the grid. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="actualPresentNetDemandChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This represents the actual net demand profile change in response to a signal from the grid. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="actualPresentSupplyChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This represents the actual supply profile change in response to a signal from the grid. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="committedPresentDemandChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This represents the demand profile change commitment made to the energy provider in response to a signal from the grid. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="committedPresentNetDemandChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This represents the net demand profile change commitment made to the energy provider in response to a signal from the grid. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="committedPresentSupplyChange" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This represents the supply profile change commitment made to the energy provider in response to a signal from the grid. The value is based upon the applicable technical aggregations and enterprise policy decisions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currentEnergySupplier" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Organization currently available to the EM for supplying energy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currentPrices" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Current energy price information known by the EM at the present time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partialIntervalAggregateElectricalEnergyStored" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate stored electrical energy calculated by applying the ElectricalEnergyStoredAggregation algorithm in a partially completed (filling) demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partialIntervalAggregateEmissionsGenerated" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate emissions calculated by applying the EmissionsGeneratedAggregation algorithm in a partially completed (filling) demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partialIntervalAggregateEnergyConsumed" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate consumed energy calculated by applying the EnergyConsumedAggregation algorithm in a partially completed (filling) demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partialIntervalAggregateEnergySupplied" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate generated energy calculated by applying the EnergySuppliedAggregation algorithm in a partially completed (filling) demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partialIntervalAggregateNetEnergyConsumed" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The net consumed energy calculated by applying the NetEnergyConsumedAggregation algorithm in a partially completed (filling) demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partialIntervalAggregateThermalEnergyStored" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate stored thermal energy calculated by applying the ThermalEnergyStoredAggregation algorithm in a partially completed (filling) demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partialIntervalPowerQualitySummary" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Power quality summary in a partially completed interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentAggregateAdjustedFullDRDemand" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate demand calculated by applying the AdjustedFullDRDemandAggregation algorithm averaged over the time since the beginning of the present demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentAggregateAdjustedFullDRSupply" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate supply calculated by applying the AdjustedFullDRupplyAggregation algorithm averaged over the time since the beginning of the present demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentAggregateAdjustedNoDRDemand" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate demand calculated by applying the AdjustedNoDRDemandAggregation algorithm averaged over the time since the beginning of the present demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentAggregateAdjustedNoDRSupply" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate supply calculated by applying the AdjustedNoDRSupplyAggregation algorithm averaged over the time since the beginning of the present demand interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentAggregateDemand" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate demand calculated by applying the DemandAggregation algorithm at the present time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentAggregateEmissionsGenerationRate" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+The aggregate emissions generation rate calculated by applying the EmissionsGenerationRateAggregation algorithm at the present time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentAggregateNetDemand" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The net demand calculated by applying the NetDemandAggregation algorithm at the present time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentAggregateSupply" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The aggregate supply calculated by applying the SupplyAggregation algorithm at the present time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentResources" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The set of all of the loads, generators, meters, and EMs that are directly managed by the energy manager at this instant in time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentWeatherReportMeasured" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The weather at the present time and place.  This weather report is provided by a source internal to the facility.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentWeatherReportProvided" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The weather at the present time and place.  This weather report is provided by an external source.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentWeatherTrendMeasured" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The weather trend at the present time and place.  This weather trend is provided by a source internal to the facility.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentWeatherTrendProvided" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The weather trend at the present time and place.  This weather trend is provided by an external source.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="usageSummary" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The facility's Summary data related to energy for the present time. Note that this UsageSummary is distinct from any UsageSummary generated by the supplier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="userAggregations" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>User defined aggregations used by this Energy Manager.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="aggregationMetadata" type="AggregationProperties" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The metadata that applies to a Circuit for which an aggregation is being computed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentEIEvents" type="EiEventType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Energy events underway that are relevant to the EM at the present time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentMeasurementQuantity" type="MeasurementQuantity" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>User defined MeasurementQuantity relevant to the EM at the present time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentMeasurementSet" type="MeasurementSet" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>User defined MeasurementSet relevent to the EM at the present time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="EMUsagePoint" type="EMUsagePoint"/>
+	<xs:complexType name="EMUsagePoint">
+		<xs:annotation>
+			<xs:documentation>Logical point on a network at which consumption or production is either measured (e.g., metered) or estimated (e.g., unmetered street lights).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="UsagePoint">
+				<xs:sequence>
+					<xs:element name="physicalConnectionPoint" type="ConnectionPoint" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The representation of the point that connects to a Circuit in the facility's physical electrical topology.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurements" type="Measurement" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Measurements at a specific EMUsagePoint.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ServiceSupplierData" type="ServiceSupplierData"/>
+	<xs:complexType name="ServiceSupplierData">
+		<xs:annotation>
+			<xs:documentation>This class contains information associated with the generated emissions, quality of power, and energy-price units associated with an identified supplier of energy.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="cpp" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The critical peak period bucket to which the reading is attributed. A value of 0 means that there is no applicable critical peak period. Even though critical peak period is usually considered a specialized form of time-of-use pricing, this attribute is defined explicitly to provide flexibility.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="emissions" type="EmissionsMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The emissions generated by this supplier for the energy used.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="emissionsRate" type="EmissionsRateMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The rate of emissions generated by this supplier for the energy used.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="energyPrice" type="UnitEnergyPriceType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The unit energy price associated with this supplier for the energy used.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marketContext" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The  overall market or program rules that govern relations between the energy supplier and the facility.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tou" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The time-of-use bucket to which the reading value is attributed. A value of 0 means not applicable.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="target" type="DemandTarget" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The internal demand goal or target for this energy supplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="energySupplier" type="ServiceSupplier" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The supplier of the energy referenced by this data.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

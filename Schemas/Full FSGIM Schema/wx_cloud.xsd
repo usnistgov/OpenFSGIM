@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Description of cloud phenomena.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="wx_measures.xsd"/>
+	<xs:include schemaLocation="wx_phenombase.xsd"/>
+	<xs:element name="CloudCondition" type="CloudCondition"/>
+	<xs:complexType name="CloudCondition">
+		<xs:annotation>
+			<xs:documentation>Cloud condition.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractPhenomenon">
+				<xs:sequence>
+					<xs:element name="base" type="VerticalDistance" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Base vertical distance of phenomenon.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="top" type="VerticalDistance" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Top distance of the phenomenon.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

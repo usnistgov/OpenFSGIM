@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>For applicable services, see Annex B.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="constructeddas.xsd"/>
+	<xs:element name="ASG" type="ASG"/>
+	<xs:complexType name="ASG">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent analogue settings.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="maxVal" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Maximum setting for 'setMag'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="minVal" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Minimum setting for 'setMag'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="setMag" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the analogue setting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stepSize" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Step between the individual values of 'setMag'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sVC" type="ScaledValueConfig" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Configuration for scaled value representation ('setMag', 'minVal', 'maxVal', 'stepSize').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="units" type="Unit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unit for 'setMag', 'minVal', 'maxVal', 'stepSize'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CSG" type="CSG"/>
+	<xs:complexType name="CSG">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to hold curve points and describe curve settings.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="crvPts" type="Point" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The array with the points specifying a curve shape.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="maxPts" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Maximum supported size for 'crvPts[]'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numPts" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Actual size of 'crvPts[]'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pointZ" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Position of the curve on z-axis.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xD" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of the value of the x-axis of a curve.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xDU" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of the value of the x-axis of a curve in Unicode.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xUnit" type="Unit" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unit of the x-axis of a curve.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="yD" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of the value of the y-axis of a curve.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="yDU" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of the value of the x-axis of a curve in Unicode.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="yUnit" type="Unit" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unit of the y-axis of a curve.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="zD" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of the value of the z-axis of a curve.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="zDU" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of the value of the z-axis of a curve in Unicode.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="zUnit" type="Unit" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unit of the z-axis of a curve.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

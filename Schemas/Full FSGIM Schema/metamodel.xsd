@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Meta-model reflecting contents of IEC61850-7-x. Can be instantiated in at least two ways:
+
+	1. By connecting to one or more ACSI Servers at the given IP address(es), without any other configuration required.
+	2. By reading SCL file (and potentially connecting to one or more ACSI Servers).</xs:documentation>
+	</xs:annotation>
+	<xs:element name="EnumDA" type="EnumDA"/>
+	<xs:complexType name="EnumDA" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Not explicitly defined in the standard. Enumerated data attribute has only a value field of some enumerated type.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+</xs:schema>

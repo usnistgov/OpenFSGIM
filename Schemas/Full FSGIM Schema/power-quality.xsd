@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Power Quality defines the electrical limits of power that does not provide any significant loss or performance or equipment life.  Higher quality power can obtain a market premium. A buyer willing to accept lower quality power may be able to obtain it at lower expense. Power qualities must be measurable, discrete, and allow buyers and sellers to make choices. They must also be auditable and measurable by a specific defined protocol, so performance can be compared to promise. </xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="emix.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="naesb_pap10_eui.xsd"/>
+	<xs:simpleType name="MeasurementProtocolEnumeratedType">
+		<xs:annotation>
+			<xs:documentation>An identification of the standard or other protocol used to measure power quality. Sets definition for all other power attributes.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EN 50160">
+				<xs:annotation>
+					<xs:documentation>EN50160 means of measuring power quality.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IEEE 1549-2009">
+				<xs:annotation>
+					<xs:documentation>IEEE 1549 means of measuring power quality.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MeasurementProtocolType">
+		<xs:annotation>
+			<xs:documentation>An identification of the standard or other protocol used to measure power quality.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="fsgim:MeasurementProtocolEnumeratedType"/>
+	</xs:simpleType>
+	<xs:element name="PowerQualityWarrantType" type="PowerQualityWarrantType"/>
+	<xs:complexType name="PowerQualityWarrantType">
+		<xs:annotation>
+			<xs:documentation>A Power Quality Warrant asserts or requires that the power be of a certain quality or better. This type extends the EMIX Quality Warrant for use in describing power. The Power Quality Warrant is a collection of the most commonly used Quality Measurements. Users who require a Quality Measure not on this list can extend the Quality Measure Type to create new Quality Measures.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="measurementProtocol" type="MeasurementProtocolType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>An identification of the standard or other protocol used to measure power quality.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="qualityMeasure" type="QualityMeasureType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A collection of power quality indicators.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="qualityType" type="QualityTypeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The origin of a power quality measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="side" type="SideType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Identifies whether information originator is on the Buy or Sell side of the transaction.  </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uid" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unique Identifier between transacting parties.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="QualityMeasureType" type="QualityMeasureType"/>
+	<xs:complexType name="QualityMeasureType">
+		<xs:annotation>
+			<xs:documentation>Quality Measure is a collection of Power Quality Indicators. The Quality Measure is placed in a WS-Calendar (OASIS WS-Calendar v1.0) Artifact so it can populate a schedule.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="qualities" type="ElectricPowerQualitySummary" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A collection of power quality indicators.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="QualityTypeEnumeratedType">
+		<xs:annotation>
+			<xs:documentation>A string indicating the type of Assertion being made.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="guaranteed">
+				<xs:annotation>
+					<xs:documentation>Formal assurance or promise, that certain quality conditions shall be fulfilled relating to a product, service, or transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="averaged">
+				<xs:annotation>
+					<xs:documentation>A quality number that typifies a set of quality numbers.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="projected">
+				<xs:annotation>
+					<xs:documentation>Estimate or forecast of quality based upon trends.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="measured">
+				<xs:annotation>
+					<xs:documentation>Quality as ascertained by comparison with a standard.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="QualityTypeType">
+		<xs:annotation>
+			<xs:documentation>Abstract class for the origin of a power quality measurement.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="fsgim:QualityTypeEnumeratedType"/>
+	</xs:simpleType>
+</xs:schema>

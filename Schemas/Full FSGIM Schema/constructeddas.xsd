@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Constructed attribute classes are defined for the use in common data classes (CDC) in Clause 7.
+IEC 61850-7-1 provides an overview of all IEC 61850-7 documents (IEC 61850-7-2, IEC 61850-7-3, and IEC 61850-7-4). IEC 61850-7-1 also describes the basic notation used in IEC 61850-7-3 and the description of the relations between the IEC 61850-7 documents.
+NOTE The common ACSI type 'TimeStamp' is specified in IEC 61850-7-2.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="iec61850_7_3_daenums.xsd"/>
+	<xs:element name="AnalogueValue" type="AnalogueValue"/>
+	<xs:complexType name="AnalogueValue">
+		<xs:annotation>
+			<xs:documentation>This type is used to represent primary process measured value, pVal. An analogue value may be represented by applying an appropriate conversion to a basic type integer 'i' or to a floating point 'f'.
+At least one of the attributes shall be used. If both 'i' and 'f' exist, the application in the server shall insure that both values remain consistent, i.e., that the pVal produced after appropriate conversion is the same within acceptable error. The latest value set by the communication service shall be used to update the other value. As an example, if 'xxx.f' is written, the application shall update 'xxx.i' accordingly.
+NOTE The reason for both integer and floating point representation is so that IEDs without floating point capabilities are enabled to support analogue values. In this case, the scaleFactor and offset may be exchanged offline between clients and servers.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="f" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Floating point representation of the measured value. The formula to convert between 'f' and the process value (pVal) shall be: pVal='f'*10'Unit.multiplier'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="i" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Integer representation of the measured value. The formula to convert between 'i' and the process value (pVal) shall be: pVal=('i'*'ScaledValueConfig.scaleFactor')+'ScaledValueConfig.offset'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DetailQual" type="DetailQual"/>
+	<xs:complexType name="DetailQual">
+		<xs:annotation>
+			<xs:documentation>This type contains reason for an 'invalid' or 'questionable' value. See statechart diagram 'Quality.validity'.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="badReference" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, the value may not be a correct value due to a reference being out of calibration. The server shall decide if validity shall be set to invalid or questionable (used for measurand information and binary counter information only).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="failure" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, a supervision function has detected an internal or external failure.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="inaccurate" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, the value does not meet the stated accuracy of the source. 
+EXAMPLE The measured value of power factor may be noisy (inaccurate) when the current is very small.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="inconsistent" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, an evaluation function has detected an inconsistency.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oldData" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, an update is not made during a specific time interval. The value may be an old value that may have changed in the meantime. This specific time interval may be defined by an allowed-age attribute.
+NOTE "Fail silent" errors, where the equipment stops sending data, will cause setting this flag to true. In this case, the last received information was correct.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oscillatory" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>To prevent overloading of event driven communication channels, it is desirable to detect and suppress oscillating (fast changing) binary inputs. If a signal changes in a defined time (tosc) twice in the same direction (from 0 to 1 or from 1 to 0), then it shall be defined as an oscillation and this attribute shall be set to true. If a configured numbers of transient changes is detected, they shall be suppressed. In this time, the 'Quality.validity' shall be set to 'questionable'. If the signal is still in the oscillating state after the defined number of changes, the value shall be left in the state it was in when this flag was set. In this case, the 'Quality.validity' shall be changed from 'questionable' to 'invalid' and kept so as long as the signal is oscillating.
+If the configuration is such that all transient changes should be suppressed, the 'Quality.validity' shall be set immediately to 'invalid' and this flag to true (used for status information only).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="outOfRange" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, the attribute to which the quality has been associated is beyond a predefined range of values. The server shall decide if validity shall be set to invalid or questionable (used for measurand information only).
+EXAMPLE A measured value may exceed a predefined range, however the selected data type can still represent the value, for example the data type is a 16-bit unsigned integer, the predefined range is 0 to 40000, if the value is between 40001 and 65535 it is considered to be out of range.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="overflow" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, the value of the attribute to which the quality has been associated is beyond the capability of being represented properly (used for measurand information only).
+EXAMPLE A measured value may exceed the range that may be represented by the selected data type, for example the data type is a 16-bit unsigned integer and the value exceeds 65535.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Originator" type="Originator"/>
+	<xs:complexType name="Originator">
+		<xs:annotation>
+			<xs:documentation>This type is used to describe the originator of the last change of a controllable data.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="orCat" type="OriginatorCategoryKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Category indicates who/what caused the change of a controllable process value. If the initiator of a change is not known, this attribute shall be set to 'process'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="orIdent" type="GlobalID" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Identification of the originator of the value change. If the initiator of a change is not known, this value shall be set to null.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Point" type="Point"/>
+	<xs:complexType name="Point">
+		<xs:annotation>
+			<xs:documentation>This type is used to represent points in a two or three dimensional coordinate system.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="xVal" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>X-axis value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="yVal" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Y-axis value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="zVal" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Z-axis value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PulseConfig" type="PulseConfig"/>
+	<xs:complexType name="PulseConfig">
+		<xs:annotation>
+			<xs:documentation>As the result of receiving an 'operate' service request, a pulsed output may be generated to the on or off input of a switching device. This type is used to configure that output pulse.
+If 'cmdQual=pulse', the duration of the pulse shall be defined with 'onDur', 'offDur' and 'numPls'. If 'cmdQual=persistent', the output stays in the state indicated in the 'operate' service request.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cmdQual" type="ControlOutputKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Kind of control output.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numPls" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of pulses that are generated.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="offDur" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Duration between two pulses [ms]. If set to 0, the duration is defined locally.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onDur" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Duration of the pulse [ms]. If set to 0, the duration is defined locally.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Quality" type="Quality"/>
+	<xs:complexType name="Quality">
+		<xs:annotation>
+			<xs:documentation>Quality contains data that describe the quality of the data from the server. Quality of the data is also related to the mode of a logical node. Further details can be found in IEC 61850-7-4. The different quality attributes are not independent.
+The default value shall be applied if the functionality of the related attribute is not supported. The mapping may specify to exclude the attribute from the message if it is not supported or if the default value applies.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="detailQual" type="DetailQual" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Describes reason in case 'validity' is not 'good'. See statechart diagram 'Quality.validity'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="operatorBlocked" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, further update of the value has been blocked by an operator. The value shall be the information that was acquired before blocking. If this flag is set, then the 'detailQul.oldData' shall also be set.
+The operator shall use the data attribute 'CDC.blkEna' to block the update of the value.
+NOTE Both an operator as well as an automatic function may freeze communication updating as well as input updating. In both cases, 'detailQual.oldData' will be set. If the blocking is done by an operator, then this flag is set additionally, and an operator activity is required to clear the condition.
+EXAMPLE An operator may freeze the update of an input, to save the old value before the auxiliary supply is switched off.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="source" type="SourceKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Defines the source of a value.
+NOTE 1 Substitution may be done locally or via the communication services. In the second case, specific attributes with a FC=SV are used.
+NOTE 2 There are various means to clear a substitution. As an example, a substitution that was done following an invalid condition may be cleared automatically if the invalid condition is cleared. However, this is a local issue and therefore not in the scope of this standard.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="test" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, the value is a test value and not to be used for operational purposes. The processing of the test quality in the client shall be as described in IEC 61850-7-4. This bit shall be completely independent from the other bits within the quality descriptor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validity" type="ValidityKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Validity of the value, as condensed information for the client. In case this value is not 'good', the reasons may be found in the 'detailQual'. See statechart diagram 'Quality.validity'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RangeConfig" type="RangeConfig"/>
+	<xs:complexType name="RangeConfig">
+		<xs:annotation>
+			<xs:documentation>This type is used to configure the limits that define the range of a measured value.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="hhLim" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Setting for 'CDC.range' transition between 'high' and 'high-high'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hLim" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Setting for 'CDC.range' transition between 'normal' and 'high'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="limDb" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>When present, the value used to introduce a hysteresis in the calculation of 'range'. When a high/low limit has been crossed, 'range' is immediately set to the higher/lower value. However, 'range' is only set back to the lower/higher value when the value of the high limit minus/low limit plut 'limDb' has been crossed. The value shall represent the percentage between 'max' and 'min' in units of 0.001 %.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lLim" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Setting for 'CDC.range' transition between 'normal' and 'low'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="llLim" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Setting for 'CDC.range' transition between 'low' and 'low-low'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="max" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The maximum process measurement for which 'AnalogueValue.[i,f]' is considered within process limits. If the value is higher, quality shall be set accordingly ('Quality.detailQual.outOfRange'=true =&gt; 'Quality.validity'='questionable'; see statechart diagram 'Quality.validity').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="min" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The minimum process measurement for which 'AnalogueValue.[i,f]' is considered within process limits. If the value is lower, quality shall be set accordingly ('Quality.detailQual.outOfRange'=true =&gt; 'Quality.validity'='questionable'; see statechart diagram 'Quality.validity').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ScaledValueConfig" type="ScaledValueConfig"/>
+	<xs:complexType name="ScaledValueConfig">
+		<xs:annotation>
+			<xs:documentation>This type is used to configure the integer value representation of the analogue value. See AnalogueValue.i.
+NOTE If a server does not support transmission of floating point values and needs to apply conversion, the client may retrieve these values from the SCL file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="offset" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Offset for integer representation of analogue value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="scaleFactor" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Scaling factor for integer representation of analogue value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SourceKind">
+		<xs:annotation>
+			<xs:documentation>Source of a value.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="process">
+				<xs:annotation>
+					<xs:documentation>The value is provided by an input function from the process I/O or is calculated from some application function.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="substituted">
+				<xs:annotation>
+					<xs:documentation>The value is provided by an operator input or by an automatic source.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Unit" type="Unit"/>
+	<xs:complexType name="Unit">
+		<xs:annotation>
+			<xs:documentation>This type is used to represent unit and multiplier information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="multiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unit multiplier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SIUnit" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>SI unit of measure.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ValidityKind">
+		<xs:annotation>
+			<xs:documentation>This type is used as validity of a value. See statechart diagram 'Quality.validity'.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="good">
+				<xs:annotation>
+					<xs:documentation>Supervision function has detected no abnormal condition of either the acquisition function or the information source.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="invalid">
+				<xs:annotation>
+					<xs:documentation>Supervision function has detected an abnormal condition of the acquisition function or the information source (missing or non-operating updating devices). The value shall not be defined under this condition. It shall be used to indicate to the client that the value may be incorrect and shall not be used.
+EXAMPLE If an input unit detects an oscillation of one input it will mark the related information as invalid.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="questionable">
+				<xs:annotation>
+					<xs:documentation>Supervision function has detected any abnormal behaviour. However, the value could still be valid. It is client's responsibility to determine whether the values should be used.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Vector" type="Vector"/>
+	<xs:complexType name="Vector">
+		<xs:annotation>
+			<xs:documentation>This type is used to represent a complex value (phasor), with magnitude and angle.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ang" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Angle of the complex value [deg]; angle reference is defined in the context where this type is used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mag" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Magnitude of the complex value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

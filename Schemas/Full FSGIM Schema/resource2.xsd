@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim2" xmlns="urn:X-fsgim:fsgim2" xmlns:fsgim2="urn:X-fsgim:fsgim2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This package is being created just so that we can move PowerRampSegmentType into its own package.  That will allow us to assign it to a different namespace.  Right now it is clashing with the element of the same name in the Load package.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="urn:X-fsgim:fsgim" schemaLocation="power_meas.xsd"/>
+	<xs:element name="PowerRampSegmentType" type="PowerRampSegmentType"/>
+	<xs:complexType name="PowerRampSegmentType">
+		<xs:annotation>
+			<xs:documentation>A Power Ramp Segment describes a change up or down in units/duration. A ramp rate holds for the duration between beginRamp to endRamp.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="beginRamp" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quantity of power at the start of a ramp segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>the time period component of a ratio specifying the maximum rate of change of power for this segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endRamp" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quantity of power at the end of a ramp segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="integralOnly" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, offer is all or none; no partial acceptance of this segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rate" type="fsgim:PowerQuantityType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>the power component of a ratio specifying the maximum rate of change of power for this segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

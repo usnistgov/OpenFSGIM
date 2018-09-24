@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim2="urn:X-fsgim:fsgim2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Resources include generators that can produce power and other services, storage devices that can consume, store and then produce power, and loads that produce power through load curtailment.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="urn:X-fsgim:fsgim2" schemaLocation="resource2.xsd"/>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="emix.xsd"/>
+	<xs:include schemaLocation="power_meas.xsd"/>
+	<xs:include schemaLocation="energy_meas.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="emix-terms.xsd"/>
+	<xs:element name="ArrayOfRampSegments" type="ArrayOfRampSegments"/>
+	<xs:complexType name="ArrayOfRampSegments">
+		<xs:annotation>
+			<xs:documentation>Collection of Power Ramp Segments.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="fsgim2:PowerRampSegmentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Characteristics of a change up or down in units/duration during a response.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="LoadReductionType" type="LoadReductionType"/>
+	<xs:complexType name="LoadReductionType">
+		<xs:annotation>
+			<xs:documentation>A Load Reduction Resource ramps down, stays down, and then ramps up. For stagingRamps, endRamp is less than beginRamp. For recoveryRamps, endRamp is greater than beginRamp.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PowerResponseType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="OfferCurveType" type="OfferCurveType"/>
+	<xs:complexType name="OfferCurveType">
+		<xs:annotation>
+			<xs:documentation>A collection of Offer Segments used to compute cost requirements across a range of power.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseTermType">
+				<xs:sequence>
+					<xs:element name="offerSegment" type="OfferSegmentType" minOccurs="1" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The offer price for the quantity offered in a segment.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="OfferSegmentType" type="OfferSegmentType"/>
+	<xs:complexType name="OfferSegmentType">
+		<xs:annotation>
+			<xs:documentation>Marginal offer for Power within a range. Marginal costs must be computed within the context of a range of segments as conformed by the Offer Type.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Duration of this Segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="EnergyItemType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of energy item being offered. (e.g., Real energy, measured in Watt Hours)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="integralOnly" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, offer is all or none; no partial acceptance of this segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="PowerItemType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of power item being offered. (e.g., Reactive power, measured in volt-amperes reactive)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="PriceType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Energy Price for this Segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="quantity" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Power Quantity for this Segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="segment" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Numeric identifier of this segment</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PowerResponseType" type="PowerResponseType"/>
+	<xs:complexType name="PowerResponseType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Generic model describing the power response capabilities of a resource</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="maximumResponse" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The greatest Response for which this resource will accept a request.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="minimumResponse" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The least Response for which this resource will accept a request. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mrid" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master Resource Identifier that identifies a physical device that may be a Customer Meter or other types of End Devices.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element ref="OfferCurveType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A collection of Offer Segments that define the offer price (as expressed in EMIX Requirements) for the quantity offered in each segment.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="recoveryRamp" type="ArrayOfRampSegments" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>An array Power Ramp Segments describing how a Resource's returns to its original state following a response. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="stagingRamp" type="ArrayOfRampSegments" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Characteristics describing a resource's ability to change level at the initiation of a response.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="terms" type="ArrayOfTerms" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A collection of business and performance rules that define the product offering.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="ResourceTypeEnumeratedType">
+		<xs:annotation>
+			<xs:documentation>Resource types share common responsiveness and predictability characteristics, sometimes covarying across resources in the same class. (Example: Solar in the same region failing at the same time)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="dispatchableHydro">
+				<xs:annotation>
+					<xs:documentation>Hydro-based electrical generators dispatchable by power grid operators.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nonDispatchableHydro">
+				<xs:annotation>
+					<xs:documentation>Hydro-based electrical generators that are not dispatchable by power grid operators.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="windGeneration">
+				<xs:annotation>
+					<xs:documentation>Electrical power generation created from wind.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="solarGeneration">
+				<xs:annotation>
+					<xs:documentation>Electrical power generation created from solar photovoltaic cells.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tollingContract">
+				<xs:annotation>
+					<xs:documentation>A take-or-pay contract for conversion or transportation of energy.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="aggregateResource">
+				<xs:annotation>
+					<xs:documentation>The characteristics of the summation of all the energy resources of an entity.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dispatchableStorage">
+				<xs:annotation>
+					<xs:documentation>Energy storage dispatchable by power grid operators.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ResourceTypeType" type="ResourceTypeType"/>
+	<xs:complexType name="ResourceTypeType">
+		<xs:annotation>
+			<xs:documentation>Abstract class for the type and dispatch ability of a resource. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+</xs:schema>

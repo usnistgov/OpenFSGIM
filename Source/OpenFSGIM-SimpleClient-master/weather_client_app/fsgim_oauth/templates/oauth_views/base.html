@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>FSGIM Web</title>
+	<meta charset="utf-8" />
+	{% load staticfiles %}
+	<link rel='stylesheet' href="{% static 'css/bootstrap.min.css' %}" tpye='text/css'/>
+	<style>
+				body {margin:0;}
+
+				.navbar {
+				  overflow: hidden;
+				  background-color: #333;
+				  position: fixed;
+				  top: 0;
+				  width: 100%;
+				}
+
+				.navbar a {
+				  float: left;
+				  display: block;
+				  color: #f2f2f2;
+				  text-align: center;
+				  padding: 14px 16px;
+				  text-decoration: none;
+				  font-size: 17px;
+				}
+
+				.navbar a:hover {
+				  background: #ddd;
+				  color: black;
+				}
+
+				.main {
+				  padding: 16px;
+				  margin-top: 50px;
+
+				}
+		</style>
+</head>
+
+	<body class="body" style="background-color:#f6f6f6">
+		<div class="container-fluid">
+  			<div class="row">
+				<div class="navbar">
+				 </div>
+			</div>
+			<div class="row">
+				<div class="jumbotron">
+					<h2>Facilities Smart Grid Information Model</h2>
+					<h3><em>Weather Client Application</em></h3>
+				</div>
+			</div>
+				<div class="container-fluid" style="min-height:95%;">
+						<div class="main">
+						   {% block body %}
+						   {% endblock %}
+						</div>
+				</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This clause covers the portion of the FSGIM that provides information elements supporting the key roles of managing, monitoring, and reporting the energy aspects of all or some portion of a facility, including interfacing within a hierarchy of energy managers. It ties together present measurement and control with forecasts of future needs and historical records of past performance. Some energy managers interface with entities outside of the facility to exchange information including weather, emissions, energy pricing and cost, and energy demand and supply.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="AggregationProperties" type="AggregationProperties"/>
+	<xs:complexType name="AggregationProperties">
+		<xs:annotation>
+			<xs:documentation>This class defines a set of attributes that characterize a Circuit with respect to Loads and Generators that are directly connected to it or indirectly connected through other Circuits that contribute to aggregations performed on this Circuit.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="circuitOfAggregation" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Circuit for which an aggregation is being computed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hasElectricalGenerators" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute indicates whether (True) or not (False) this Circuit has associated electrical generators.  A Circuit has associated electrical generators if the Circuit has:
+	- one or more direct subordinate instances of the Generator Class (including instances of the DispatchableGenerator), or; 
+	- one or more direct subordinate instances of the EM Class with the hasElectricalGenerators attribute for this Circuit set to True, or;
+	- one or more direct subordinate instances of the ElectricMeter Class with the hasElectricalGenerators attribute for the Circuit connected to the output ConnectionPoint set to True, or;
+	- an EnergyRouter contained within this EM where the associated aggregation Ruleset has caused the hasElectricalGenerators attribute for this Circuit to be set to True.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hasLoads" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute indicates whether (True) or not (False) this Circuit has associated loads. A Circuit has associated loads if the Circuit has:
+	- one or more direct subordinate instances of the Load Class (including instances of the CurtailableLoad Class), or; 
+	- one or more direct subordinate instances of the EM Class with the hasLoads attribute for this Circuit set to True, or;
+	- one or more direct subordinate instances of the ElectricMeter Class with the hasLoads attribute for the Circuit connected to the output ConnectionPoint set to True, or;
+	- an EnergyRouter contained within this EM where the associated aggregation Ruleset has caused the hasLoads attribute for this Circuit to be set to True.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The FSGIMWeather model describes an abstract representation of weather information that may be used by or exchanged with the facility. It includes weather information and forecasts that may be received from outside providers, and information generated through observations (measurements) performed at the facility. The weather model also includes weather phenomena such as wind, rain, and storms.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="wx_process.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="wx_measures.xsd"/>
+	<xs:include schemaLocation="iso19136.xsd"/>
+	<xs:include schemaLocation="wx_phenombase.xsd"/>
+	<xs:include schemaLocation="observation.xsd"/>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="wx_datatypes.xsd"/>
+	<xs:include schemaLocation="measures.xsd"/>
+	<xs:element name="FSGIMPrecipitation" type="FSGIMPrecipitation"/>
+	<xs:complexType name="FSGIMPrecipitation">
+		<xs:annotation>
+			<xs:documentation>This class extends the basic weather data with precipitation data.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractPhenomenon">
+				<xs:sequence>
+					<xs:element name="depth" type="Depth" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Measurement of precipitation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="duration" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The time over which accumulation was measured. The ending time is the obsOrFcstTime.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="isFreezing" type="xs:boolean" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True if precipitation is freezing.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMSolar" type="FSGIMSolar"/>
+	<xs:complexType name="FSGIMSolar">
+		<xs:annotation>
+			<xs:documentation>This class extends the basic weather data with solar data.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="diffuseIrradiance" type="Irradiance" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Solar radiation that has been scattered in passing through the earth's atmosphere. It is equal to the global irradiance less the direct normal and ground-reflected components. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="directNormalIrradiance" type="Irradiance" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Irradiance received from the sun without significant change of direction from the apparent position of the sun.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="globalHorizontlIrradiance" type="Irradiance" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The global (or hemispheric) solar radiant energy is the quantity of solar energy incident upon a unit surface area in unit time through a unit hemisphere above the surface, expressed in W/m2).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="planeOfArrayIrradiance" type="Irradiance" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The hemispheric solar radiant energy incident on a planar surface that is tilted relative to the surface of the earth.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FSGIMWeatherArea" type="FSGIMWeatherArea"/>
+	<xs:complexType name="FSGIMWeatherArea">
+		<xs:annotation>
+			<xs:documentation>Defines the area of interest for a weather observation or forecast.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractFeature">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMWeatherBase" type="FSGIMWeatherBase"/>
+	<xs:complexType name="FSGIMWeatherBase">
+		<xs:annotation>
+			<xs:documentation>This class defines the basic weather information including temperature and humidity data.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractFeature">
+				<xs:sequence>
+					<xs:element name="airPressure" type="Pressure" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The air pressure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="airTemperature" type="AirTemperature" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The air temperature.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dewpointTemperature" type="AirTemperature" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The dew point temperature.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="maxTemperature" type="AirTemperature" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Maximum air temperature.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="minTemperature" type="AirTemperature" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Minimum air temperature.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="obsOrFcstTime" type="UTCDateTimeInterval" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Forecast time for object. For a moving feature that is being tracked (e.g., GustFront), this will often be the time instant corresponding to the forecasted position. For a forecast of conditions for a general area, the time will often be the period of time associated with the forecast. For example, 'between 2 and 3 PM, there will be a wind shift in area X'. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="relativeHumidity" type="RelativeHumidity" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The relative humidity as a fraction. This value may be derived from the airTemperature and dewpointTemperature attributes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="sunriseTime" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time of day of sunrise.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="sunsetTime" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time of day of sunset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="validTime" type="UTCDateTimeInterval" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time period over which the feature is considered valid. Most commonly used in
+conjunction with forecasts. Valid time is logically separate from a forecast time in that it describes a time period within which a forecast is in effect. So a forecast that describes 'Snow predicted between 6 and 10 PM this evening' may have a valid time that starts at the current time, while the forecast period itself runs from 6 to 10. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="solar" type="FSGIMSolar" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Solar irradience measurments.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="wind" type="FSGIMWind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Wind measurements</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMWeatherForecast" type="FSGIMWeatherForecast"/>
+	<xs:complexType name="FSGIMWeatherForecast">
+		<xs:annotation>
+			<xs:documentation>The weather forecast of observations at a future time and with a defined confidence and probability.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Observation">
+				<xs:sequence>
+					<xs:element name="confidence" type="Percentage" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Percentage confidence in forecast.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="confidenceRange" type="PercentageRange" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Range for percentage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="forecastAnalysisTime" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Forecast analysis time.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="probability" type="Percentage" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Probability for this forecast.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="validTime" type="UTCDateTimeInterval" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time period over which forecast result is valid (can incorporate "expiration time").</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="changeIndicator" type="ForecastChangeIndicator" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Expected change.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMWeatherObservation" type="FSGIMWeatherObservation"/>
+	<xs:complexType name="FSGIMWeatherObservation">
+		<xs:annotation>
+			<xs:documentation>Weather observation. This class comprises the measurements and observed phenomena at a point in time and for a given weather area.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Observation">
+				<xs:sequence>
+					<xs:element name="validTime" type="UTCDateTimeInterval" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time period over which observation result is valid (can incorporate "expiration time").</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMWeatherReport" type="FSGIMWeatherReport"/>
+	<xs:complexType name="FSGIMWeatherReport">
+		<xs:annotation>
+			<xs:documentation>A container class for weather observations, forecasts, and trends.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractFeature">
+				<xs:sequence>
+					<xs:element name="automated" type="xs:boolean" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True if report is automated.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="issueTime" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>When the report was issued.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="missing" type="xs:boolean" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True if report source data is missing.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="process" type="ReportProcess" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The process related to the distribution or collection of weather reports.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="raw_text" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Arbitrary associated text potentially from a reporting station in an older text-based format.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMWeatherTrend" type="FSGIMWeatherTrend"/>
+	<xs:complexType name="FSGIMWeatherTrend">
+		<xs:annotation>
+			<xs:documentation>A sequence of forecasts of weather in increments of a defined duration such as hourly. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AbstractFeature">
+				<xs:sequence>
+					<xs:element name="changePeriod" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Change period of trend.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="trendChangeIndicator" type="ForecastChangeIndicator" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Expected change.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FSGIMWind" type="FSGIMWind"/>
+	<xs:complexType name="FSGIMWind">
+		<xs:annotation>
+			<xs:documentation>This class extends the basic weather data with wind data.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="verticalWindGust" type="WindGust" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Vertical wind gust.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="windDirection" type="WindDirection" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Wind direction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="windGust" type="WindGust" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Wind gust.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="windSpeed" type="WindSpeed" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Wind speed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Irradiance" type="Irradiance"/>
+	<xs:complexType name="Irradiance">
+		<xs:annotation>
+			<xs:documentation>The power of electromagnetic radiation per unit area incident on a surface, measured in W/m2.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="AbstractMeasure">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The value of the measure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit of measure for irradience.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Default is 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RelativeHumidity" type="RelativeHumidity"/>
+	<xs:complexType name="RelativeHumidity">
+		<xs:annotation>
+			<xs:documentation>The relative humidity, the ratio of the partial pressure of water vapor to the equilibrium vapor pressure at constant temperature.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="AbstractMeasure">
+				<xs:sequence>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The value of the measure.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="uom" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit of measure for relative humidity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Default is 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

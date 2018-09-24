@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The Energy Market Information Exchange (EMIX) Component contains classes that support the ability to exchange Price and Product information for power and energy markets.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:include schemaLocation="emix-terms.xsd"/>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="wscalendarpim.xsd"/>
+	<xs:element name="DeliveryType" type="DeliveryType"/>
+	<xs:complexType name="DeliveryType">
+		<xs:annotation>
+			<xs:documentation>Receipt / Report of Product Delivery. Injection flag is true for adding product to market supply, false for taking from market.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixBaseType">
+				<xs:sequence>
+					<xs:element name="injection" type="xs:boolean" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>True means positive Delivery is injection into the grid. False means positive Delivery is extraction from Grid. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmixBaseType" type="EmixBaseType"/>
+	<xs:complexType name="EmixBaseType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>iCalendar-derived object to host EMIX (OASIS EMIX v1.0) elements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="GluonType">
+				<xs:sequence>
+					<xs:element name="uid" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A unique identifier for an EMIX element. Note: different markets and specifications that use EMIX may have their own rules for specifying a UID. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="envelopeContents" type="EnvelopeContentsType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The extrinsic information that may distinguish the product from being a pure commodity. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmixInterfaceType" type="EmixInterfaceType"/>
+	<xs:complexType name="EmixInterfaceType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstract base class for the interfaces for EMIX Product delivery, measurement, and/or pricing.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmixOptionType" type="EmixOptionType"/>
+	<xs:complexType name="EmixOptionType">
+		<xs:annotation>
+			<xs:documentation>Option to buy an Emix Product.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixBaseType">
+				<xs:sequence>
+					<xs:element name="currency" type="CurrencyKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Currency denominating this product.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="expirationDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The date and time when a Tender expires. Meaningful only when the value of Transactive State is Tender. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="integralOnly" type="xs:boolean" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If true, each Option Call must be for the full amount specified</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marketContext" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Market Context is the overall market or program rules that govern this event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="optionHolderSide" type="SideType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The side which enjoys the benefit of choosing whether to exercise the terms specified in the option. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="optionPremium" type="PriceType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Price paid by the Option Holder Side for the rights involved. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="optionStrikePrice" type="PriceType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Price that the Option Holder Side pays to exercise the option. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="optionType" type="OptionTypeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>An enumerated list of Option types. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="side" type="SideType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Identifies whether information originator is on the Buy or Sell side. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="terms" type="ArrayOfTerms" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A collection of business and performance rules that define the product offering. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="transactiveState" type="TransactiveStateType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Indication of the present state of the transaction.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EnvelopeContentsType" type="EnvelopeContentsType"/>
+	<xs:complexType name="EnvelopeContentsType">
+		<xs:annotation>
+			<xs:documentation>EMIX Warrants are delivered as Envelope Contents. Assertions that distinguish the commodity product are called EMIX Warrants. A common definition of a warrant is a written assurance that some product or service will be provided or will meet certain specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="warrants" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The assertions that distinguish the commodity product.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="OptionTypeEnumeratedType" type="OptionTypeEnumeratedType"/>
+	<xs:complexType name="OptionTypeEnumeratedType">
+		<xs:annotation>
+			<xs:documentation>Enumerated Option Types.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="OptionTypeType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="OptionTypeType" type="OptionTypeType"/>
+	<xs:complexType name="OptionTypeType">
+		<xs:annotation>
+			<xs:documentation>The EMIX Option is an elaboration of the EMIX Product. An option is an instrument that gives the buyer the right, but not the obligation, to buy or sell a product at a set price during given time windows.  </xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="PriceBaseType" type="PriceBaseType"/>
+	<xs:complexType name="PriceBaseType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Type of Abstract base for EMIX Prices</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="PriceMultiplierType" type="PriceMultiplierType"/>
+	<xs:complexType name="PriceMultiplierType">
+		<xs:annotation>
+			<xs:documentation>Multiplier times market price, 1 for same as market</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PriceBaseType">
+				<xs:sequence>
+					<xs:element name="marketContext" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Market Context for  base price. If blank, Market Context from hosting artifact.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="multiplier" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Multiplier that when applied to a reference price produces the actual price of a quantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PriceRelativeType" type="PriceRelativeType"/>
+	<xs:complexType name="PriceRelativeType">
+		<xs:annotation>
+			<xs:documentation>Price Relative is a fixed charge (positive or negative) apllied to base price</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PriceBaseType">
+				<xs:sequence>
+					<xs:element name="marketContext" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Market Context for base price. If blank, Market Context from hosting artifact.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element ref="MonetaryQuantity" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Value added to a reference price to compute the actual price. The value may be positive or negative.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PriceType" type="PriceType"/>
+	<xs:complexType name="PriceType">
+		<xs:annotation>
+			<xs:documentation>Simple Price</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PriceBaseType">
+				<xs:sequence>
+					<xs:element name="value" type="MonetaryQuantity" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This is the number that quantifies the actual price per unit of the product.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ProductType" type="ProductType"/>
+	<xs:complexType name="ProductType">
+		<xs:annotation>
+			<xs:documentation>EMIX Product Type, i.e., a Product Description applied to a Schedule</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixBaseType">
+				<xs:sequence>
+					<xs:element name="currency" type="CurrencyKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Currency denominating this product.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="expirationDate" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The date and time when a Tender expires. Meaningful only when the value of Transactive State is Tender.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="integralOnly" type="xs:boolean" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>As part of a Tender, indicates element must be accepted in full or rejected</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marketContext" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Market Context is the overall market or program rules that govern this event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="side" type="SideType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Identifies whether information originator is on the Buy or Sell side.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="terms" type="ArrayOfTerms" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A collection of business and performance rules that define the product offering.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="transactiveState" type="TransactiveStateType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Indication of the present state of the transaction.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ServiceAreaType" type="ServiceAreaType"/>
+	<xs:complexType name="ServiceAreaType">
+		<xs:annotation>
+			<xs:documentation>The Service Area is the geographic region that is affected by the EMIX market condition</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixInterfaceType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="SideType">
+		<xs:annotation>
+			<xs:documentation>Identifies whether information originator is on the Buy or Sell side.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="buy">
+				<xs:annotation>
+					<xs:documentation>A party interested in purchasing a product or service.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sell">
+				<xs:annotation>
+					<xs:documentation>A party offering a product or service for sale.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactiveStateType">
+		<xs:annotation>
+			<xs:documentation>Indication of the present state of the transaction. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="indicationOfInterest">
+				<xs:annotation>
+					<xs:documentation>The act of making interest in an offer generally known.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tender">
+				<xs:annotation>
+					<xs:documentation>An offer to supply a product or a service at a stated fixed price.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="transaction">
+				<xs:annotation>
+					<xs:documentation>An instance of buying or selling a product or service.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="exercise">
+				<xs:annotation>
+					<xs:documentation>The financial transaction specified by a contract is to be enacted immediately between the two parties, and the contract itself is terminated.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="delivery">
+				<xs:annotation>
+					<xs:documentation>The action of delivering a product or service.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="transportCommitment">
+				<xs:annotation>
+					<xs:documentation>The act of committing to transport a product.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="publication">
+				<xs:annotation>
+					<xs:documentation>The action of making trade offering generally known.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

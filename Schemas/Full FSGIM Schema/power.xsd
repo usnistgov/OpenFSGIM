@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The Base EMIX Product Descriptions can be extended to define a variety of power products, in particular extending the Item Base to create Items for Real Power, Apparent Power, and Reactive Power among others.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="energy_meas.xsd"/>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="emix.xsd"/>
+	<xs:element name="AggregatedPnodeType" type="AggregatedPnodeType"/>
+	<xs:complexType name="AggregatedPnodeType">
+		<xs:annotation>
+			<xs:documentation>An aggregated pricing node is a specialized type of pricing node used to model items such as System Zone, Default Price Zone, Custom Price Zone, Control Area, Aggregated Generation, Aggregated Particpating Load, Aggregated Non-Participating Load, Trading Hub, DCA Zone</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixInterfaceType">
+				<xs:sequence>
+					<xs:element name="node" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A place where something changes (often ownership) or connects on the grid. It is a utility or transmission grid operator assigned designator for this point on the electrical network.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EndDeviceAssetType" type="EndDeviceAssetType"/>
+	<xs:complexType name="EndDeviceAssetType">
+		<xs:annotation>
+			<xs:documentation>The EndDeviceAssets are the physical device or devices which could be meters or other types of devices that may be of interest</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixInterfaceType">
+				<xs:sequence>
+					<xs:element name="mrid" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master Resource Identifier that can identify a physical device that may be a Customer Meter or other types of End Devices. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MeterAssetType" type="MeterAssetType"/>
+	<xs:complexType name="MeterAssetType">
+		<xs:annotation>
+			<xs:documentation>The MeterAsset is the physical device or devices that performs the role of the meter</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixInterfaceType">
+				<xs:sequence>
+					<xs:element name="mrid" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master Resource Identifier that can identify a physical device that may be a Customer Meter or other types of End Devices.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PnodeType" type="PnodeType"/>
+	<xs:complexType name="PnodeType">
+		<xs:annotation>
+			<xs:documentation>A pricing node is directly associated with a connectivity node.  It is a pricing location for which market participants submit their bids, offers, buy/sell CRRs, and settle.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixInterfaceType">
+				<xs:sequence>
+					<xs:element name="node" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A place where something changes (often ownership) or connects on the grid. It is a utility or transmission grid operator assigned designator for this point on the electrical network.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ServiceDeliveryPointType" type="ServiceDeliveryPointType"/>
+	<xs:complexType name="ServiceDeliveryPointType">
+		<xs:annotation>
+			<xs:documentation>Logical point on the network where the ownership of the service changes hands. It is one of potentially many service points within a ServiceLocation, delivering service in accordance with a CustomerAgreement. Used at the place where a meter may be installed.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixInterfaceType">
+				<xs:sequence>
+					<xs:element name="node" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A place where something changes (often ownership) or connects on the grid. It is a utility or transmission grid operator assigned designator for this point on the electrical network.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ServiceLocationType" type="ServiceLocationType"/>
+	<xs:complexType name="ServiceLocationType">
+		<xs:annotation>
+			<xs:documentation>A customer ServiceLocation has one or more ServiceDeliveryPoint(s), which in turn relate to Meters. For distribution, the ServiceLocation is typically the location of the utility customer's premise. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixInterfaceType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TransportInterfaceType" type="TransportInterfaceType"/>
+	<xs:complexType name="TransportInterfaceType">
+		<xs:annotation>
+			<xs:documentation>The Transport Interface delineates the edges at either end of a transport segment.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmixInterfaceType">
+				<xs:sequence>
+					<xs:element name="pointOfDelivery" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Where power exits a network or changes ownership. It is a utility or transmission grid operator assigned designator for this point on the electrical network.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="pointOfReceipt" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Where power enters a network or changes ownership. It is a utility or transmission grid operator assigned designator for this point on the electrical network.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="UnitEnergyPriceType" type="UnitEnergyPriceType"/>
+	<xs:complexType name="UnitEnergyPriceType">
+		<xs:annotation>
+			<xs:documentation>Price per Unit of Energy, i.e., Power times Duration</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="EnergyItemType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Base class for the measurement of energy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priceBase" type="PriceBaseType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Simple, absolute, or other types of energy prices that rely on foreknowledge and computation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

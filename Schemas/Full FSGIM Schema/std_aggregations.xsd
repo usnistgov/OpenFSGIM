@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This clause documents the Standard Aggregations and associated Standard Rulesets that are prescribed in the FSGIM.  Note: In the following diagrams, the rules that make up the standard Rulesets are shown in the Notes field to make the diagrams more compact.
+
+Use of the Standard Aggregations requires a logical tree structure for Energy Managers consistent with the structure of the circuits in the facility. In order to get a Standard Aggregation that correctly represents an entire Circuit, the designer must ensure that there is one Energy Manager with direct or indirect visibility of all contributors to that Circuit.
+
+For quantities to be suitable for standard aggregations, they must have consistent values for their measurement time reference, meaning the measurements must have the same start times and durations.  When it is not practical to precisely align time references, it is a local matter to decide how to adapt actual measurement values to make them consistent.
+
+The standard rulesets are written from the perspective of present data. When applying the ruleset to historical or forecast data, substitutions of attributes from the EMIntervalData Class instead of the EMPresentData Class are required. 
+
+For example, the DemandRuleset refers to 
+“EM.presentAggregationData.aggregationMetadata.hasElectricalGenerators.” 
+For a historical sequence, this is replaced by
+“EM.billingCycle.intervals.attach.aggregationMetadata.hasElectricalGenerators.”</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="collections.xsd"/>
+	<xs:include schemaLocation="emission_meas.xsd"/>
+	<xs:include schemaLocation="energy_meas.xsd"/>
+	<xs:include schemaLocation="power_meas.xsd"/>
+	<xs:element name="AdjustedFullDRDemandAggregation" type="AdjustedFullDRDemandAggregation"/>
+	<xs:complexType name="AdjustedFullDRDemandAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate demand of loads directly or indirectly managed by the associated EM averaged over the identified time interval assuming the largest acceptable response to demand response events occurred.
+
+For a partially completed (filling) demand interval, this is the expected demand of loads directly or indirectly managed by the associated EM as if the largest acceptable response to a demand response event was in effect, averaged over the time since the beginning of the present demand interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate demand of loads, with the largest acceptable demand response, directly or indirectly managed by the associated EM averaged over the identified time interval.
+
+For example, in a production line this could be the demand of the production line when it was providing the largest acceptable demand reduction in response to a DR request. For an HVAC system, this could be the demand that still meets code requirements and acceptable comfort conditions assuming a certain set of weather conditions and occupancy levels.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AdjustedFullDRDemandAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AdjustedFullDRDemandAggregationRestrictions" type="AdjustedFullDRDemandAggregationRestrictions"/>
+	<xs:complexType name="AdjustedFullDRDemandAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="PowerMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The PowerMeasurementsSet resulting from an AdjustedFullDRDemandAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AdjustedFullDRSupplyAggregation" type="AdjustedFullDRSupplyAggregation"/>
+	<xs:complexType name="AdjustedFullDRSupplyAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate supply of electrical generators and electrical storage devices directly or indirectly managed by the associated EM averaged over the identified time interval assuming the largest acceptable response to demand response events occurred.
+
+For a partially completed (filling) demand interval, this is the expected supply of electrical generators and electrical storage devices directly or indirectly managed by the associated EM as if the largest acceptable response to a demand response event was in effect, averaged over the time since the beginning of the present demand interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate demand of electrical generators and electrical storage devices, with the largest acceptable demand response, directly or indirectly managed by the associated EM averaged over the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AdjustedFullDRSupplyAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AdjustedFullDRSupplyAggregationRestrictions" type="AdjustedFullDRSupplyAggregationRestrictions"/>
+	<xs:complexType name="AdjustedFullDRSupplyAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="PowerMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The PowerMeasurementsSet resulting from an AdjustedFullDRSupplyAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AdjustedNoDRDemandAggregation" type="AdjustedNoDRDemandAggregation"/>
+	<xs:complexType name="AdjustedNoDRDemandAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate demand of loads directly or indirectly managed by the associated EM averaged over the identified time interval assuming no demand response events occurred.
+
+For a partially completed (filling) demand interval, this is the expected demand of loads directly or indirectly managed by the associated EM as if no demand response was in effect, averaged over the time since the beginning of the present demand interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate demand of loads, without demand response, directly or indirectly managed by the associated EM averaged over the identified time interval.
+
+For example, in a production line this could be the expected average demand of the production line assuming that the production line was operating at a certain capacity.  For an HVAC system, this could be the expected average demand assuming a certain set of weather conditions and occupancy levels.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AdjustedNoDRDemandAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AdjustedNoDRDemandAggregationRestrictions" type="AdjustedNoDRDemandAggregationRestrictions"/>
+	<xs:complexType name="AdjustedNoDRDemandAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="PowerMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The PowerMeasurementsSet resulting from an AdjustedNoDRDemandAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AdjustedNoDRSupplyAggregation" type="AdjustedNoDRSupplyAggregation"/>
+	<xs:complexType name="AdjustedNoDRSupplyAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate supply of electrical generators and electrical storage devices directly or indirectly managed by the associated EM averaged over the identified time interval assuming no demand response events occurred.
+
+For a partially completed (filling) demand interval, this is the expected supply of electrical generators and electrical storage devices directly or indirectly managed by the associated EM as if no demand response was in effect, averaged over the time since the beginning of the present demand interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate supply of electrical generators and electrical storage devices, without demand response, directly or indirectly managed by the associated EM averaged over the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AdjustedNoDRSupplyAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AdjustedNoDRSupplyAggregationRestrictions" type="AdjustedNoDRSupplyAggregationRestrictions"/>
+	<xs:complexType name="AdjustedNoDRSupplyAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="PowerMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The PowerMeasurementsSet resulting from an AdjustedNoDRSupplyAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DemandAggregation" type="DemandAggregation"/>
+	<xs:complexType name="DemandAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate demand of loads directly or indirectly managed by the associated EM averaged over the identified time interval.
+
+For a partially completed (filling) demand interval, this is the aggregate present subinterval demand of loads directly or indirectly managed by the associated EM.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate demand of loads directly or indirectly managed by the associated EM averaged over the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DemandAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DemandAggregationRestrictions" type="DemandAggregationRestrictions"/>
+	<xs:complexType name="DemandAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="PowerMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The PowerMeasurementsSet resulting from a DemandAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ElectricalEnergyStoredAggregation" type="ElectricalEnergyStoredAggregation"/>
+	<xs:complexType name="ElectricalEnergyStoredAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical or forecast aggregations, this is the energy stored in electrical storage directly or indirectly managed by the associated EM during the identified time interval.
+For a partially completed (filling) demand interval, this is the energy stored in electrical storage directly or indirectly managed by the associated EM since the beginning of the interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ElectricalEnergyStoredAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ElectricalEnergyStoredAggregationRestrictions" type="ElectricalEnergyStoredAggregationRestrictions"/>
+	<xs:complexType name="ElectricalEnergyStoredAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="EnergyMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The EnergyMeasureementsSet resulting from an ElectricalEnergyStoredAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsGeneratedAggregation" type="EmissionsGeneratedAggregation"/>
+	<xs:complexType name="EmissionsGeneratedAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate emissions generated by electrical generators and electrical storage devices directly or indirectly managed by the associated EM during the identified time interval.
+
+For a partially completed (filling) demand interval, this is the aggregate emissions generated by electrical generators and electrical storage devices directly or indirectly managed by the associated EM since the beginning of the interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate emissions generated by electrical generators and electrical storage devices directly or indirectly managed by the associated EM during the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmissionsGeneratedAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsGeneratedAggregationRestrictions" type="EmissionsGeneratedAggregationRestrictions"/>
+	<xs:complexType name="EmissionsGeneratedAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="EmissionsMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The EmissionsMeasurementsSet resulting from an EmissionsGeneratedAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsGenerationRateAggregation" type="EmissionsGenerationRateAggregation"/>
+	<xs:complexType name="EmissionsGenerationRateAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate rate of emissions generated by electrical generators and electrical storage devices directly or indirectly managed by the associated EM averaged over the identified time interval.
+
+For a partally completed (filling) emissions interval, this is the aggregate present subinterval rate of emissions generated by electrical generators and electrical storage devices directly or indirectly managed by the associated EM.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate rate of emissions generation of electrical generators and electrical storage devices directly or indirectly managed by the associated EM averaged over the indentified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EmissionsGenerationRateAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EmissionsGenerationRateAggregationRestrictions" type="EmissionsGenerationRateAggregationRestrictions"/>
+	<xs:complexType name="EmissionsGenerationRateAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="EmissionsMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The EmissionsRateMeasurementsSet resulting from an EmissionsGenerationRateAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EnergyConsumedAggregation" type="EnergyConsumedAggregation"/>
+	<xs:complexType name="EnergyConsumedAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate energy consumed by loads directly or indirectly managed by the associated EM during the identified time interval.
+
+For a partially completed (filling) demand interval, this is the aggregate energy consumed by loads directly or indirectly managed by the associated EM since the beginning of the interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate energy consumed by loads directly or indirectly managed by the associated EM during the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EnergyConsumedAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EnergyConsumedAggregationRestrictions" type="EnergyConsumedAggregationRestrictions"/>
+	<xs:complexType name="EnergyConsumedAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="EnergyMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The EnergyMeasurementsSet resulting from an EnergyConsumedAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EnergySuppliedAggregation" type="EnergySuppliedAggregation"/>
+	<xs:complexType name="EnergySuppliedAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate energy supplied by electrical generators and electrical storage devices directly or indirectly managed by the associated EM during the identified time interval.
+
+For a partially completed (filling) demand interval, this is the aggregate energy supplied by electrical generators and electrical storage devices directly or indirectly managed by the associated EM since the beginning of the interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate energy supplied by electrical generators and electrical storage devices directly or indirectly managed by the associated EM during the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EnergySuppliedAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EnergySuppliedAggregationRestrictions" type="EnergySuppliedAggregationRestrictions"/>
+	<xs:complexType name="EnergySuppliedAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="EnergyMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The EnergyMeasurementsSet resulting from an EnergySuppliedAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="NetDemandAggregation" type="NetDemandAggregation"/>
+	<xs:complexType name="NetDemandAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate net demand of loads, electrical generators, and electrical storage devices directly or indirectly managed by the associated EM averaged over the identified time interval.
+
+For a partially completed (filling) demand interval, this is the aggregate present subinterval net demand of loads, electrical generators, and electrical storage devices directly or indirectly managed by the associated EM.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate net demand of loads, electrical generators, and electrical storage devices directly or indirectly managed by the associated EM averaged over the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="NetDemandAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="NetDemandAggregationRestrictions" type="NetDemandAggregationRestrictions"/>
+	<xs:complexType name="NetDemandAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="PowerMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The PowerMeasurementsSet resulting from a NetDemandAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="NetEnergyConsumedAggregation" type="NetEnergyConsumedAggregation"/>
+	<xs:complexType name="NetEnergyConsumedAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate net energy consumed by loads, electrical generators, and electrical storage devices directly or indirectly managed by the associated EM during the identified time interval.
+
+For a partially completed (filling) demand interval, this is the aggregate net energy consumed by loads, electrical generators, and electrical storage devices directly or indirectly managed by the associated EM since the beginning of the interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate net energy consumed by loads, electrical generators, and electrical storage devices directly or indirectly managed by the associated EM during the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="NetEnergyConsumedAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="NetEnergyConsumedAggregationRestrictions" type="NetEnergyConsumedAggregationRestrictions"/>
+	<xs:complexType name="NetEnergyConsumedAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="EnergyMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The EnergyMeasurementsSet resulting from a NetEnergyConsumedAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SupplyAggregation" type="SupplyAggregation"/>
+	<xs:complexType name="SupplyAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate supply of electrical generators and electrical storage devices directly or indirectly managed by the associated EM averaged over the identified time interval.
+
+For a partially completed (filling) demand interval, this is the aggregate present subinterval supply of electrical generators and electrical storage devices directly or indirectly managed by the associated EM.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate supply of electrical generators and electrical storage devices directly or indirectly managed by the associated EM averaged over the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="SupplyAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SupplyAggregationRestrictions" type="SupplyAggregationRestrictions"/>
+	<xs:complexType name="SupplyAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="PowerMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The PowerMeasurementsSet resulting from a SupplyAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ThermalEnergyStoredAggregation" type="ThermalEnergyStoredAggregation"/>
+	<xs:complexType name="ThermalEnergyStoredAggregation">
+		<xs:annotation>
+			<xs:documentation>For historical aggregations, this is the aggregate thermal energy stored by thermal storage devices directly or indirectly managed by the associated EM during the identified time interval.
+
+For a partially completed (filling) demand interval, this is the aggregate thermal energy stored by thermal storage devices directly or indirectly managed by the associated EM since the beginning of the interval.
+
+The exact manner in which a forecast aggregation is determined is a local matter.  It shall represent the expected aggregate thermal energy stored by thermal storage devices directly or indirectly managed by the associated EM during the identified time interval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ThermalEnergyStoredAggregationRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ThermalEnergyStoredAggregationRestrictions" type="ThermalEnergyStoredAggregationRestrictions"/>
+	<xs:complexType name="ThermalEnergyStoredAggregationRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Aggregation">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aggregateQuantity" type="ThermalEnergyMeasurementsSetRestrictions" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The EnergyThermalQuantityt resulting from a ThermalEnergyStoredAggregation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>For applicable services, see Annex B.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="metamodel.xsd"/>
+	<xs:include schemaLocation="constructeddas.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:element name="BCR" type="BCR"/>
+	<xs:complexType name="BCR">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent binary counter reading.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="actVal" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Binary counter status represented as an integer value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="frEna" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Controls the freeze process. If true, freezing shall occur as specified in 'strTm', 'frPd' and 'frRs'; otherwise, no freezing shall occur.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="frPd" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Time interval between freeze operations [ms]. If value is 0, only a single freeze is performed at the time indicated in 'strTm'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="frRs" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>If true, the counter is to be automatically reset to zero after each freezing process.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="frTm" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Time of the last counter freeze.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="frVal" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Frozen binary counter status represented as an integer value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pulsQty" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Magnitude of the counted value per count. Used together with 'actVal' and 'frVal' to calculate the value: [value = 'actVal * pulsQty'], [value = 'frVal * pulsQty'].</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="q" type="Quality" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the data values 'actVal', 'frVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="strTm" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Starting time of the freeze process. If the current time is later than 'strTm', the first freeze shall occur at the expiration of the next freeze interval 'frPd', computed from 'strTm' setting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="t" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change of the data value 'actVal' or quality 'q'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="units" type="Unit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unit for value calculated as [value = 'actVal * pulsQty'], [value = 'frVal * pulsQty'].</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ENS" type="ENS"/>
+	<xs:complexType name="ENS" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent integer status values with the value restricted to those in an enumeration.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="q" type="Quality" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the data value 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="EnumDA" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Status data value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subVal" type="EnumDA" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value used to substitute 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="t" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change of the data value 'stVal' or quality 'q'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="INS" type="INS"/>
+	<xs:complexType name="INS">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent integer status values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="q" type="Quality" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the data value 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Status data value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subVal" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value used to substitute 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="t" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change of the data value 'stVal' or quality 'q'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="units" type="Unit" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unit for 'stVal', 'subVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SPS" type="SPS"/>
+	<xs:complexType name="SPS">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent single point status values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="q" type="Quality" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality of the data value 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stVal" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Status data value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subVal" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value used to substitute 'stVal'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="t" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Timestamp of the last change of the data value 'stVal' or quality 'q'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

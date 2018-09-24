@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>This clause supports the need to relate facility management data with time intervals and sequences of time intervals.  These sequences of intervals can be either forecasts or historical data.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:include schemaLocation="primitives.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="energy_manager.xsd"/>
+	<xs:include schemaLocation="wscalendarpim.xsd"/>
+	<xs:element name="ForecastSequence" type="ForecastSequence"/>
+	<xs:complexType name="ForecastSequence">
+		<xs:annotation>
+			<xs:documentation>The Sequence that is used for storing all forecasts, including forecasts for time periods where the originally forecasted time period has now passed.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Sequence">
+				<xs:sequence>
+					<xs:element name="timeOfForecast" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Time at which the forecast was made.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="IntervalDataContainer" type="IntervalDataContainer"/>
+	<xs:complexType name="IntervalDataContainer">
+		<xs:annotation>
+			<xs:documentation>This class represents an interval of time that attaches to a collection of data pertinent to the interval. This is a specialization of the WSCalendar PIM IntervalType.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="IntervalDataContainerRestrictions">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="IntervalDataContainerRestrictions" type="IntervalDataContainerRestrictions"/>
+	<xs:complexType name="IntervalDataContainerRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="IntervalType">
+				<xs:sequence>
+					<xs:element name="mRID" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Master resource identifier issued by a model authority. The mRID is globally unique within an exchange context. This attribute redefines the mRID attribute of the NAESB IdentifiedObject to force the attribute to be of type GlobalId.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Any free text that names the object.  This attribute redefines the NAESB IdentifiedObject attribute to force the multiplicity to be 1.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameType" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameTypeAuthority" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name of the name type authority.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="instanceUid" type="GlobalID" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unique identifier to the interval instance.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The time reference for an interval which includes some combination of start, duration, and end.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tolerance" type="ToleranceValueType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The tolerance for the associated timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="attach" type="EMIntervalDataRestrictions" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Associates a set of EMIntervalData with this IntervalDataContainer.
+
+Note:  All direct subordinate Meters, Loads, Generators, and Energy Managers have one or more ConnectionPoints that link them to a Circuit. For each instance of the Sequence Class or ForecastSequence Class, there is one instance of the EMIntervalData Class for each of these Circuits.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PeakPowerData" type="PeakPowerData"/>
+	<xs:complexType name="PeakPowerData">
+		<xs:annotation>
+			<xs:documentation>This class contains information associated with peak power intervals within a Sequence.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="demandPrice" type="MonetaryQuantity" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute represents the demand price associated with a billingCycle.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rachetPrice" type="MonetaryQuantity" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute represents the rachet price associated with a Sequence applicable to the rachet period.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="supplyPrice" type="MonetaryQuantity" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute represents the supply price associated with a billingCycle. This is analogous to the concept of a demand price, for facilities that have local generation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="peakNetSupply" type="EMIntervalData" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This value is only applicable to the EM.billingCycle sequence of an energy manager that is serving in an ESI EM role.  
+
+The value identifies the EMIntervalData instance containing the most negative EMIntervalData.aggregateNetDemand within the sequence of intervals. The applicable tariff rules are used to determine which instance of EMIntervalData represents this peak net supply.
+
+If the information is available and there is at least one instance that meets the tariff rules and where the EMIntervalData.aggregateNetDemand is negative, then this information must be provided.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="peakNetDemand" type="EMIntervalData" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This value is only applicable to the EM.billingCycle sequence of an energy manager that is serving in an ESI EM role.  
+
+The value identifies the EMIntervalData instance containing the most positive EMIntervalData.aggregateNetDemand within the sequence of intervals. The applicable tariff rules are used to determine which instance of EMIntervalData represents this peak net demand.
+
+If the information is available and there is at least one instance that meets the tariff rules and where the EMIntervalData.aggregateNetDemand is positive, then this information must be provided.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Sequence" type="Sequence"/>
+	<xs:complexType name="Sequence">
+		<xs:annotation>
+			<xs:documentation>A sequence is a set of time related ordered intervals.  These can represent a schedule of events or just a set of data related by time. Each interval of a sequence includes relative start time. The concatenation of these intervals forms a time-series. Missing data, for periodic time-series, can be surmised by monitoring the time references.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="GluonType">
+				<xs:sequence>
+					<xs:element name="intervalDuration" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the duration of individual intervals in the common case of a sequence of contiguous intervals, all having the same duration. This attribute is derived from the path vavailability.availability.availInterval.duration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Name used to identify the sequence.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="timeOfLastSync" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute represents the most recent time that IntervalDataContainer.timeReference was synchronized with the energy provider. Synchronization is sometimes implemented using a demand end-of-interval (EOI) pulse obtained from the meter. To determine the next expected EOI this attribute is summed with the Sequence.intervalDuration attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="peakPower" type="PeakPowerData" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This association is only applicable to an energy manager that is serving in an ESI EM role.  It identifies information associated with any peaks during the given Sequence.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Measurements of power, energy, and emissions are used extensively in the Facility Smart Grid Information Model.  Examples include:
+	- actual measurements, such as those that would come from a meter;
+	- nominal measurements, such as those that would appear on a product datasheet,
+	- estimated measurements, such as those that would be created when trying to predict day-ahead demand, or
+	- derived measurements, such as emissions measurements derived from power or energy measurements.
+The various external standards that are used within the FSGIM employ a variety of representations for these measurements.  In order to more easily integrate the various external standards, the FSGIM uses the harmonized representation of measurements described in this clause.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="naesb_pap10_eui.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:element name="ItemBaseType" type="ItemBaseType"/>
+	<xs:complexType name="ItemBaseType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstract base type for units for EMIX Product delivery, measurement, and warrants. Item as in PO Item, Requisition Item, Invoice Item, Lading Item. Item does not include Quantity or Price, because a single product description or transaction may have multiple quantities or prices associated with a single item.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="Measurement" type="Measurement"/>
+	<xs:complexType name="Measurement" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstraction of a measured value or related set of values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MeasurementMetadataType" type="MeasurementMetadataType"/>
+	<xs:complexType name="MeasurementMetadataType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Metadata associated with a measurement.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ItemBaseType">
+				<xs:sequence>
+					<xs:element name="accumulationCharacteristic" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Accumulation behaviour of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataQualifier" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>User defined text describing this measurement or its usage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemDescription" type="xs:string" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Pre-defined name for this type of measurement as specified by the derived class.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="itemUnits" type="UnitSymbolKind" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Units for the measurement, not including any multiplier.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the measurement if other than "good."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resolution" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The granularity of the measurement, corresponding to the smallest increment reportable by a measurement instrument.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="siScaleCode" type="SiScaleCodeType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>SI multiplier that applies to the unit of measure contained in the itemUnits enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MeasurementQuantity" type="MeasurementQuantity"/>
+	<xs:complexType name="MeasurementQuantity">
+		<xs:annotation>
+			<xs:documentation>The quantity portion of a generic quantity/metadata pair used to represent types of measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="MeasurementQuantityRestrictions">
+				<xs:sequence>
+					<xs:element name="uncertainty" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A positive number which represents the possible positive or negative deviation from the claimed measured value. If this attribute is not defined, a default value may be used as defined by local policy.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quantity of the measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementMetadata" type="MeasurementMetadataType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The metadata associated with a MeasurementQuantity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MeasurementQuantityRestrictions" type="MeasurementQuantityRestrictions"/>
+	<xs:complexType name="MeasurementQuantityRestrictions">
+		<xs:complexContent>
+			<xs:restriction base="Measurement">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MeasurementSet" type="MeasurementSet"/>
+	<xs:complexType name="MeasurementSet" abstract="true">
+		<xs:annotation>
+			<xs:documentation>An abstract container class used to hold either the power measurements, energy measurements, or emissions measurements that could be made for a given EMUsagePoint and time reference.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="Measurement">
+				<xs:sequence>
+					<xs:element name="timeReference" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Applicable time reference associated with this Measurement. The duration, end, and start can be populated as needed to describe the time reference of the measurement. If only a timestamp is necessary then omit duration and end. If the measurement occurred over a period, use the duration attribute to indicate this period. Only two of the three attributes may be included.
+
+If the Measurement is a MeasurementSet the contained MeasurementQuantity will not populate timeReference.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measuredAt" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The logical reference for a point of measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

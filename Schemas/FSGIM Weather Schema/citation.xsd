@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Classes for citation and responsible party information.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="ref_sys.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:element name="CI_Address" type="CI_Address"/>
+	<xs:complexType name="CI_Address">
+		<xs:annotation>
+			<xs:documentation>Location of the responsible individual or organisation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="administrativeArea" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>State, province of the physical address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>City of the physical address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="country" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Country of the physical address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="deliveryPoint" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Address line for the physical address (Street name, box number, suite).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="electronicMailAddress" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Address of the electronic mailbox of the responsible organisation or individual.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postalCode" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>ZIP or other postal code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CI_Citation" type="CI_Citation"/>
+	<xs:complexType name="CI_Citation">
+		<xs:annotation>
+			<xs:documentation>Standardized resource reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="altTitle" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Short name or other language name by which the cited information is known.
+-Example: "Digital Chart of the World" or "DCW".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="citedResponsibleParty" type="CI_ResponsibleParty" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Name and position information for an individual or organisation that is responsible for the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="collectiveTitle" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Common title with holdings note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="date" type="UTCDateTime" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Reference date for the cited information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="edition" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Version of the dataset.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="editionDate" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Date of the edition.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="identifier" type="MD_Identifier" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>value uniquely identifying an object within a namespace.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ISBN" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>International Standard Book Number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ISSN" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>International Standard Serial Number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="otherCitationDetails" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Other information required to complete the citation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="presentationForm" type="CI_PresentationFormCode" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Mode in which the data is represented.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="series" type="CI_Series" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the series of which the dataset is a part.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name by which the cited information is known.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CI_Contact" type="CI_Contact"/>
+	<xs:complexType name="CI_Contact">
+		<xs:annotation>
+			<xs:documentation>Information required enabling contact with the  responsible person and/or organisation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="address" type="CI_Address" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Physical and email address at which the organisation or individual may be contacted.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactInstructions" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Supplemental instructions on how or when to contact the individual or organisation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hoursOfService" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Time period (including time zone) when individuals can contact the organisation or individual.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="onlineResource" type="CI_OnlineResource" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Online information that can be used to contact the individual or organisation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phone" type="CI_Telephone" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Telephone numbers at which the organisation or individual may be contacted.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CI_OnLineFunctionCode">
+		<xs:annotation>
+			<xs:documentation>Function performed by the resource</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="download">
+				<xs:annotation>
+					<xs:documentation>Online instructions provide the information necessary to acquire data</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="information">
+				<xs:annotation>
+					<xs:documentation>Online instructions provide more information about the data</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="offlineAccess">
+				<xs:annotation>
+					<xs:documentation>Online instructions provide the ability to transfer data from one storage device or system to another</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="order">
+				<xs:annotation>
+					<xs:documentation>Online instructions provide the ability to acquire data</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="search">
+				<xs:annotation>
+					<xs:documentation>Online instructions provide the ability to seek out information about a dataset</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="CI_OnlineResource" type="CI_OnlineResource"/>
+	<xs:complexType name="CI_OnlineResource">
+		<xs:annotation>
+			<xs:documentation>Information about online sources from which the dataset, specification, or community profile name and extended metadata elements can be obtained.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="applicationProfile" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of an application profile that can be used with the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description of what the resource is/does.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="function" type="CI_OnLineFunctionCode" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Function performed by the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="linkage" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Method, source, or location for online access.
+
+Example: a Uniform Resource Locator (URL) such as http://www,gii.getty.edu/tgn_browser/</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="protocol" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Connection protocol to be used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CI_PresentationFormCode">
+		<xs:annotation>
+			<xs:documentation>Mode in which the data is represented</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="documentDigital">
+				<xs:annotation>
+					<xs:documentation>Piece of written or printed matter that provides a record or evidence of events, an agreement, ownership, identification, etc..</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="documentHardcopy">
+				<xs:annotation>
+					<xs:documentation>Representation of a map which is printed on paper, photographic material, or other media and can be interpreted directly by the human user</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="imageDigital">
+				<xs:annotation>
+					<xs:documentation>Permanent record of the likeness of any natural or man-made features, objects, and activities reproduced on photographic materials.  This image can be acquired through the sensing of visual or any other segment of the electromagnetic spectrum by sensors, such as thermal infrared, and high resolution radar.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="imageHardcopy">
+				<xs:annotation>
+					<xs:documentation>Hard-copy of image.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mapDigital">
+				<xs:annotation>
+					<xs:documentation>Digital map.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mapHardcopy">
+				<xs:annotation>
+					<xs:documentation>Hard copy of map.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelDigital">
+				<xs:annotation>
+					<xs:documentation>Representation in three dimensions of geospatial data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelHardcopy">
+				<xs:annotation>
+					<xs:documentation>Hard copy of model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="profileDigital">
+				<xs:annotation>
+					<xs:documentation>Vertical cross-section of geospatial data</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="profileHardcopy">
+				<xs:annotation>
+					<xs:documentation>Hard copy of profile.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tableDigital">
+				<xs:annotation>
+					<xs:documentation>Digital table representation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tableHardcopy">
+				<xs:annotation>
+					<xs:documentation>Hard copy representation of table.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="videoDigital">
+				<xs:annotation>
+					<xs:documentation>Digital video.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="videoHardcopy">
+				<xs:annotation>
+					<xs:documentation>Hard copy of digital video.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="CI_ResponsibleParty" type="CI_ResponsibleParty"/>
+	<xs:complexType name="CI_ResponsibleParty">
+		<xs:annotation>
+			<xs:documentation>Identification of, and means of communication with, person(s) and organisations associated with the dataset.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInfo" type="CI_Contact" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Address of the responsible party.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="individualName" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the responsible person-  SURNAME, given name, title separated by a delimiter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="organisationName" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the responsible organisation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="positionName" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Role or position of the responsible person.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="role" type="CI_RoleCode" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Function performed by the responsible party.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CI_RoleCode">
+		<xs:annotation>
+			<xs:documentation>Function performed by the responsible party.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="author">
+				<xs:annotation>
+					<xs:documentation>Author role.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="custodian">
+				<xs:annotation>
+					<xs:documentation>Guardian or keeper responsible for maintaining the data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="distributor">
+				<xs:annotation>
+					<xs:documentation>Person or organisation who distributes the data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="originator">
+				<xs:annotation>
+					<xs:documentation>Responsible party who created the dataset or metadata </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="owner">
+				<xs:annotation>
+					<xs:documentation>Person who owns the data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pointOfContact">
+				<xs:annotation>
+					<xs:documentation>Responsible party who can be contacted for acquiring knowledge about or acquisition of the data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="principalInvestigator">
+				<xs:annotation>
+					<xs:documentation>Key person responsible for gathering information and conducting research.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="processor">
+				<xs:annotation>
+					<xs:documentation>Responsible party who has processed the data in a manner in which the data has been modified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="publisher">
+				<xs:annotation>
+					<xs:documentation>Responsible party who published the data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="resourceProvider">
+				<xs:annotation>
+					<xs:documentation>Party that supplies the data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="user">
+				<xs:annotation>
+					<xs:documentation>Person who uses the data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="CI_Series" type="CI_Series"/>
+	<xs:complexType name="CI_Series">
+		<xs:annotation>
+			<xs:documentation>Information about the series, or aggregate resource, to which a resource belongs.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="issueIdentification" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information identifying the issue of the series.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the series, or aggregate resource, of which the resource is a part.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="page" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Details on which pages of the publication the article was published.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CI_Telephone" type="CI_Telephone"/>
+	<xs:complexType name="CI_Telephone">
+		<xs:annotation>
+			<xs:documentation>Telephone numbers for contacting the responsible individual or organisation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="facsimile" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Telephone number of a facsimile machine for the responsible organisation or individual.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="voice" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Telephone number by which individuals can speak to the responsible organisation or individual.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,86 @@
+{% extends "oauth_views/base.html" %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class=".col-md-4">
+            <br>
+            <p><strong>Welcome {{ name }},</strong> <br> <br>The weather client application provides access to RESTful
+                API of the Facilities Smart Grid Information Model(FSGIM)- Weather Web Server. FSGIM uses <em>'The Atom
+                    Syndication Format'</em> RFC 4287, which is an XML-based Web content and metadata syndication.
+            </p>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class=".col-md-4">
+            <br>
+            <table class="table">
+                <tr class="success">
+                    <th>GET</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <br>
+                <tr>
+                    <td><strong>URI:</strong></td>
+                    <td>{{ get_uri }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><textarea class="scrollabletextbox" row="100" cols="100">
+                        {{ get_data }}
+                    </textarea></td>
+                </tr>
+                <br>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                         <form method="post">
+                             {% csrf_token %}
+                        <button name="fsgim-get" type="submit" class="btn btn-success btn-width">GET</button>
+                         </form>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </div>
+    </div>
+     <div class="row">
+        <div class=".col-md-4">
+            <br>
+            <table class="table table-condensed">
+                <tr class="info">
+                    <th>POST</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <br>
+                <tr>
+                    <td><strong>URI:</strong></td>
+                    <td>FSGIM-Post URI here</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><textarea class="scrollabletextbox" row="100" cols="100">
+                    </textarea></td>
+                </tr>
+                <br>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form method="post">
+                             {% csrf_token %}
+                            <button name="fsgim-post" type="button" class="btn btn-info btn-width">POST</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </div>
+    </div>
+</div>
+{% endblock %}

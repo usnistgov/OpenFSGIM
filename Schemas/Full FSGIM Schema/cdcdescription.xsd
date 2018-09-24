@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>For applicable services, see Annex B.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="LPL" type="LPL"/>
+	<xs:complexType name="LPL">
+		<xs:annotation>
+			<xs:documentation>This common data class is used for nameplate information of logical nodes.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="configRev" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Uniquely identifies the configuration of a logical device instance. 'LLN0.NamPlt.configRev' has to be changed at least on any semantic change of the data model of the logical device, related to the client functionality. How this is detected and performed is left to the user. Also the semantics of 'configRev' for other logical nodes is left to the user. For further details see as well Annex C. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ldNs" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Logical device name space. Scope of the standard specified with the attribute is LN class definition (CDC definition by reference). For details see IEC 61850-7-1.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lnNs" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Logical node name space. Scope of the standard specified with the attribute is LN class definition (CDC definition by reference). For details see IEC 61850-7-1.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="paramRev" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Uniquely identifies the parameter revision of a logical device or logical node instance. 'paramRev' has to be changed at least on any change of a parameter (FC= SE or FC=SP) within this logical device or logical node. How this is detected and performed is left to the user. For further details see as well Annex C.
+The value change of 'paramRev' shall be done as follows:
+	- if the parameter change is done in the IED only through communication services or through the local HMI, this value shall be increased by one;
+	- if the parameter change is done in the configuration file, this value shall be increased by 10 000.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="swRev" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Software revision.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="valRev" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Uniquely identifies the revision of the preconfiguration of configuration values (FC= CF) in a logical device or logical node instance through a SCL file. 'valRev' has to be changed at least on any change of preconfigured values within an SCL file for this logical device or logical node. How this is detected and performed is left to the user. For further details see as well Annex C.
+The value change of 'valRev' shall be done according to the same rules as for 'paramRev'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vendor" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name of the vendor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:include schemaLocation="FSGIMWeatherAtomLink.xsd"/>
+	<xs:include schemaLocation="generator.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="wscalendarpim.xsd"/>
+	<xs:include schemaLocation="load.xsd"/>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="sequences.xsd"/>
+	<xs:include schemaLocation="emix.xsd"/>
+	<xs:include schemaLocation="collections.xsd"/>
+	<xs:include schemaLocation="energy_manager.xsd"/>
+	<xs:include schemaLocation="meter.xsd"/>
+	<xs:include schemaLocation="power.xsd"/>
+	<xs:include schemaLocation="naesb_pap10_eui.xsd"/>
+	<xs:include schemaLocation="std_aggregations.xsd"/>
+	<xs:include schemaLocation="power-quality.xsd"/>
+	<xs:include schemaLocation="eiclasses.xsd"/>
+	<xs:element name="FSGIMAtomLink" type="FSGIMAtomLink"/>
+	<xs:complexType name="FSGIMAtomLink">
+		<xs:annotation>
+			<xs:documentation>This class exists solely for the purpose of giving us a class that can have an association to all of the atom resources that are in the model.  This allows us to generate a schema for the package that this class is in and automatically get a schema for the whole model.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AdjustedFullDRDemandAggregation" type="AdjustedFullDRDemandAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AdjustedFullDRSupplyAggregation" type="AdjustedFullDRSupplyAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AdjustedNoDRDemandAggregation" type="AdjustedNoDRDemandAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AdjustedNoDRSupplyAggregation" type="AdjustedNoDRSupplyAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AggregatedPnodeType" type="AggregatedPnodeType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="AllResourcesInEMDomain" type="AllResourcesInEMDomain" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="CurtailableLoad" type="CurtailableLoad" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Customer" type="Customer" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="CustomerAuthorisation" type="CustomerAuthorisation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="DeliveryType" type="DeliveryType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="DemandAggregation" type="DemandAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Device" type="Device" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="DispatchableGenerator" type="DispatchableGenerator" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EiTargetType" type="EiTargetType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ElectricalEnergyStoredAggregation" type="ElectricalEnergyStoredAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ElectricMeter" type="ElectricMeter" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ElectricPowerQualitySummary" type="ElectricPowerQualitySummary" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EM" type="EM" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EMGenerationType" type="EMGenerationType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EmissionsGeneratedAggregation" type="EmissionsGeneratedAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EmissionsGenerationRateAggregation" type="EmissionsGenerationRateAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EmissionsMeter" type="EmissionsMeter" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EmixOptionType" type="EmixOptionType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EMLoadReductionType" type="EMLoadReductionType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EMPowerResponseType" type="EMPowerResponseType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EMUsagePoint" type="EMUsagePoint" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EndDeviceAssetType" type="EndDeviceAssetType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EnergyConsumedAggregation" type="EnergyConsumedAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EnergySuppliedAggregation" type="EnergySuppliedAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="EventDescriptorType" type="EventDescriptorType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FilteredCollection" type="FilteredCollection" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ForecastSequence" type="ForecastSequence" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="FSGIMWeatherAtomLink" type="FSGIMWeatherAtomLink" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="GridCircuit" type="GridCircuit" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="IntervalBlock" type="IntervalBlock" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="IntervalDataContainer" type="IntervalDataContainer" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="IntervalReading" type="IntervalReading" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="LocalTimeParameters" type="LocalTimeParameters" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="MeterAssetType" type="MeterAssetType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="MeterReading" type="MeterReading" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="NetDemandAggregation" type="NetDemandAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="NetEnergyConsumedAggregation" type="NetEnergyConsumedAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="PnodeType" type="PnodeType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="PowerQualityWarrantType" type="PowerQualityWarrantType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ProductType" type="ProductType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Reading" type="Reading" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="RelationLink" type="RelationLink" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="RuleSet" type="RuleSet" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ServiceAreaType" type="ServiceAreaType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ServiceDeliveryPointType" type="ServiceDeliveryPointType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ServiceLocationType" type="ServiceLocationType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ServiceSupplierData" type="ServiceSupplierData" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="SupplyAggregation" type="SupplyAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ThermalEnergyStoredAggregation" type="ThermalEnergyStoredAggregation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="TransportInterfaceType" type="TransportInterfaceType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="UsageSummary" type="UsageSummary" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

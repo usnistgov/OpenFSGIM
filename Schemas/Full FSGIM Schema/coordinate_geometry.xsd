@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Coordinate geometry classes.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="DirectPosition" type="DirectPosition"/>
+	<xs:complexType name="DirectPosition">
+		<xs:annotation>
+			<xs:documentation>DirectPosition object data types (Figure 14) hold the coordinates for a position within some coordinate reference system. The coordinate reference system is described in ISO 19111. Since DirectPositions, as data types, will often be included in larger objects (such as GM_Objects) that have references to ISO19111::SC_CRS, the DirectPosition::cordinateReferenceSystem may be left NULL if this particular DirectPosition is included in a larger object with such a reference to a SC_CRS. In this case, the DirectPosition::cordinateReferenceSystem is implicitly assumed to take on the value of the containing object's SC_CRS. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="coordinate" type="xs:float" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Array of coordinates for the direct position in the Coordinate Reference System units.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dimension" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of coordinates.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CRS" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The coordinate system for this position.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GM_Envelope" type="GM_Envelope"/>
+	<xs:complexType name="GM_Envelope">
+		<xs:annotation>
+			<xs:documentation>GM_Envelope is often referred to as a minimum bounding box or rectangle. Regardless of dimension, a GM_Envelope can be represented without ambiguity as two direct positions (coordinate points). To encode a GM_Envelope, it is sufficient to encode these two points. This is consistent with all of the data types in this standard, their state is represented by their publicly accessible attributes. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="lowerCorner" type="DirectPosition" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A coordinate consisting of all minimal values of the ordinates of all points within the GM_Envelope.
+
+The "lowerCorner" of a GM_Envelope is a coordinate position consisting of all the minimal ordinates for each dimension for all points within the GM_Envelope.
+GM_Envelope::lowerCorner : DirectPosition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="upperCorner" type="DirectPosition" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A coordinate consisting of all maximal values of the ordinates of all points within the GM_Envelope.
+
+The "upperCorner" of a GM_Envelope is a coordinate position consisting of all the maximal ordinates for each dimension for all points within the GM_Envelope.
+GM_Envelope::upperCorner : DirectPosition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

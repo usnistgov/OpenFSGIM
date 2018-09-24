@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>The Generator Component is the portion of the FSGIM that provides an abstract representation of all devices that produce electricity or store it.  This includes fossil fuel powered generators, photovoltaic arrays, wind generators, and any other generation/storage that is operated and managed by the facility.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="load.xsd"/>
+	<xs:include schemaLocation="energy_meas.xsd"/>
+	<xs:include schemaLocation="eiclasses.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="power_meas.xsd"/>
+	<xs:include schemaLocation="iec61850_7_420_daenums.xsd"/>
+	<xs:include schemaLocation="emission_meas.xsd"/>
+	<xs:include schemaLocation="lngroupm.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:include schemaLocation="lngroupf.xsd"/>
+	<xs:include schemaLocation="other_common.xsd"/>
+	<xs:include schemaLocation="iec61850_7_420_logicalnodes.xsd"/>
+	<xs:element name="DERDatasheetEmissions" type="DERDatasheetEmissions"/>
+	<xs:complexType name="DERDatasheetEmissions">
+		<xs:annotation>
+			<xs:documentation>A class that summarizes data sheet emissions information for a generator.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="datasheetEmissions" type="EmissionsMeasurementsSet" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>An EmissionsMeasurementSet containing rated emissions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="operatingMode" type="ScheduleOperatingModeKind" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The operating mode of the containing generator Component.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DispatchableGenerator" type="DispatchableGenerator"/>
+	<xs:complexType name="DispatchableGenerator">
+		<xs:annotation>
+			<xs:documentation>The DispatchableGenerator class defines the attributes that are unique to power generating devices that can supply power when needed. The attributes define the information needed to represent supply policies based on criteria including priorities, cost constraints, protection of physical equipment, and safety considerations. The DispatchableGenerator class also provides attributes for orderly reduction  of generated supply.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Generator">
+				<xs:sequence>
+					<xs:element name="eligibleSupply" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the amount of supply still eligible to be added by the generator. For two-state generators this value will either be the value of maximumSupply as defined in the Generator class or zero. For multi-state generators this value is the total remaining supply that can be added as defined in the supplyRatingsLevel attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="generatedSupplySetpoint" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the maximum power threshold of the generator at the present time. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="lastSupplyCycleDateTime" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the date and time on which the generator last supplied power.  For multistage generators, each time a stage is switched, this attribute shall be updated.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="maximumSupplyCyclesInPeriod" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the maximum number of times this generator may supply energy within the specified period. When the supplyCyclesInPeriod reaches this attribute's value, the generatorStatus attribute will be set to maxCyclesThisPeriod rendering the generator ineligible to supply energy until the period information is reset.   The duration of the period and the resetting of this attribute is a local matter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="maximumSupplyTime" type="xs:duration" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the maximum number of seconds that a generator may supply power before it shall be released.   This duration is often used to manage emission levels, or meet safety code requirements.  It is used to set the queueTimeRemaining attribute when placing the generator in the maxSupplyQueue state.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="minimumSupplyTime" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the minimum number of seconds that a generator shall be powered up before it may be released. This duration may be used to protect the generator's hardware from excess cycling or to meet safety code requirements.
+It is used to set the QueueTimeRemaining attribute when placing the load in the minCurtailQueue state.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="overridden" type="xs:boolean" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute is typically controlled by an external entity to affect eligibility of the generator. For example, the Energy Manager may override this generator if the present price of fuel is outside a defined economic threshold. 
+This attribute differs from the generatorLocked attribute in that this attribute is meant to be connected to an automation system and only persists while the override is in effect. The generatorLocked attribute persists indefinitely and meant to be set by manual intervention.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="priceThreshold" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the marginal operational cost per unit of power basis for this generator. The priority is not created within the generator; this is a placeholder for the Energy Manager. This attribute can be derived from the DERCostParameters.OperatingWCost attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="priority" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the order upon which a generator starts across a set of generators. If the attribute is not present, it shall be assumed to have the lowest priority. The priority is not created within the generator, this is a placeholder for the Energy Manager. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="queueTimeRemaining" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the duration of time that a dispatchable generator has remaining on either the minimum supply time, the maximum supply time or release time queue.  When entered in the queue, this value will be set to the minimumSupply time, the (maximumSupplyTime – minimumSupplyTime) or the releaseTime respectively. This value will be down counted at a rate of not less than once per minute until the timer expires.  At the expiration time, the generator state will transition to the next state and the queue time reset.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="releaseTime" type="xs:duration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute specifies the number of seconds that a generator shall be turned off before it is again eligible to supply power. This duration may be used to protect the generator's hardware from excess cycling or meet safety code requirements. It is used to set the queueTimeRemaining attribute when placing the generator in the releaseQueue state.
+If this attribute is not present, the releaseTime shall be considered to be zero (0) and immediately become available to supply power.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="requestedSupplyLevel" type="FSGIMEventSignalType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the power level to which the Energy Manager is requesting the generator to operate.  The request by the Energy Manager is always a supply amount; however, the generator will compare this supply requested amount to the present supply of the generator and may then a) supply more power, b) reduce the power or c) leave the generator at its present supply state.
+
+The request is made in one of four ways defined by the value requestedSupplyLevel.signalType :
+
+1)  When the requestedSupplyLevel.signalType attribute is set to 'setpoint', the requestedSupplyLevel.currentValue attribute describes the absolute amount of supply the generator may deliver. The currentValue must be a positive number or zero. The currentValue is compared against
+the generatedSupplySetpoint and maximumSupply to determine the adjustment needed to the generation supply setpoint.  
+a) If the currentValue equals the generatedSupplySetpoint, no further adjustment will occur. The supplyStatus will be set to supplyCompliant.
+b)  If the currentValue is zero, the generator will be powered down if the generator has surpassed its minSupplyTime and the supplyStatus will be set to supplyCompliant. If the minSupplyTime has not yet been surpassed, the generator will be powered down as soon as it reaches the minSupplyTime. The supplyStatus will be set to minSupplyQueue until the minSupplyTime is reached where upon the supplyStatus will then be set to supplyCompliant.
+c)  If the currentValue is less than the generatedSupplySetpoint but not zero, the generator setpoint will be reduced if the generator has surpassed its minSupplyTime. If not, the generator will reduce the power setpoint as soon as it reaches the minSupplyTime. The supplyStatus will be set to supplyCompliant.
+d)  If the currentValue is greater than the generatedSupplySetpoint but less than the maximumSupply, the generator setpoint will be increased if the generator has surpassed its minSupplyTime.  If not, the generator setpoint will be increased once the generator reaches the minSupplyTime.
+e)  If the currentValue is greater than  the maximumSupply, the generator setpoint will be increased to the maximumSupply and the supplyStatus will be set to supplyNoncompliant
+
+2) When the requestedSupplyLevel.signalType attribute is set to 'delta', the requestedSupplyLevel.currentValue attribute defines the relative amount of supply the generator may deliver. The currentValue may be a positive or negative number. The sum of currentValue and actualGeneratedSupply, is compared against zero and maximumSupply to determine the adjustment needed to the generation supply setpoint.  
+a) If the currentValue is zero no further curtailment or restoration will occur. The supplyStatus will be set to supplyCompliant.
+b)  If the currentValue is positive, the generatedSupplySetpoint will be increased to the sum of the currentValue plus the generatedSupplySetpoint, but not to exceed the maximumSupply. If the sum of the currentValue and the generatedSupplySetpoint is less than the maximumSupply the supplyStatus will be set to supplyCompliant.  . If the sum of the currentValue and the generatedSupplySetpoint is greater than the maxSupply the supplyStatus will be set to supplyNonCompliant.  
+c)  If the currentValue is negative, the generatedSupplySetpoint will be decreased to the sum of the currentValue plus the generatedSupplySetpoint, but not less than zero. If the sum of the currentValue and the generatedSupplySetpoint is greater than zero, the supplyStatus will be set to supplyCompliant.  If the sum of the currentValue and the generatedSupplySetpoint is less than zero, generatedSupplySetpoint will be set to zero and the supplyStatus will be set to supplyCompliant.  
+
+3) When the requestedSupplyLevel.signalType attribute is set to 'multiplier', the requestedSupplyLevel.currentValue attribute divided by 100 defines the percentage of the generatedSupplySetpoint value to which the generator should be adjusted. That is:
+
+generatedSupplySetpoint &lt;= generatedSupplySetpoint*(currentValue/100)
+
+where the currentValue must be a positive number in the range of 0 to 100.  The supplyStatus will be set to supplyCompliant.  
+
+
+4)  When the requestedSupplyLevel.signalType attribute is set to 'level', the requestedSupplyLevel.currentValue attribute describes the predefined level to which the generator will be adjusted. The currentValue must be a positive number within the range of 1 to n, where n is defined as the number of entries in the supplyRatingsLevel array. When the request is received, the generator will adjust its generatedSupplySetpoint to the level defined by supplyRatingsLevel(currentValue).supplyAmount.
+
+If the value of currentValue is not within the range of n supported by the generator, the request will not be honored.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="supplyCost" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the monetary value of the fixed and variable cost associated with supplying power (when positive) or the savings associated with supplying power (when negative) on a per unit of power basis. This attribute is derived from DERCostParameters.OperatingCost, DERCostParameters.StartCost, DERCostParameters.RampCost, and DERCostParameters.StopCost.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="supplyCyclesInPeriod" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the number of times the generator has supplied power since this attribute was last reset. This attribute shall be increased by one each time a dispatchable generator becomes operational and supplies power to a load. This attribute is derived from DERUnitGenerator.PeriodStartCount.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="supplyRatingsLevel" type="SupplyArrayElement" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the array of supply when the requestedSupplyLevel.signalType equals 'level'.  This array transforms the level requested by the Energy Manager as specified by the attribute requestedSupplyLevel.level into the supply to which the generator shall be controlled. This attribute is derived from DERGeneratorRatings.MaximumWOutput, DERGeneratorRatings.MinimumWOutput, DERComplexRamping.StepPs, and DERComplexRamping.StepNg.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="supplyStatus" type="SupplyStatusType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute indicates whether the generator is presently supplying power and, if so, is in compliance with the power request received. This attribute is derived from DERUnitGenerator.GeneratorOperationStatus and DERUnitStatus.ModeOnConnected.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Generator" type="Generator"/>
+	<xs:complexType name="Generator">
+		<xs:annotation>
+			<xs:documentation>The Generator Class is the central class of the Generator Component.  It contains, directly through its attributes and indirectly through its associations, the information elements that support the functionality of a generator.  A generator produces energy or retrieves it from storage.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ComponentElement">
+				<xs:sequence>
+					<xs:element name="actualStoredEnergy" type="StoreableEnergyQuantity" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the amount of stored energy available at the present time. The value can be derived from the DERUnitGenerator.TotalWh and DERUnitGenerator.PeriodWh attributes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="actualSupply" type="PowerMeasurementsSet" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the power being generated by the device at the present time in units specified by PowerMeasurementsSet. The value can be derived from the DERMeasurement.TotW, DERMeasurement.TotVAr and, DERMeasurement.TotVA attributes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="downRamp" type="PowerRampSegmentType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the Real power component reduction in power over time when a generator being partially or fully de-energized has a complex power ramp.  It can be generated from the DERComplexOutputRamping.RmpDn attribute for complex generators.  Simple generators can use DERDeviceControllerCharacteristics.LoadRampRate to generate the single ramp segment needed.
+For each element of the Generator.downRamp array, the generatorDownRamp[n].rate defines the amount of power increase and the generatorDownRamp[n].duration defines the length of time in seconds upon which the increase is in effect. If the generatorDownRamp[n].beginRamp attribute is defined for a ramp segment, this is the initial value of the ramp segment; if it is not present the initial value of the ramp equals the ending value of the previous ramp segment.
+Although the downRamp attribute name implies that the rise is monotonically decreasing, individual array elements may have slopes less than, greater than, or equal to 0.  However, the overall trend of the function shall be decreasing.
+The downRamp function shall measure the time from the generator being fully energized until the power is completely depleted.
+If downRamp is not present, the power decrease to 0 shall be instantaneous.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="locked" type="xs:boolean" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines whether the generator is unavailable for use.   It can be generated from the DERUnitStatus.ModeOffUnavailable attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ratedStoredEnergy" type="StoreableEnergyQuantity" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the maximum amount of stored energy available. The value can be derived from the DERGeneratorRatings.WHRating attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="status" type="GeneratorOperationStatusEnumeration" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the current operational status of the generator. It can be generated from the DERUnitGenerator.GeneratorOperationStatus attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="storage" type="StorageType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines whether this instance of the Generator Class models electrical energy storage, thermal energy storage, or neither.
+
+The value of this attribute can be generated from DERDeviceControllerCharacteristics.DERType. If the value of DERDeviceControllerCharacteristics.DERType is "compressedAir", "pumpedHydroelectric", "flywheel",  "electroChemicalBattery", "flowBattery", "capacitor", or "superconductingMagneticEnergy", then the value of this enumeration shall be electricalStorage.  If the value of DERDeviceControllerCharacteristics.DERType is "thermalEnergyStorage", then the value of this enumeration shall be "thermalStorage."</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="supplyLimits" type="PowerRatings" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The operational demand characteristics and their associated end points for the generator.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="type" type="DRCT.DERtyp.ING" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the type of generator or storage system</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="upRamp" type="PowerRampSegmentType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>This attribute defines the Real power component increase in power over time when a generator being partially or fully energized has a complex power ramp. It can be determined from the DERComplexOutputRamping.RmpUp attribute for complex generators.  Simple generators can use DERDeviceControllerCharacteristics.LoadRampRate to derive the single ramp segment needed.
+For each element of the Generator.upRamp array, the upRamp[n].rate defines the amount of power increase and the upRamp[n].duration defines the length of time in seconds upon which the increase is in effect. If the upRamp[n].beginRamp attribute is defined for a ramp segment, this is the initial value of the ramp segment; if it is not present the initial value of the ramp equals the ending value of the previous ramp segment.
+Although the upRamp attribute name implies that the rise is monotonically increasing, individual array elements may have slopes less than, greater than, or equal to 0. However, the overall trend of the function shall be increasing.
+The upRamp shall measure the time from the generator being stopped until the power is completely restored as defined by DERGeneratorRatings.MaximumWOutput. If this attribute is not present, the power increase upon restoration shall be instantaneous.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="output" type="ConnectionPoint" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="DERComplexOutputRamping" type="DERComplexOutputRamping" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Generator ramping behavior</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERCostParameters" type="DERCostParameters" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Key economic statistics on generator operation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nameplateEmissions" type="DERDatasheetEmissions" minOccurs="0" maxOccurs="11">
+						<xs:annotation>
+							<xs:documentation>Generator emissions per operating mode.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERDeviceControllerCharacteristics" type="DERDeviceControllerCharacteristics" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Device control characteristics and control setpoints.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERGeneratorRatings" type="DERGeneratorRatings" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Nameplate ratings of the generator/storage unit.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERMeasurement" type="DERMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Basic generator measurements.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DEROperationalModeControls" type="DEROperationalModeControls" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Control of the operational modes of the generator/storage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERThermalStorage" type="DERThermalStorage" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Characteristics of the thermal storage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERUnitControlActions" type="DERUnitControlActions" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Basic generator control operations.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERUnitGenerator" type="DERUnitGenerator" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Detailed status of generator/storage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DERUnitStatus" type="DERUnitStatus" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Operational status of the generator/storage.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="StorageType">
+		<xs:annotation>
+			<xs:documentation>An enumeration that defines the energy storage characteristics of an instance of the Generator Class.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>This value indicates that this instance of the Generator Class models a device that does not produce energy from storage.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="electricalStorage">
+				<xs:annotation>
+					<xs:documentation>This value indicates that this instance of the Generator Class models a device that produces electricity from storage.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="thermalStorage">
+				<xs:annotation>
+					<xs:documentation>This value indicates that this instance of the Generator Class models a device that produces thermal energy from storage.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="SupplyArrayElement" type="SupplyArrayElement"/>
+	<xs:complexType name="SupplyArrayElement">
+		<xs:annotation>
+			<xs:documentation>This class defines a single array element of the supplyRatingsLevel attribute. Each array element defines the fixed supply to which the generator shall be controlled as a function of the stated level. The array is ordered by the supplyRatingsLevel.levelIndex attribute.  </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="levelIndex" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the level or percentage index when used in the supplyRatingsLevel or supplyRatingsMultiplier attributes respectively. When used in the supplyRatingsLevel array , this attribute is matched to the requestedSupplyLevel.currentValue as supplied by the Energy Manager to transform the level request to the absolute supply requested. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="supplyAmount" type="PowerMeasurementsSet" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This attribute defines the absolute supply to be achieved upon receipt of a request from an energy manager as specified in the requestedSupplyLevel.currentValue attribute.  When deployed in the supplyRatingsLevel array, this attribute defines the absolute supply the generator should target for each of the defined levels.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SupplyStatusType">
+		<xs:annotation>
+			<xs:documentation>This enumeration indicates if the load is presently curtailed and if curtailed is in compliance with the curtailment request received.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="supplyInactive">
+				<xs:annotation>
+					<xs:documentation>This generator is not presently operating</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="supplyRequestPending">
+				<xs:annotation>
+					<xs:documentation>A request has been received and is pending.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="supplyCompliant">
+				<xs:annotation>
+					<xs:documentation>The generator operation is compliant with the last request.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="supplyNoncompliant">
+				<xs:annotation>
+					<xs:documentation>The generator is not compliant with the last request.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

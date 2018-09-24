@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Measured values as defined in the following clauses may also be applied to calculated values.
+For applicable services, see Annex B.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="constructeddas.xsd"/>
+	<xs:include schemaLocation="iec61850_7_3_daenums.xsd"/>
+	<xs:element name="CMV" type="CMV"/>
+	<xs:complexType name="CMV">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent complex (phasor) measured values.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="RangeDeadbandCDC">
+				<xs:sequence>
+					<xs:element name="angRef" type="AngleReferenceKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Angle reference, indicating the quantity that is used as reference for the phase angles 'cVal.ang', 'instCVal.ang', subCVal.ang'. For the indicated quantity, the fundamental frequency (index = 1) is used as reference by convention.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="angSVC" type="ScaledValueConfig" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Configuration for scaled value representation of angles 'instCVal.ang', 'cVal.ang', 'rangeAngC.min' and 'rangeAngC.max'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="cVal" type="Vector" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Deadbanded complex value, based on a deadband calculation from the instantaneous value 'instCVal.mag' with 'db' and 'instCVal.ang' with 'dbAng', independently. See 'MV.mag'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dbAng" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Deadband is a configuration parameter used to calculate deadbanded angle of a complex value ('cVal.ang'). The value of 'dbAng' shall represent the percentage of difference ('rangeAngC.max' - 'rangeAngC.min') in units of 0.001%. See 'RangeDeadbandCDC.db'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="instCVal" type="Vector" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Instantaneous complex (phasor) value, with magnitude and angle.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="magSVC" type="ScaledValueConfig" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Configuration for scaled value representation of magnitudes 'instCVal.mag', 'cVal.mag', 'subCVal.mag'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="q" type="Quality" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the data values 'instCVal', 'cVal', 'range'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="rangeAng" type="RangeKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Range in which the current instantaneous value is ('MV.instMag' or 'CMV.instCVal.mag'). It may be used to report an event if its value changes (due to the change in the instantaneous value). See RangeConfig.
+NOTE The use of algorithms to filter events based on transition from one range to another is a local issue.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="rangeAngC" type="RangeConfig" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Configuration for 'rangeAng'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="smpRate" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Number of samples per nominal period that has been used to determine instantaneous value 'instCVal.mag'.In the case of a dc system, it is number of samples per s.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="subCVal" type="Vector" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Value used to substitute 'instCVal'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="t" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Timestamp of the last change in one of the data values 'cVal', 'range', or quality 'q'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="units" type="Unit" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit for 'instCVal.mag', 'cVal.mag', 'subCVal.mag', 'rangeC'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DEL" type="DEL"/>
+	<xs:complexType name="DEL">
+		<xs:annotation>
+			<xs:documentation>This class is a collection of measurements of values in a three phase system that represent phase to phase values ("delta").
+Values for 'phsAB', 'phsBC' and 'phsCA' have been simultaneously acquired or determined, and their respective time stamps hold the same value 't.secondSinceEpoch'. It shall be assumed that any jitter between the acquisition times dedicated for these values is neglectable. The jitter for simultaneity shall be as indicated in any of the respective 't.timeQuality' attributes of the above values.
+Attribute 'angRef' is used in place of individual 'angRef' attributes of 'phsAB', 'phsBC' and 'phsCA'.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="angRef" type="AngleReferenceKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Angle reference, indicating the quantity that is used as reference for the phase angles {'phsAB', 'phsBC', 'phsCA'}.'instCVal.ang', instead of their own 'angRef'. For the indicated quantity, the fundamental frequency (index = 1) is used as reference by convention.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phsAB" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value of phase A to phase B measurement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phsBC" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value of phase B to phase C measurement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phsCA" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value of phase C to phase A measurement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="HarmonicMeasurandCDC" type="HarmonicMeasurandCDC"/>
+	<xs:complexType name="HarmonicMeasurandCDC" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This abstract supertype groups the configuration attributes for common data classes that provide harmonic and interharmonic measurand information. Attributes are used to configure arrays of harmonic values in concrete CDCs ('har[] in HMV, {'phsAHar', 'phsBHar', phsCHar', 'neutHar', 'netHar', 'resHar'}[] in HWYE, and {'phsABHar', phsBCHar', 'phsCAHar'}[] in HDEL).
+
+An array (e.g., 'har[]') contains the harmonic and subharmonic ('evalTm' equals 'frequency' period), or the interharmonic values ('evalTm' differs from 'frequency' period). The first array element 'har[0]' contains the dc component, the further array elements 'har[1]'...'har['numHar']' contain the values for the harmonics 1..'numHar', respectively.
+
+For the case of harmonic and subharmonic values ('evalTm' equals'frequency' period), if 'numCyc'&gt;1, 'har[]' contains both harmonics, and subharmonics with their multiples. Array elements with the index that is a multiple of 2'numCyc'-1 are harmonics; all the others are subharmonics or multiple of subharmonics.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="evalTm" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Time window [ms] applied to interharmonic calculations. See 'numHar'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="frequency" type="xs:float" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Nominal frequency of the power system (HMV, HDEL) or some other fundamental frequency (HWYE) [Hz].</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hvRef" type="HvReferenceKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Reference type (i.e., ratio of harmonic to fundamental, to RMS or to absolute), of the values in 'CMV[i].instCVal.mag'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numCyc" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of cycles of power frequency, which are used for harmonic, subharmonic and interharmonic calculation. See 'numHar'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numHar" type="xs:integer" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of harmonic and subharmonics, or interharmonic values that are to be returned as the array of values. Array index 0 refers to the dc component, therefore 'numHar'&gt;0. The maximum value can be calculated as follows: 'numHar' = 1 + 0.5 * ('smpRate' * 'frequency' * 'evalTm' * 2'numCyc'-1).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rmsCyc" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of cycles of power frequency used for the calculation of rms values.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="smpRate" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Determines the highest possible harmonic or interharmonic detectable, according to the sampling theorem; the minimum value is 'smpRate'=2 * 'frequency'. 'smpRate' is the number of samples per nominal period. In the case of a dc system, it is number of samples per s.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="HMV" type="HMV"/>
+	<xs:complexType name="HMV">
+		<xs:annotation>
+			<xs:documentation>This class is a collection of values that represent the harmonic or interharmonic content of a process value.
+NOTE Harmonics for a single circuit may have phase angles, but need no reference for the angle ('angRef'), since by convention the reference is always the fundamental frequency (index 1).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="HarmonicMeasurandCDC">
+				<xs:sequence>
+					<xs:element name="har" type="CMV" minOccurs="1" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Array of harmonic and subharmonic, or the interharmonic values.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MV" type="MV"/>
+	<xs:complexType name="MV">
+		<xs:annotation>
+			<xs:documentation>This common data class is used to represent scalar measured values.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="RangeDeadbandCDC">
+				<xs:sequence>
+					<xs:element name="instMag" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Magnitude of the instantaneous value.
+NOTE 'instMag' is optional from the perspective of the visibility of that value to the communication. The instantaneous value may be required for the internal behaviour of the function, e.g., to perform the deadband calculation for 'mag'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mag" type="AnalogueValue" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Magnitude based on a deadband 'db' calculation from the instantaneous value 'instMag'. The value of 'mag' shall be updated to the current instantaneous value 'instMag' when the value has changed according the configured deadband 'db'. If 'db'=0, 'mag'='instMag'.
+NOTE 1 This value is typically used to create reports for analogue values. Such a report sent "by exception" is not comparable to the transfer of sampled measured values as supported by the CDC SAV.
+NOTE 2 This 'mag' is not the same as 'Vector.mag'. In particular, the value 'CMV.instCVal.mag' is NOT a deadbanded value.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="q" type="Quality" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Quality of the data values 'instMag', 'mag', 'range'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="smpRate" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Number of samples per nominal period that has been used to determine instantaneous value 'instMag'. In the case of a dc system, it is number of samples per s.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="subMag" type="AnalogueValue" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Value used to substitute 'instMag'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="sVC" type="ScaledValueConfig" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Configuration for scaled value representation ('instMag', 'mag', 'subMag', 'range').</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="t" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Timestamp of the last change in one of the data values 'mag', 'range', or quality 'q'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="units" type="Unit" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Unit for 'instMag', 'mag', 'subMag', 'rangeC'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RangeDeadbandCDC" type="RangeDeadbandCDC"/>
+	<xs:complexType name="RangeDeadbandCDC" abstract="true">
+		<xs:annotation>
+			<xs:documentation>This abstract supertype groups the attributes common to those common data classes  that provide deadbanded values (in addition to instantaneous ones).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="db" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Deadband is a configuration parameter used to calculate deadbanded value ('MV.mag' or 'CMV.cVal.mag'). The value of 'db' shall represent the percentage of difference ('rangeC.max' - 'rangeC.min') in units of 0.001%. Therefore, 'db'=[0, 100'000], corresponding to [0%, 100%], respectively. If an integral calculation is used to determine the deadbanded value, the value of 'db' shall be represented as 0,001% s.
+Value 0 shall suppress reporting events on the analog value, so that only changes of the 'range' value will lead to events.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="range" type="RangeKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Range in which the current instantaneous value is ('MV.instMag' or 'CMV.instCVal.mag'). It may be used to report an event if its value changes (due to the change in the instantaneous value). See RangeConfig.
+NOTE The use of algorithms to filter events based on transition from one range to another is a local issue.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rangeC" type="RangeConfig" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Configuration for 'range'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="zeroDb" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Configuration parameter used to calculate the range around zero, where the deadbanded value ('MV.mag' or CMV.cVal.mag') will be forced to zero. The value of 'zeroDb' shall represent the percentage of difference ('rangeC.max' - 'rangeC.min') in units of 0,001%. Therefore, 'zeroDb'=[0, 100'000], corresponding to [0%, 100%], respectively.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="WYE" type="WYE"/>
+	<xs:complexType name="WYE">
+		<xs:annotation>
+			<xs:documentation>This class is a collection of simultaneous measurements of values in a three phase system that represent phase to ground values ("wye").
+Values for 'phsA', 'phsB', 'phsC', 'neut', 'net' and 'res' have been simultaneously acquired or determined, and their respective time stamps hold the same value 't.secondSinceEpoch'. It shall be assumed that any jitter between the acquisition times dedicated for these values is neglectable. The jitter for simultaneity shall be as indicated in any of the respective 't.timeQuality' attributes of the above values.
+Attribute 'angRef' is used in place of individual 'angRef' attributes of 'phsA', 'phsB', 'phsC', 'neut', 'net' and 'res'.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="angRef" type="AngleReferenceKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Angle reference, indicating the quantity that is used as reference for the phase angles {'phsA', 'phsB', 'phsC', 'neut', 'net', 'res'}.'instCVal.ang', instead of their own 'angRef'. For the indicated quantity, the fundamental frequency (index = 1) is used as reference by convention.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="net" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Net current, as the algebraic sum of the instantaneous values of currents flowing through all live conductors and neutral point of the electrical installation('phsA.instCVal'+'phsB.instCVal'+'phsC.instCVal'+'neut.instCVal').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="neut" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value of the measured phase neutral. If a direct measurement of this value is not available, it is acceptable to substitute an estimate computed by creating the algebraic sum of the instantaneous values of currents flowing through all live conductors ('phsA.instCVal'+'phsB.instCVal'+'phsC.instCVal'); in that case, 'neut'='res'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phsA" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value of phase A.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phsB" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value of phase B.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phsC" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Value of phase C.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phsToNeut" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>True indicates that this WYE instance is used for phase to neutral values instead of phase to ground values ('neut' always indicates the neutral to ground value).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="res" type="CMV" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Residual current, as the algebraic sum of the instantaneous values of currents flowing through all live conductors of the electrical installation('phsA.instCVal'+'phsB.instCVal'+'phsC.instCVal').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

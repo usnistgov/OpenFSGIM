@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:X-fsgim:fsgim" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Defines the cultural locale for a location including language, country, and character set.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="iso00639.xsd"/>
+	<xs:include schemaLocation="iso03166.xsd"/>
+	<xs:include schemaLocation="id_info.xsd"/>
+	<xs:element name="PT_Locale" type="PT_Locale"/>
+	<xs:complexType name="PT_Locale">
+		<xs:annotation>
+			<xs:documentation>A class describing the cultural locale for a location including language, country, and character set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="characterSetCode" type="MD_CharacterSetCode" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The character set code of the locale.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="country" type="CountryCode" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The country code of the locale.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="languageCode" type="LanguageCode" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The language code of the locale.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

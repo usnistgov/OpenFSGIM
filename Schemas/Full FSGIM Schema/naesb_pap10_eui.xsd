@@ -1,0 +1,2872 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:X-fsgim:fsgim" xmlns="urn:X-fsgim:fsgim" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fsgim="urn:X-fsgim:fsgim" elementFormDefault="qualified" version="1.0">
+	<xs:annotation>
+		<xs:documentation>This is the NAESB REQ.18/WEQ.19 PAP10 Energy Usage Information Model. It was ratified in October 2010 and updated this year 2012. </xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="enumerations.xsd"/>
+	<xs:include schemaLocation="time.xsd"/>
+	<xs:include schemaLocation="device.xsd"/>
+	<xs:simpleType name="AccumulationKind">
+		<xs:annotation>
+			<xs:documentation>This attribute provides metadata about how the measurements described are made. These enumerated values refer to the common present and historic methods by which physical measurements are made in revenue-quality metering instruments and are based on that terminology.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not Applicable, or implied by the unit of measure.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bulkQuantity">
+				<xs:annotation>
+					<xs:documentation>A value from a register which represents the bulk quantity of a commodity. This quantity is computed as the integral of the commodity usage rate. This value is typically used as the basis for the dial reading at the meter, and as a result, will roll over upon reaching a maximum dial value. 
+Note 1: With the metering system, the roll-over behavior typically implies a roll-under behavior so that the value presented is always a positive value (e.g., unsigned integer or positive decimal.) However, when communicating data between enterprise applications a negative value might occur in a case such as net metering.
+Note 2: A BulkQuantity refers primarily to the dial reading and not the consumption over a specific period of time.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="continuousCumulative">
+				<xs:annotation>
+					<xs:documentation>The sum of the previous billing period values and the present period value. Note: "ContinuousCumulative" is commonly used in conjunction with "demand." The "ContinuousCumulative Demand" would be the cumulative sum of the previous billing period maximum demand values (as occurring with each demand reset) summed with the present period maximum demand value (which has yet to be reset.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cumulative">
+				<xs:annotation>
+					<xs:documentation>The sum of the previous billing period values. Note: "Cumulative" is commonly used in conjunction with "demand." Each demand reset causes the maximum demand value for the present billing period (since the last demand reset) to accumulate as an accumulative total of all maximum demands. So instead of "zeroing" the demand register, a demand reset has the affect of adding the present maximum demand to this accumulating total. </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="deltaData">
+				<xs:annotation>
+					<xs:documentation>The difference between the value at the end of the prescribed interval and the beginning of the interval. This is used for incremental interval data. 
+Note: One common application would be for load profile data, another use might be to report the number of events within an interval (such as the number of equipment energizations within the specified period of time.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="indicating">
+				<xs:annotation>
+					<xs:documentation>As if a needle is swung out on the meter face to a value to indicate the current value. (Note: An "indicating" value is typically measured over hundreds of milliseconds or greater, or may imply a "pusher" mechanism to capture a value. Compare this to "instantaneous" which is measured over a shorter period of time.) </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="summation">
+				<xs:annotation>
+					<xs:documentation>A form of accumulation which is selective with respect to time. 
+Note : "Summation" could be considered a specialization of "Bulk Quantity" according to the rules of inheritance where "Summation" selectively accumulates pulses over a timing pattern, and "BulkQuantity" accumulates pulses all of the time.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="timeDelay">
+				<xs:annotation>
+					<xs:documentation>A form of computation which introduces a time delay characteristic to the data value</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="instantaneous">
+				<xs:annotation>
+					<xs:documentation>Typically measured over the fastest period of time allowed by the definition of the metric (usually milliseconds or tens of milliseconds.) (Note: "Instantaneous" was moved to attribute #3 in 61968-9Ed2 from attribute #1 in 61968-9Ed1.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="latchingQuantity">
+				<xs:annotation>
+					<xs:documentation>When this description is applied to a metered value, it implies that the value is a time-independent cumulative quantity much a BulkQuantity, except that it latches upon the maximum value upon reaching that value. Any additional accumulation (positive or negative) is discarded until a reset occurs. 
+Note: A LatchingQuantity may also occur in the downward direction – upon reaching a minimum value. The terms "maximum" or "minimum" will usually be included as an attribute when this type of accumulation behaviour is present.
+When this description is applied to an encoded value (UOM= "Code"), it implies that the value has one or more bits which are latching. The condition that caused the bit to be set may have long since evaporated.
+In either case, the timestamp that accompanies the value may not coincide with the moment the value was initially set.
+In both cases a system will need to perform an operation to clear the latched value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="boundedQuantity">
+				<xs:annotation>
+					<xs:documentation>A time-independent cumulative quantity such as BulkQuantity or a LatchingQuantity, except that the accumulation stops at the maximum or minimum values. When the maximum is reached, any additional positive accumulation is discarded, but negative accumulation may be accepted (thus lowering the counter.) Likewise, when the negative bound is reached, any additional negative accumulation is discarded, but positive accumulation is accepted (thus increasing the counter.) </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="BaseCIM_CombinedVersion" type="BaseCIM_CombinedVersion"/>
+	<xs:complexType name="BaseCIM_CombinedVersion">
+		<xs:annotation>
+			<xs:documentation>The combined version denotes the versions of the subpackages that have been combined into the total CIM model. This is a convenience instead of having to look at each subpackage.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="date" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Form is YYYY-MM-DD for example for January 5, 2009 it is 2009-01-05.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="version" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Form is IEC61970CIMXXvYY_IEC61968CIMXXvYY_combined where XX is the major CIM package version and the YY is the minor version, and different packages could have different major and minor versions. For example IEC61970CIM13v18_IEC61968CIM10v16_combined.  Additional packages might be added in the future.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CommodityKind">
+		<xs:annotation>
+			<xs:documentation>Identifies the commodity being measured.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not Applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="electricity SecondaryMetered">
+				<xs:annotation>
+					<xs:documentation>All types of metered quantities. This type of reading comes from the meter and represents a "secondary" metered value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="electricity PrimaryMetere">
+				<xs:annotation>
+					<xs:documentation>It is possible for a meter to be outfitted with an external VT and/or CT. The meter might not be aware of these devices, and the display not compensate for their presence. Ultimately, when these scalars are applied, the value that represents the service value is called the "primary metered" value. The "index" in sub-category 3 mirrors those of sub-category 0.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="communication">
+				<xs:annotation>
+					<xs:documentation>A measurement of the communication infrastructure itself.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="air">
+				<xs:annotation>
+					<xs:documentation>Air</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="insulativeGas">
+				<xs:annotation>
+					<xs:documentation>Insulative gas (SF6 is found separately below.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="insulativeOil">
+				<xs:annotation>
+					<xs:documentation>Insulative Oil</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="naturalGas">
+				<xs:annotation>
+					<xs:documentation>Natural Gas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="propane">
+				<xs:annotation>
+					<xs:documentation>Propane C3H8</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="potableWater">
+				<xs:annotation>
+					<xs:documentation>Drinkable water</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="steam">
+				<xs:annotation>
+					<xs:documentation>Water in steam form, usually used for heating.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wasteWater">
+				<xs:annotation>
+					<xs:documentation>Waste Water (Sewerage)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="heatingFluid">
+				<xs:annotation>
+					<xs:documentation>This fluid is likely in liquid form. It is not necessarily water or water based. The warm fluid returns cooler than when it was sent. The heat conveyed may be metered.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="coolingFluid">
+				<xs:annotation>
+					<xs:documentation>The cool fluid returns warmer than when it was sent. The heat conveyed may be metered.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nonpotableWater">
+				<xs:annotation>
+					<xs:documentation>Reclaimed water – possibly used for irrigation but not sufficiently treated to be considered safe for drinking.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nox">
+				<xs:annotation>
+					<xs:documentation>Nitrous Oxides NOX</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="so2">
+				<xs:annotation>
+					<xs:documentation>Sulfur Dioxide SO2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ch4">
+				<xs:annotation>
+					<xs:documentation>Methane CH4</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="co2">
+				<xs:annotation>
+					<xs:documentation>Carbon Dioxide CO2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="carbon">
+				<xs:annotation>
+					<xs:documentation>Carbon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pfc">
+				<xs:annotation>
+					<xs:documentation>Perfluorocarbons PFC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sf6">
+				<xs:annotation>
+					<xs:documentation>Sulfurhexafluoride SF6</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tvLicence">
+				<xs:annotation>
+					<xs:documentation>Television</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="internet">
+				<xs:annotation>
+					<xs:documentation>Internet service</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="refuse">
+				<xs:annotation>
+					<xs:documentation>trash</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="h2">
+				<xs:annotation>
+					<xs:documentation>Hydrogen, H2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="c2h2">
+				<xs:annotation>
+					<xs:documentation>Acetylene, C2H2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="c2h4">
+				<xs:annotation>
+					<xs:documentation>Ethylene, C2H4</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="c2h6">
+				<xs:annotation>
+					<xs:documentation>Ethane, C2H6</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="co">
+				<xs:annotation>
+					<xs:documentation>Carbon monoxide, CO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="o2">
+				<xs:annotation>
+					<xs:documentation>Oxygen, O2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dissolvedCombustibleGas">
+				<xs:annotation>
+					<xs:documentation>Dissolved Combustible Gas (A combination of combustible gasses such as H2, CH4, C2H2, C2H4, C2H6, and/or CO in some mixture.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="co2e">
+				<xs:annotation>
+					<xs:documentation>Carbon Dioxide CO2 Equivalent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lead">
+				<xs:annotation>
+					<xs:documentation>Lead, Pb</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mercury">
+				<xs:annotation>
+					<xs:documentation>Mercury, Hg</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ozone">
+				<xs:annotation>
+					<xs:documentation>Ozone, O3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pm10">
+				<xs:annotation>
+					<xs:documentation>Particulate matter whose maximum size is 10 µm.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pm25">
+				<xs:annotation>
+					<xs:documentation>Particulate matter whose maximum size is 2.5 µm.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sox">
+				<xs:annotation>
+					<xs:documentation>Sulfur Oxides, SOX</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Customer" type="Customer"/>
+	<xs:complexType name="Customer">
+		<xs:annotation>
+			<xs:documentation>Organization receiving services from ServiceSupplier.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="CustomerAgreements" type="CustomerAgreement" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>All agreements of this customer.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ServiceSuppliers" type="ServiceSupplier" minOccurs="1" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>ServiceSuppliers associated with a Customer.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CustomerAgreement" type="CustomerAgreement"/>
+	<xs:complexType name="CustomerAgreement">
+		<xs:annotation>
+			<xs:documentation>Agreement between the customer and the ServiceSupplier to pay for service at a specific service location. It provides for the recording of certain billing information about the type of service provided at the service location and is used during charge creation to determine the type of service.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Customer" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Customer for this agreement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CustomerAuthorisations" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>CustomerAuthorisations provided by the Customer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name is any free human readable and possibly non unique text naming the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ServiceDeliveryPoints" type="ServiceDeliveryPoint" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>All service delivery points regulated by this customer agreement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CustomerAuthorisation" type="CustomerAuthorisation"/>
+	<xs:complexType name="CustomerAuthorisation">
+		<xs:annotation>
+			<xs:documentation>Holds an authorization for access to specific user-private data granted to a third party service provider. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="accessToken" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Contains the access token associated with this authorization. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="authorizationServer" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Contains the URI link to the authorization endpoint associated with this authorization. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="authorizedPeriod" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Restricts access to requests or subscriptions within this date time interval. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="publishedPeriod" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Restricts access to the objects within the associated resource that were published within this date time interval. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="resource" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Contains the identifier of the resource, same as was specified in OAuth "scope". </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="status" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The status of this authorization. 
+0 - Revoked
+1 - Active</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="validityInterval" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Date and time interval this agreement is valid (from going into effect to termination).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CustomerAgreements" type="CustomerAgreement" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>CustomerAgreements represented by a CustomerAuthorisation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="DataQualifierKind">
+		<xs:annotation>
+			<xs:documentation>This value qualifies the measurement as to what it represents -- for example a minimum or maximum value or a nominal or nameplate value.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="high">
+				<xs:annotation>
+					<xs:documentation>Typically used to identify the high volume flow port of a compound water meter.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="low">
+				<xs:annotation>
+					<xs:documentation>Typically used to identify the low volume flow port of a compound water meter.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not Applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="average">
+				<xs:annotation>
+					<xs:documentation>The value represents an average</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="excess">
+				<xs:annotation>
+					<xs:documentation>The value represents an amount over which a threshold was exceeded.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="highThreshold">
+				<xs:annotation>
+					<xs:documentation>The value represents a programmed threshold.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lowThreshold">
+				<xs:annotation>
+					<xs:documentation>The value represents a programmed threshold.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="maximum">
+				<xs:annotation>
+					<xs:documentation>The highest value observed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="minimum">
+				<xs:annotation>
+					<xs:documentation>The smallest value observed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nominal">
+				<xs:annotation>
+					<xs:documentation>The value represents nominal or nameplate values</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="normal">
+				<xs:annotation>
+					<xs:documentation>The value represents typical operating values</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="secondMaximum">
+				<xs:annotation>
+					<xs:documentation>The second highest value observed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="secondMinimum">
+				<xs:annotation>
+					<xs:documentation>The second smallest value observed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="thirdMaximum">
+				<xs:annotation>
+					<xs:documentation>The third highest value observed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fourthMaximum">
+				<xs:annotation>
+					<xs:documentation>The fourth highest value observed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fifthMaximum">
+				<xs:annotation>
+					<xs:documentation>The fifth highest value observed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sum">
+				<xs:annotation>
+					<xs:documentation>The accumulated sum</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ElectricPowerQualitySummary" type="ElectricPowerQualitySummary"/>
+	<xs:complexType name="ElectricPowerQualitySummary">
+		<xs:annotation>
+			<xs:documentation>A summary of power quality events. This information represents a summary of power quality information typically required by energy management systems. It is not intended to satisfy the detailed requirements of power quality monitoring. All values are as defined by measurementProtocol during the period. The standards typically also give ranges of allowed values. See referenced standards for definition, measurement protocol  and period.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="flickerPlt" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A measurement of long term Rapid Voltage Change </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="flickerPst" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>flickerPst is a value measured over 10 minutes that characterizes the likelihood that the voltage fluctuations would result in perceptible light flicker. A value of 1.0 is designed to represent the level that 50% of people would perceive flicker in a 60 watt incandescent bulb.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="harmonicVoltage" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A measurement of the Harmonic Voltage during the period. For DC, distortion is with respect to a signal of zero Hz.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="longInterruptions" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A count of Long Interruption events (as defined by measurementProtocol) during the summary interval period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mainsVoltage" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A measurement of the Mains [Signaling] Voltage during the summary interval period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="measurementProtocol" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A reference to the source used as the measurement protocol definition. e.g., "IEEE1519-2009", "EN50160"</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="powerFrequency" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A measurement of the power frequency during the summary interval period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="rapidVoltageChanges" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A count of Rapid Voltage Change events during the summary interval period</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shortInterruptions" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A count of Short Interruption events during the summary interval period </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="summaryInterval" type="UTCDateTimeInterval" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The relevant time reference for the ElectricPowerQualitySummary.
+
+This time interval may not be the same as any associated EMIntervalData time interval. For example, many of the statistics in the summary are running counts. The summaryInterval defines when the counts began.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="supplyVoltageDips" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A count of Supply Voltage Dip events during the summary interval period </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="supplyVoltageImbalance" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A count of Supply Voltage Imbalance events during the summary interval period </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="supplyVoltageVariations" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A count of Supply Voltage Variations during the summary interval period </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tempOvervoltage" type="xs:integer" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A count of Temporary Overvoltage events (as defined by measurementProtocol) during the summary interval period </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="EndDeviceAsset" type="EndDeviceAsset"/>
+	<xs:complexType name="EndDeviceAsset">
+		<xs:annotation>
+			<xs:documentation>EndDeviceAsset that performs one or more end device functions. One type of EndDeviceAsset is a MeterAsset which can perform metering, load management, connect/disconnect, accounting functions, etc. Some EndDeviceAssets, such as ones monitoring and controlling air conditioner, refrigerator, pool pumps may be connected to a MeterAsset. All EndDeviceAssets may have communication capability defined by the associated ComFunction(s). An EndDeviceAsset may be owned by a consumer, an energy service provider, utility or otherwise.
+There may be a related end device function that identifies a sensor or control point within a metering application or communications systems (e.g., water, gas, electricity).
+Some devices may use an optical port that conforms to the ANSI C12.18 standard for communications.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name is any free human readable and possibly non unique text naming the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UsagePoint" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Usage point to which this end device asset belongs.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="EnergyUsageInformation" type="EnergyUsageInformation"/>
+	<xs:complexType name="EnergyUsageInformation">
+		<xs:annotation>
+			<xs:documentation>A collection of customer energy usage information. This class is a container, and has no attributes.  </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ServiceSuppliers" type="ServiceSupplier" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>ServiceSuppliers associated with this collection of EnergyUsageInformation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UsagePoints" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>UsagePoints in this collection of EnergyUsageInformation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="FlowDirectionKind">
+		<xs:annotation>
+			<xs:documentation>This value identifies the direction of flow of what is being measured. Specific indications are supported, especially for electrical measurements that have complex values.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not Applicable (N/A)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="forward">
+				<xs:annotation>
+					<xs:documentation>"Delivered," or "Imported" as defined 61968-2.
+
+Forward Active Energy is a positive kWh value as one would naturally expect to find as energy is supplied by the utility and consumed at the service.
+
+Forward Reactive Energy is a positive VArh value as one would naturally expect to find in the presence of inductive loading.
+
+In polyphase metering, the forward energy register is incremented when the sum of the phase energies is greater than zero:
+
+EnergyA + EnergyB + EnergyC &gt; 0</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lagging">
+				<xs:annotation>
+					<xs:documentation>Typically used to describe that a power factor is lagging the reference value. 
+Note 1: When used to describe VA, "lagging" describes a form of measurement where reactive power is considered in all four quadrants, but real power is considered only in quadrants I and IV.
+Note 2: When used to describe power factor, the term "lagging" implies that the PF is negative. The term "lagging" in this case takes the place of the negative sign. If a signed PF value is to be passed by the data producer, then the direction of flow enumeration zero (none) should be used in order to avoid the possibility of creating an expression that employs a double negative. The data consumer should be able to tell from the sign of the data if the PF is leading or lagging. This principle is analogous to the concept that "Reverse" energy is an implied negative value, and to publish a negative reverse value would be ambiguous.
+Note 3: Lagging power factors typically indicate inductive loading.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="leading">
+				<xs:annotation>
+					<xs:documentation>Typically used to describe that a power factor is leading the reference value.
+Note: Leading power factors typically indicate capacitive loading.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="net">
+				<xs:annotation>
+					<xs:documentation>|Forward| - |Reverse|, See 61968-2.
+
+Note: In some systems, the value passed as a "net" value could become negative. In other systems the value passed as a "net" value is always a positive number, and rolls-over and rolls-under as needed. </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q1plusQ2">
+				<xs:annotation>
+					<xs:documentation>Reactive positive quadrants. (The term "lagging" is preferred.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q1plusQ3">
+				<xs:annotation>
+					<xs:documentation>Quadrants 1 and 3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q1plusQ4">
+				<xs:annotation>
+					<xs:documentation>Quadrants 1 and 4 usually represent forward active energy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q1minusQ4">
+				<xs:annotation>
+					<xs:documentation>Quadrant1 minus Quadrant4</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q2plusQ3">
+				<xs:annotation>
+					<xs:documentation>Quadrants 2 and 3 usually represent reverse active energy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q2plusQ4">
+				<xs:annotation>
+					<xs:documentation>Quadrants 2 and 4</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q2minusQ3">
+				<xs:annotation>
+					<xs:documentation>Quadrant2 minus Quadrant3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q3plusQ4">
+				<xs:annotation>
+					<xs:documentation>Reactive negative quadrants. (The term "leading" is preferred.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="q3minusQ2">
+				<xs:annotation>
+					<xs:documentation>Quadrant3 minus Quadrant2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="quadrant1">
+				<xs:annotation>
+					<xs:documentation>Quadrant1 only</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="quadrant2">
+				<xs:annotation>
+					<xs:documentation>Quadrant2 only</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="quadrant3">
+				<xs:annotation>
+					<xs:documentation>Quadrant3 only</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="quadrant4">
+				<xs:annotation>
+					<xs:documentation>Quadrant4 only</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reverse">
+				<xs:annotation>
+					<xs:documentation>Reverse Active Energy is equivalent to "Received," or "Exported" as defined in 61968-2.
+
+Reverse Active Energy is a positive kWh value as one would expect to find when energy is backfed by the service onto the utility network.
+
+Reverse Reactive Energy is a positive VArh value as one would expect to find in the presence of capacitive loading and a leading Power Factor.
+
+In polyphase metering, the reverse energy register is incremented when the sum of the phase energies is less than zero:
+
+EnergyA + EnergyB + EnergyC &lt; 0
+
+Note: The value passed as a reverse value is always a positive value. It is understood by the label "reverse" that it represents negative flow.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="total">
+				<xs:annotation>
+					<xs:documentation>|Forward| + |Reverse|, See 61968-2.
+The sum of the commodity in all quadrants Q1+Q2+Q3+Q4.
+
+In polyphase metering, the total energy register is incremented when the absolute value of the sum of the phase energies is greater than zero:
+
+| EnergyA + EnergyB + EnergyC | &gt; 0</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="totalByPhase">
+				<xs:annotation>
+					<xs:documentation>In polyphase metering, the total by phase energy register is incremented when the sum of the absolute values of the phase energies is greater than zero:
+
+| EnergyA | + | EnergyB | + | EnergyC | &gt; 0
+
+In single phase metering, the formulas for "Total" and "Total by phase" collapse to the same expression. For communication purposes however, the "Total" enumeration should be used with single phase meter data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="IntervalBlock" type="IntervalBlock"/>
+	<xs:complexType name="IntervalBlock">
+		<xs:annotation>
+			<xs:documentation>Time sequence of Readings of the same ReadingType. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="ReadingType" type="ReadingType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Type information for interval reading values contained in this block.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="IntervalReading" type="IntervalReading"/>
+	<xs:complexType name="IntervalReading">
+		<xs:annotation>
+			<xs:documentation>Data captured over a specific interval of time. If not specified, the duration is the intervalLength of the associated ReadingType, where the full definition of the units of measure is located.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="cost" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The cost associated with this reading for this interval.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="interval" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The time interval associated with the reading. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Value of this interval reading.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ReadingQualities" type="ReadingQuality" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Used only if quality of this interval reading value is different than 'Good'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="LineItem" type="LineItem"/>
+	<xs:complexType name="LineItem">
+		<xs:annotation>
+			<xs:documentation>Details on an amount line, with rounding, date and note.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="amount" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Amount for this line item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateTime" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Date and time when this line was created in the application process.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="measurement" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Optional relevant measurement for line item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Free format note relevant to this line.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rounding" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Totalized monetary value of all errors due to process rounding or truncating that is not reflected in 'amount'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MacroPeriodKind">
+		<xs:annotation>
+			<xs:documentation>Time period of interest that reflects how the reading is viewed or captured over a long period of time.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not Applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="billingPeriod">
+				<xs:annotation>
+					<xs:documentation>Captured during the billing period starting at midnight of the first day of the billing period (as defined by the billing cycle day). If during the current billing period, it specifies a period from the start of the current billing period until "now".</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="daily">
+				<xs:annotation>
+					<xs:documentation>Daily Period starting at midnight. If for the current day, this specifies the time from midnight to "now".</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="monthly">
+				<xs:annotation>
+					<xs:documentation>Monthly period starting at midnight on the first day of the month. If within the current month, this specifies the period from the start of the month until "now."</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="seasonal">
+				<xs:annotation>
+					<xs:documentation>A season of time spanning multiple months. E.g., "Summer," "Spring," "Fall," and "Winter" based cycle. If within the current season, it specifies the period from the start of the current season until "now."</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="weekly">
+				<xs:annotation>
+					<xs:documentation>Weekly period starting at midnight on the first day of the week and ending the instant before midnight the last day of the week. If within the current week, it specifies the period from the start of the week until "now."</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="specifiedPeriod">
+				<xs:annotation>
+					<xs:documentation>The period defined by the start time and end time of the MeterReading.valuesInterval associated with the containing ReadingType.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MeasurementKind">
+		<xs:annotation>
+			<xs:documentation>Identifies "what" is being measured, as refinement of 'commodity'. When combined with 'unit', it provides detail to the unit of measure. For example, 'energy' with a unit of measure of 'kWh' indicates to the user that active energy is being measured, while with 'kVAh' or 'kVArh', it indicates apparent energy and reactive energy, respectively. 'power' can be combined in a similar way with various power units of measure: Distortion power ('distortionVoltAmperes') with 'kVA' is different from 'power' with 'kVA'.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not Applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="apparentPowerFactor">
+				<xs:annotation>
+					<xs:documentation>apparentPowerFactor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="currency">
+				<xs:annotation>
+					<xs:documentation>Funds</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="current">
+				<xs:annotation>
+					<xs:documentation>Current</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="currentAngle">
+				<xs:annotation>
+					<xs:documentation>Current angle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="currentImbalance">
+				<xs:annotation>
+					<xs:documentation>Current imbalance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="date">
+				<xs:annotation>
+					<xs:documentation>Date</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="demand">
+				<xs:annotation>
+					<xs:documentation>Demand</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="distance">
+				<xs:annotation>
+					<xs:documentation>Distance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="distortionVoltAmperes">
+				<xs:annotation>
+					<xs:documentation>Distortion volt-amperes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="energization">
+				<xs:annotation>
+					<xs:documentation>Energization</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="energy">
+				<xs:annotation>
+					<xs:documentation>Energy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="energizationLoadSide">
+				<xs:annotation>
+					<xs:documentation>Energization load side</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fan">
+				<xs:annotation>
+					<xs:documentation>Fan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="frequency">
+				<xs:annotation>
+					<xs:documentation>Frequency</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366ASAI">
+				<xs:annotation>
+					<xs:documentation>IEEE1366 Average Service Availability Index (ASAI) </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366ASIDI">
+				<xs:annotation>
+					<xs:documentation>IEEE1366 Average System Interruption Duration Index (ASIDI)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366ASIFI">
+				<xs:annotation>
+					<xs:documentation>IEEE1366 Average System Interruption Frequency Index (ASIFI)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366CAIDI">
+				<xs:annotation>
+					<xs:documentation>IEEE1366 Customer Average Interruption Duration Index (CAIDI)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366CAIFI">
+				<xs:annotation>
+					<xs:documentation>IEEE1366 Customer Average Interruption Frequency Index (CAIFI)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366CEMIn">
+				<xs:annotation>
+					<xs:documentation>IEEE1366 Customers Experiencing Multiple Interruptions (CEMIN)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366CEMSMIn">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 Customers Experiencing Multiple Sustained Interruption and Momentary Interruption Events (CEMSMIN)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366CTAIDI">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 Customers Experiencing Multiple Sustained Interruption and Momentary Interruption Events (CEMSMIN)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366MAIFI">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 Momentary Average Interruption Frequency Index (MAIFI)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366MAIFIe">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 Momentary Average Interruption Event Frequency Index (MAIFIE)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366SAIDI">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 System average interruption duration index (SAIDI)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366SAIFI">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 System average interruption frequency index (SAIFI)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lineLosses">
+				<xs:annotation>
+					<xs:documentation>Line Losses</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="losses">
+				<xs:annotation>
+					<xs:documentation>Losses</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="negativeSequence">
+				<xs:annotation>
+					<xs:documentation>Negative Sequence</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phasorPowerFactor">
+				<xs:annotation>
+					<xs:documentation>Phasor Power Factor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phasorReactivePower">
+				<xs:annotation>
+					<xs:documentation>Phasor Reactive Power</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="positiveSequence">
+				<xs:annotation>
+					<xs:documentation>Positive Sequence</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="power">
+				<xs:annotation>
+					<xs:documentation>Power</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="powerFactor">
+				<xs:annotation>
+					<xs:documentation>Power Factor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="quantityPower">
+				<xs:annotation>
+					<xs:documentation>Quantity Power</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sag">
+				<xs:annotation>
+					<xs:documentation>Sag</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="swell">
+				<xs:annotation>
+					<xs:documentation>Swell</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="switchPosition">
+				<xs:annotation>
+					<xs:documentation>Switch Position</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tapPosition">
+				<xs:annotation>
+					<xs:documentation>Tap Position</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tariffRate">
+				<xs:annotation>
+					<xs:documentation>Tariff Rate</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="temperature">
+				<xs:annotation>
+					<xs:documentation>Temperature</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="totalHarmonicDistortion">
+				<xs:annotation>
+					<xs:documentation>Total Harmonic Distortion (THD)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="transformerLosses">
+				<xs:annotation>
+					<xs:documentation>Transformer Losses</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unipedeVoltageDip10to15">
+				<xs:annotation>
+					<xs:documentation>Unipede Voltage Dip 10 to 15</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unipedeVoltageDip15to30">
+				<xs:annotation>
+					<xs:documentation>Unipede Voltage Dip 15 to 30</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unipedeVoltageDip30to60">
+				<xs:annotation>
+					<xs:documentation>Unipede Voltage Dip 30 to 60</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unipedeVoltageDip60to90">
+				<xs:annotation>
+					<xs:documentation>Unipede Voltage Dip 60 to 90</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unipedeVoltageDip90to100">
+				<xs:annotation>
+					<xs:documentation>Unipede Voltage Dip 90 to 100</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="voltage">
+				<xs:annotation>
+					<xs:documentation>Voltage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="voltageAngle">
+				<xs:annotation>
+					<xs:documentation>Voltage Angle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="voltageExcursion">
+				<xs:annotation>
+					<xs:documentation>Voltage Excursion</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="voltageImbalance">
+				<xs:annotation>
+					<xs:documentation>Voltage Imbalance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="volume">
+				<xs:annotation>
+					<xs:documentation>Indicates fluid volume</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="zeroFlowDuration">
+				<xs:annotation>
+					<xs:documentation>Zero Flow Duration</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="zeroSequence">
+				<xs:annotation>
+					<xs:documentation>Zero Sequence</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="distortionPowerFactor">
+				<xs:annotation>
+					<xs:documentation>Distortion power factor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="frequencyExcursion">
+				<xs:annotation>
+					<xs:documentation>Frequency excursion. Usually expressed as a "count".</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="applicationContext">
+				<xs:annotation>
+					<xs:documentation>Application context.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="apTitle">
+				<xs:annotation>
+					<xs:documentation>ApTitle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="assetNumber">
+				<xs:annotation>
+					<xs:documentation>Asset number.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bandwidth">
+				<xs:annotation>
+					<xs:documentation>Bandwidth</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="batteryVoltage">
+				<xs:annotation>
+					<xs:documentation>Battery voltage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="broadcastAddress">
+				<xs:annotation>
+					<xs:documentation>Broadcast address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="deviceAddressType1">
+				<xs:annotation>
+					<xs:documentation>Device address type 1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="deviceAddressType2">
+				<xs:annotation>
+					<xs:documentation>Device address type 2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="deviceAddressType3">
+				<xs:annotation>
+					<xs:documentation>Device address type 3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="deviceAddressType4">
+				<xs:annotation>
+					<xs:documentation>Device address type 4</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="deviceClass">
+				<xs:annotation>
+					<xs:documentation>Device class</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="electronicSerialNumber">
+				<xs:annotation>
+					<xs:documentation>Electronic serial number</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="endDeviceID">
+				<xs:annotation>
+					<xs:documentation>End device ID</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="groupAddressType1">
+				<xs:annotation>
+					<xs:documentation>Group address type 1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="groupAddressType2">
+				<xs:annotation>
+					<xs:documentation>Group address type 2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="groupAddressType3">
+				<xs:annotation>
+					<xs:documentation>Group address type 3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="groupAddressType4">
+				<xs:annotation>
+					<xs:documentation>Group address type 4</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ipAddress">
+				<xs:annotation>
+					<xs:documentation>IP Address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="macAddress">
+				<xs:annotation>
+					<xs:documentation>MAC Address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mfgAssignedConfigurationID">
+				<xs:annotation>
+					<xs:documentation>Manufacturer Assigned Configuration ID</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mfgAssignedPhysicalSerialNumber">
+				<xs:annotation>
+					<xs:documentation>Manufacturer Assigned Physical Serial Number</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mfgAssignedProductNumber">
+				<xs:annotation>
+					<xs:documentation>Manufacturer Assigned Product Number</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mfgAssignedUniqueCommunicationAddress">
+				<xs:annotation>
+					<xs:documentation>Manufacturer Assigned Unique Communication Address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="multiCastAddress">
+				<xs:annotation>
+					<xs:documentation>Multicast Address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="oneWayAddress">
+				<xs:annotation>
+					<xs:documentation>One Way Address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="signalStrength">
+				<xs:annotation>
+					<xs:documentation>Signal Strength</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twoWayAddress">
+				<xs:annotation>
+					<xs:documentation>Two Way Address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="signaltoNoiseRatio">
+				<xs:annotation>
+					<xs:documentation>Signal to Noise Ration</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="alarm">
+				<xs:annotation>
+					<xs:documentation>Alarm</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="batteryCarryover">
+				<xs:annotation>
+					<xs:documentation>Battery carryover</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dataOverflowAlarm">
+				<xs:annotation>
+					<xs:documentation>Data overflow alarm</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="demandLimit">
+				<xs:annotation>
+					<xs:documentation>Demand limit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="demandReset">
+				<xs:annotation>
+					<xs:documentation>Demand resets. Usually expressed as a count as part of a billing cycle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="diagnostic">
+				<xs:annotation>
+					<xs:documentation>Diagnostic</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="emergencyLimit">
+				<xs:annotation>
+					<xs:documentation>Emergency limit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="encoderTamper">
+				<xs:annotation>
+					<xs:documentation>Encoder tamper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366MomentaryInterruption">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 Momentary Interruption</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366MomentaryInterruptionEvent">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 Momentary Interruption Event</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ieee1366SustainedInterruption">
+				<xs:annotation>
+					<xs:documentation>IEEE 1366 Sustained Interruption</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="interruptionBehaviour">
+				<xs:annotation>
+					<xs:documentation>Interruption Behavior</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="inversionTamper">
+				<xs:annotation>
+					<xs:documentation>Inversion Tamper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="loadInterrupt">
+				<xs:annotation>
+					<xs:documentation>Load Interrupt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="loadShed">
+				<xs:annotation>
+					<xs:documentation>Load Shed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="maintenance">
+				<xs:annotation>
+					<xs:documentation>Maintenance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="physicalTamper">
+				<xs:annotation>
+					<xs:documentation>Physical Tamper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="powerLossTamper">
+				<xs:annotation>
+					<xs:documentation>Power Loss Tamper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="powerOutage">
+				<xs:annotation>
+					<xs:documentation>Power Outage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="powerQuality">
+				<xs:annotation>
+					<xs:documentation>Power Quality</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="powerRestoration">
+				<xs:annotation>
+					<xs:documentation>Power Restoration</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="programmed">
+				<xs:annotation>
+					<xs:documentation>Programmed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pushbutton">
+				<xs:annotation>
+					<xs:documentation>Push Button</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="relayActivation">
+				<xs:annotation>
+					<xs:documentation>Relay Activation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="relayCycle">
+				<xs:annotation>
+					<xs:documentation>Relay Cycle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="removalTamper">
+				<xs:annotation>
+					<xs:documentation>Removal Tamper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reprogrammingTamper">
+				<xs:annotation>
+					<xs:documentation>Reprogramming Tamper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reverseRotationTamper">
+				<xs:annotation>
+					<xs:documentation>Reverse Rotation Tamper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="switchArmed">
+				<xs:annotation>
+					<xs:documentation>Switch Armed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="switchDisabled">
+				<xs:annotation>
+					<xs:documentation>Switch Disabled</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tamper">
+				<xs:annotation>
+					<xs:documentation>Tamper</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="watchdogTimeout">
+				<xs:annotation>
+					<xs:documentation>Watchdog Timeout</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="billLastPeriod">
+				<xs:annotation>
+					<xs:documentation>Customer's bill for the previous billing period (Currency)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="billToDate">
+				<xs:annotation>
+					<xs:documentation>Customer's bill, as known thus far within the present billing period (Currency)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="billCarryover">
+				<xs:annotation>
+					<xs:documentation>Customer's bill carryover.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="connectionFee">
+				<xs:annotation>
+					<xs:documentation>Monthly fee for connection to commodity.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="audibleVolume">
+				<xs:annotation>
+					<xs:documentation>Sound</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="volumetricFlow">
+				<xs:annotation>
+					<xs:documentation>Volumetric Flow</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MeasuringPeriodKind">
+		<xs:annotation>
+			<xs:documentation>Time attribute inherent or fundamental to the reading value (as opposed to 'macroPeriod' that supplies an "adjective" to describe aspects of a time period with regard to the measurement). It refers to the way the value was originally measured and not to the frequency at which it is reported or presented. For example, an hourly interval of consumption data would have value 'hourly' as an attribute. However in the case of an hourly sampled voltage value, the meterReadings schema would carry the 'hourly' interval size information.
+
+It is common for meters to report demand in a form that is measured over the course of a portion of an hour, while enterprise applications however commonly assume the demand (in kW or kVAr) normalized to 1 hour. The system that receives readings directly from the meter therefore performs this transformation before publishing readings for use by the other enterprise systems. The scalar used is chosen based on the block size (not any sub-interval size).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not Applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tenMinute">
+				<xs:annotation>
+					<xs:documentation>10-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fifteenMinute">
+				<xs:annotation>
+					<xs:documentation>15-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="oneMinute">
+				<xs:annotation>
+					<xs:documentation>1-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twentyfourHour">
+				<xs:annotation>
+					<xs:documentation>24-hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="thirtyMinute">
+				<xs:annotation>
+					<xs:documentation>30-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fiveMinute">
+				<xs:annotation>
+					<xs:documentation>5-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sixtyMinute">
+				<xs:annotation>
+					<xs:documentation>60-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twoMinute">
+				<xs:annotation>
+					<xs:documentation>2-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="threeMinute">
+				<xs:annotation>
+					<xs:documentation>3-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="present">
+				<xs:annotation>
+					<xs:documentation>Within the present period of time</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="previous">
+				<xs:annotation>
+					<xs:documentation>Shifted within the previous monthly cycle and data set</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twentyMinute">
+				<xs:annotation>
+					<xs:documentation>20-minute interval</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock60Min">
+				<xs:annotation>
+					<xs:documentation>60-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock30Min">
+				<xs:annotation>
+					<xs:documentation>30-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock20Min">
+				<xs:annotation>
+					<xs:documentation>20-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock15Min">
+				<xs:annotation>
+					<xs:documentation>15-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock10Min">
+				<xs:annotation>
+					<xs:documentation>10-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock5Min">
+				<xs:annotation>
+					<xs:documentation>5-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock1Min">
+				<xs:annotation>
+					<xs:documentation>1-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl30MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 30-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl20MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 20-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl15MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 15-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl12MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 12-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl10MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 10-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl6MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 6-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl5MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 5-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl4MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 4-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl15MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 15-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl10MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 10-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl6MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 6-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl5MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 5-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl3MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 3-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl2MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 2-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock15MinIntvl5MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>15-minute Rolling Block with 5-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock15MinIntvl3MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>15-minute Rolling Block with 3-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock15MinIntvl1MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>15-minute Rolling Block with 1-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock10MinIntvl5MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>10-minute Rolling Block with 5-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock10MinIntvl2MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>10-minute Rolling Block with 2-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock10MinIntvl1MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>10-minute Rolling Block with 1-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock5MinIntvl1MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>5-minute Rolling Block with 1-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="MeterReading" type="MeterReading"/>
+	<xs:complexType name="MeterReading">
+		<xs:annotation>
+			<xs:documentation>Set of values obtained from the meter.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="valuesInterval" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Date and time interval of the data items contained within this meter reading.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ReadingType" type="ReadingType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>ReadingType of this MeterReading.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="NAESB_EUI_Version" type="NAESB_EUI_Version"/>
+	<xs:complexType name="NAESB_EUI_Version">
+		<xs:annotation>
+			<xs:documentation>The version of this model.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="date" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Form is YYYY-MM-DD for example for January 5, 2009 it is 2009-01-05.20120802</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="version" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>naesb_eui_vxx.yy where xx is the major version and yy is the minor version. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PhaseCodeKind">
+		<xs:annotation>
+			<xs:documentation>Enumeration of phase identifiers. Allows designation of phases for both transmission and distribution equipment, circuits and loads.
+Residential and small commercial loads are often served from single-phase, or split-phase, secondary circuits. Phases 1 and 2 refer to hot wires that are 180 degrees out of phase, while N refers to the neutral wire. Through single-phase transformer connections, these secondary circuits may be served from one or two of the primary phases A, B, and C. For three-phase loads, use the A, B, C phase codes instead of s12N.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not applicable to any phase</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseN">
+				<xs:annotation>
+					<xs:documentation>Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseNtoGnd">
+				<xs:annotation>
+					<xs:documentation>Neutral to ground</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseC">
+				<xs:annotation>
+					<xs:documentation>Phase C</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseCtoN">
+				<xs:annotation>
+					<xs:documentation>Phase C to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseCtoAv">
+				<xs:annotation>
+					<xs:documentation>Phase C current or voltage relative to Phase A voltage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseCAtoN">
+				<xs:annotation>
+					<xs:documentation>CA to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseB">
+				<xs:annotation>
+					<xs:documentation>Phase B</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseBtoN">
+				<xs:annotation>
+					<xs:documentation>Phase B to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseBtoC">
+				<xs:annotation>
+					<xs:documentation>Phase B to C</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseBtoAv">
+				<xs:annotation>
+					<xs:documentation>Phase B current or voltage relative to Phase A voltage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseBCtoN">
+				<xs:annotation>
+					<xs:documentation>BC to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseA">
+				<xs:annotation>
+					<xs:documentation>Phase A</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseAtoN">
+				<xs:annotation>
+					<xs:documentation>Phase A to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseAtoB">
+				<xs:annotation>
+					<xs:documentation>Phase A to B</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseAtoAv">
+				<xs:annotation>
+					<xs:documentation>Phase A current relative to Phase A voltage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseABtoN">
+				<xs:annotation>
+					<xs:documentation>AB to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phasesABC">
+				<xs:annotation>
+					<xs:documentation>Involving all phases</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="phaseABCtoN">
+				<xs:annotation>
+					<xs:documentation>ABC to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s2">
+				<xs:annotation>
+					<xs:documentation>Phase S2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s2N">
+				<xs:annotation>
+					<xs:documentation>Phase S2 to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s1">
+				<xs:annotation>
+					<xs:documentation>Phase S1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s1N">
+				<xs:annotation>
+					<xs:documentation>Phase S1 to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s12">
+				<xs:annotation>
+					<xs:documentation>Phase S1 to S2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s12N">
+				<xs:annotation>
+					<xs:documentation>Phase S1, S2 to Neutral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="threeWireWye">
+				<xs:annotation>
+					<xs:documentation>Three wire Wye</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fourWireWye">
+				<xs:annotation>
+					<xs:documentation>Four wire Wye</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="threeWireDelta">
+				<xs:annotation>
+					<xs:documentation>Three wire Delta</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fourWireDelta">
+				<xs:annotation>
+					<xs:documentation>Four wire Delta</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fourWireHLDelta">
+				<xs:annotation>
+					<xs:documentation>Four wire High-leg Delta</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fourWireOpenDelta">
+				<xs:annotation>
+					<xs:documentation>Four wire Open Delta</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="networked">
+				<xs:annotation>
+					<xs:documentation>Networked meter</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="PositionPoint" type="PositionPoint"/>
+	<xs:complexType name="PositionPoint">
+		<xs:annotation>
+			<xs:documentation>Set of spatial coordinates that determine a point, defined in coordinate system specified in 'Location.CoordinateSystem', or "WGS 84" if not specified otherwise. Use a single position point instance to describe a point-oriented location. Use a sequence of position points to describe a line-oriented object (physical location of non-point oriented objects like cables or lines), or area of an object (like a substation or a geographical zone - in this case, have first and last position point with the same values).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UsagePoint" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>UsagePoint at thie PositionPoint (location).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="xPosition" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>X axis position.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="yPosition" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Y axis position.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="zPosition" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>(if applicable) Z axis position.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RationalNumber" type="RationalNumber"/>
+	<xs:complexType name="RationalNumber">
+		<xs:annotation>
+			<xs:documentation>Rational number = 'numerator' / 'denominator'.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="denominator" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Denominator. Value 1 indicates the number is a simple integer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numerator" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Numerator.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Reading" type="Reading"/>
+	<xs:complexType name="Reading">
+		<xs:annotation>
+			<xs:documentation>Specific value measured by a meter or other asset. Each Reading is associated with a specific ReadingType.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="cost" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Cost in a currency</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="timeStamp" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The time when the value was last updated</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="value" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Value of this reading.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ReadingQualities" type="ReadingQuality" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Used only if quality of this reading value is different than 'Good'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ReadingType" type="ReadingType" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Type information for this reading value.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ReadingInterharmonic" type="ReadingInterharmonic"/>
+	<xs:complexType name="ReadingInterharmonic">
+		<xs:annotation>
+			<xs:documentation>Interharmonics are represented as a rational number 'numerator' / 'denominator', and harmonics are represented using the same mechanism and identified by 'denominator'=1.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="denominator" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Interharmonic denominator. Value 0 means not applicable. Value 2 is used in combination with 'numerator'=1 to represent interharmonic 1/2. Finally, value 1 indicates the harmonic of the order specified with 'numerator'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numerator" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Interharmonic numerator. Value 0 means not applicable. Value 1 is used in combination with 'denominator'=2 to represent interharmonic 1/2, and with 'denominator'=1 it represents fundamental frequency. Finally, values greater than 1 indicate the harmonic of that order (e.g., 'numerator'=5 is the fifth harmonic).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ReadingQuality" type="ReadingQuality"/>
+	<xs:complexType name="ReadingQuality">
+		<xs:annotation>
+			<xs:documentation>Quality of a specific reading value or interval reading value. Note that more than one quality may be applicable to a given reading. Typically not used unless problems or unusual conditions occur (i.e., quality for each reading is assumed to be 'good' unless stated otherwise in associated reading quality).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="intervalReading" type="xs:anyURI" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Interval reading value to which this quality applies.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="quality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Quality, to be specified if different than ReadingType.defaultQuality.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reading" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Reading value to which this quality applies.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ReadingType" type="ReadingType"/>
+	<xs:complexType name="ReadingType">
+		<xs:annotation>
+			<xs:documentation>Detailed description for a type of a reading value. Values in attributes allow for the description of metadata about a measurement or measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="accumulation" type="AccumulationKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Accumulation behavior of a reading over time, usually 'measuringPeriod', to be used with individual endpoints (as opposed to 'macroPeriod' and 'aggregate' that are used to describe aggregations of data from individual endpoints).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="aggregate" type="DataQualifierKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Salient attribute of the reading data aggregated from individual endpoints. This is mainly used to define a mathematical operation carried out over 'macroPeriod', but may also be used to describe an attribute of the data when the 'macroPeriod' is not defined.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="argument" type="RationalNumber" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Argument used to introduce numbers into the unit of measure description where they are needed (e.g., 4 where the measure needs an argument such as CEMI(n=4)). Most arguments used in practice however will be integers (i.e., 'denominator'=1).
+Value 0 in 'numerator' and 'denominator' means not applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="commodity" type="CommodityKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Commodity being measured.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="consumptionTier" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>In case of common flat-rate pricing for power, in which all purchases are at a given rate, 'consumptionTier'=0. Otherwise, the value indicates the consumption tier, which can be used in conjunction with time of use or critical peak period pricing.
+Consumption tier pricing refers to the method of billing in which a certain "block" of energy is purchased/sold at one price, after which the next block of energy is purchased at another price, and so on, all throughout a defined period. At the start of the defined period, consumption is initially zero, and any usage is measured against the first consumption tier ('consumptionTier'=1). If this block of energy is consumed before the end of the period, energy consumption moves to be reconed against the second consumption tier ('consumptionTier'=2), and so on. At the end of the defined period, the consumption accumulator is reset, and usage within the 'consumptionTier'=1 restarts.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cpp" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Critical peak period bucket the reading value is attributed to. Value 0 means not applicable. Even though critical peak period is usually considered a specialized form of time of use, this attribute is defined explicitly for flexibility.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currency" type="CurrencyKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Metering-specific currency.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="defaultQuality" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The default quality of readings. It may be overridden for specific measurements in Reading or IntervalReading classes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="flowDirection" type="FlowDirectionKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Flow direction for a reading where the direction of flow of the commodity is important (for electricity measurements this includes current, energy, power, and demand).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="interharmonic" type="ReadingInterharmonic" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indication of a "harmonic" or "interharmonic" basis for the measurement. Value 0 in 'numerator' and 'denominator' means not applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IntervalBlocks" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>All blocks containing interval reading values with this type information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="intervalLength" type="xs:duration" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>(if incremental reading value) Length of increment interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="macroPeriod" type="MacroPeriodKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Time period of interest that reflects how the reading is viewed or captured over a long period of time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="measurementKind" type="MeasurementKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Identifies "what" is being measured, as refinement of 'commodity'. When combined with 'unit', it provides detail to the unit of measure. For example, 'energy' with a unit of measure of 'kWh' indicates to the user that active energy is being measured, while with 'kVAh' or 'kVArh', it indicates apparent energy and reactive energy, respectively. 'power' can be combined in a similar way with various power units of measure: Distortion power ('distortionVoltAmperes') with 'kVA' is different from 'power' with 'kVA'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="measuringPeriod" type="TimeAttributeKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Time attribute inherent or fundamental to the reading value (as opposed to 'macroPeriod' that supplies an "adjective" to describe aspects of a time period with regard to the measurement). It refers to the way the value was originally measured and not to the frequency at which it is reported or presented. For example, an hourly interval of consumption data would have value 'hourly' as an attribute. However in the case of an hourly sampled voltage value, the meterReadings schema would carry the 'hourly' interval size information.
+It is common for meters to report demand in a form that is measured over the course of a portion of an hour, while enterprise applications however commonly assume the demand (in kW or kVAr) normalised to 1 hour. The sytem that receives readings directly from the meter therefore must perform this transformation before publishing readings for use by the other enterprise systems. The scalar used is chosen based on the block size (not any sub-interval size).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MeterReadings" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>MeterReadings with this ReadingType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="multiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Metering-specific multiplier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phases" type="PhaseCodeKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Meteric-specific phase code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Readings" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>All reading values with this type information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tou" type="xs:integer" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Time of use bucket the reading value is attributed to. Value 0 means not applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="unit" type="UnitSymbolKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Metering-specific unit.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RoleFlags" type="RoleFlags"/>
+	<xs:complexType name="RoleFlags">
+		<xs:annotation>
+			<xs:documentation>Describes a set of specific communication or physical attributes that the associated UsagePoint has. The term RoleFlags in this specific case pertains to the application-specific nature of the UsagePoint. More than one of these flags can be true for any UsagePoint.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="isDC" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Is direct current (DC) rather than alternating current (AC)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isDER" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Is a DER point</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isMirror" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents a copy or mirror of an original UsagePoint</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isOneway" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Device is a one-way communications device that can only transmit its information and cannot receive.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isPEV" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Is a PEV Usage Point</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isPremiseAggregationPoint" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>This UsagePoint aggregates the contributions of other UsagePoints in the premise</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isRevenueQuality" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Is revenue quality.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isVirtual" type="xs:boolean" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Is used to indicate that the UsagePoint is virtual (that is, not a real physical measurement). This may be the result of a computation or estimation. Note that isVirtual was added to IEC 61968-9 2nd ed model of a UsagePoint which occurred after its adoption by NAESB. It has since been added to Green Button and will be added to the next release of "NAESB Business Practices and Information Models to Support Priority Action Plan 10 - Standardized Energy Usage Information standards, Revision 1.1, 2012.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ServiceCategory" type="ServiceCategory"/>
+	<xs:complexType name="ServiceCategory">
+		<xs:annotation>
+			<xs:documentation>Category of service provided to the customer.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="kind" type="ServiceKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Kind of service.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UsagePoint" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>All service delivery points that deliver this category of service.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ServiceDeliveryPoint" type="ServiceDeliveryPoint"/>
+	<xs:complexType name="ServiceDeliveryPoint">
+		<xs:annotation>
+			<xs:documentation>Logical point on the network where the ownership of the service changes hands. It is one of potentially many service points within a service location, delivering service in accordance with a customer agreement. Used at the place where a meter may be installed.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TariffProfile" type="TariffProfile" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>TariffProfile governing this ServiceDeliveryPoint.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name is any free human readable and possibly non unique text naming the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UsagePoints" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>UsagePoints at this ServiceDeliveryPoint</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ServiceKind">
+		<xs:annotation>
+			<xs:documentation>Kind of service.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="electricity">
+				<xs:annotation>
+					<xs:documentation>Electricity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gas">
+				<xs:annotation>
+					<xs:documentation>Gas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="water">
+				<xs:annotation>
+					<xs:documentation>Water</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="time">
+				<xs:annotation>
+					<xs:documentation>Time</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="heat">
+				<xs:annotation>
+					<xs:documentation>Heat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="refuse">
+				<xs:annotation>
+					<xs:documentation>Refuse</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sewerage">
+				<xs:annotation>
+					<xs:documentation>Sewerage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rates">
+				<xs:annotation>
+					<xs:documentation>Rates</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tvLicence">
+				<xs:annotation>
+					<xs:documentation>TV License</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="internet">
+				<xs:annotation>
+					<xs:documentation>Internet</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation>Other</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cold">
+				<xs:annotation>
+					<xs:documentation>Includes chilled water and ice</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ServiceSupplier" type="ServiceSupplier"/>
+	<xs:complexType name="ServiceSupplier">
+		<xs:annotation>
+			<xs:documentation>Organization that provides services to customers.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ReadingTypes" type="ReadingType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>ReadingTypes supported by ServiceSupplier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Customers" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Customers supported by a ServiceSupplier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="kind" type="SupplierKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Kind of supplier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name is any free human readable and possibly non unique text naming the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SummaryMeasurement" type="SummaryMeasurement"/>
+	<xs:complexType name="SummaryMeasurement">
+		<xs:annotation>
+			<xs:documentation>An aggregated summary measurement reading.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="powerOfTenMultiplier" type="SiScaleCodeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The multiplier part of the unit of measure, e.g., "kilo" (k)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="readingTypeRef" type="xs:anyURI" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Reference to a full ReadingType that describes the measurement. Note only one of readingTypeRef or unit + powerofTenMultiplier are used in any single instance of SummaryMeasurement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timeStamp" type="UTCDateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The date and time (if needed) of the summary measurement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="unit" type="UnitSymbolKind" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The units of the reading, e.g., "Wh".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="value" type="xs:float" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The value of the summary measurement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SupplierKind">
+		<xs:annotation>
+			<xs:documentation>Kind of supplier.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="utility">
+				<xs:annotation>
+					<xs:documentation>Utility</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="retailer">
+				<xs:annotation>
+					<xs:documentation>Retailer</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation>Other</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="district">
+				<xs:annotation>
+					<xs:documentation>District</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="intermediary">
+				<xs:annotation>
+					<xs:documentation>Intermediary</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="local">
+				<xs:annotation>
+					<xs:documentation>Local</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="microgrid">
+				<xs:annotation>
+					<xs:documentation>Microgrid</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="TariffProfile" type="TariffProfile"/>
+	<xs:complexType name="TariffProfile">
+		<xs:annotation>
+			<xs:documentation>A schedule of charges; structure associated with Tariff that allows the definition of complex tariff structures such as step and time of use.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name is any free human readable and possibly non unique text naming the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="TimeAttributeKind">
+		<xs:annotation>
+			<xs:documentation>This value identifies the time period during which this measurement was performed. For example if averaged (see DataQualifierKind) what period is averaged. Other complex time periods for how a measurement is computed are identified.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="twelveMinute">
+				<xs:annotation>
+					<xs:documentation>12-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twoHour">
+				<xs:annotation>
+					<xs:documentation>2-hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fourHour">
+				<xs:annotation>
+					<xs:documentation>4-hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sixHour">
+				<xs:annotation>
+					<xs:documentation>6-hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twelveHour">
+				<xs:annotation>
+					<xs:documentation>12-hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="specifiedInterval">
+				<xs:annotation>
+					<xs:documentation>The interval length is described in RationalNumber.numerator in seconds. Attribute RationalNumber.denominator should be '1' for whole seconds.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="specifiedFixedBlock">
+				<xs:annotation>
+					<xs:documentation>The fixed block duration is described in RationalNumber.numerator in seconds. RationalNumber.denominator should be '1' for whole seconds.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="specifiedRollingBlock">
+				<xs:annotation>
+					<xs:documentation>The rolling block size is described by RationalNumber.numerator in seconds, and the sub-interval size by RationalNumber.denominator in seconds.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="none">
+				<xs:annotation>
+					<xs:documentation>Not Applicable</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tenMinute">
+				<xs:annotation>
+					<xs:documentation>10-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fifteenMinute">
+				<xs:annotation>
+					<xs:documentation>15-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="oneMinute">
+				<xs:annotation>
+					<xs:documentation>1-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twentyfourHour">
+				<xs:annotation>
+					<xs:documentation>24-hour</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="thirtyMinute">
+				<xs:annotation>
+					<xs:documentation>30-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fiveMinute">
+				<xs:annotation>
+					<xs:documentation>5-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sixtyMinute">
+				<xs:annotation>
+					<xs:documentation>60-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twoMinute">
+				<xs:annotation>
+					<xs:documentation>2-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="threeMinute">
+				<xs:annotation>
+					<xs:documentation>3-minute</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="present">
+				<xs:annotation>
+					<xs:documentation>Within the present period of time</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="previous">
+				<xs:annotation>
+					<xs:documentation>Shifted within the previous monthly cycle and data set</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="twentyMinute">
+				<xs:annotation>
+					<xs:documentation>20-minute interval</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock60Min">
+				<xs:annotation>
+					<xs:documentation>60-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock30Min">
+				<xs:annotation>
+					<xs:documentation>30-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock20Min">
+				<xs:annotation>
+					<xs:documentation>20-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock15Min">
+				<xs:annotation>
+					<xs:documentation>15-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock10Min">
+				<xs:annotation>
+					<xs:documentation>10-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock5Min">
+				<xs:annotation>
+					<xs:documentation>5-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fixedBlock1Min">
+				<xs:annotation>
+					<xs:documentation>1-minute Fixed Block</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl30MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 30-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl20MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 20-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl15MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 15-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl12MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 12-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl10MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 10-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl6MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 6-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl5MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 5-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock60MinIntvl4MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>60-minute Rolling Block with 4-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl15MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 15-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl10MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 10-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl6MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 6-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl5MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 5-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl3MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 3-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock30MinIntvl2MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>30-minute Rolling Block with 2-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock15MinIntvl5MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>15-minute Rolling Block with 5-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock15MinIntvl3MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>15-minute Rolling Block with 3-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock15MinIntvl1MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>15-minute Rolling Block with 1-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock10MinIntvl5MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>10-minute Rolling Block with 5-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock10MinIntvl2MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>10-minute Rolling Block with 2-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock10MinIntvl1MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>10-minute Rolling Block with 1-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rollingBlock5MinIntvl1MinSubIntvl">
+				<xs:annotation>
+					<xs:documentation>5-minute Rolling Block with 1-minute sub-intervals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="UsagePoint" type="UsagePoint"/>
+	<xs:complexType name="UsagePoint">
+		<xs:annotation>
+			<xs:documentation>Logical point on a network at which consumption or production is either physically measured (e.g., metered) or estimated (e.g., unmetered street lights).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>A human readable description of the object. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="isVirtual" type="xs:boolean" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Is used to indicate that the UsagePoint is virtual (that is, not a real physical measurement). This may be the result of a computation or estimation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="roleFlags" type="RoleFlags" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The set of roles pertinent to this UsagePoint</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="status" type="xs:integer" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Status of this UsagePoint:
+0 - Off
+1 - On</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EndDeviceAssets" type="EndDeviceAsset" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>All end device assets at this usage point.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EnergyUsageInformation" type="EnergyUsageInformation" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>EnergyUsageInformation collection that this UsagePoint is part of.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PositionPoint" type="PositionPoint" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>PositionPoint describing location of this UsagePoint.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ServiceCategory" type="ServiceCategory" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Service category delivered by this service delivery point.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ServiceDeliveryPoints" type="ServiceDeliveryPoint" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>ServiceDeliveryPoints associated with this UsagePoint.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="UsageSummary" type="UsageSummary"/>
+	<xs:complexType name="UsageSummary">
+		<xs:annotation>
+			<xs:documentation>Summary of usage for a billing period. 
+
+Note: This model was extended using the work of OpenADE 2015 for ESPI. These extensions are proposed for the next revision of the NAESB standard REQ.21. Also extended are SummaryMeasurement and LineDetail.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FSGIMIdentifiedObject">
+				<xs:sequence>
+					<xs:element name="billingPeriod" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The billing period to which the included measurements apply. May also be an off-bill arbitrary period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="billLastPeriod" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The amount of the bill for the referenced billingPeriod  in the currency attribute of this UsageSummary (e.g., 840 = USD, US dollar).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="billToDate" type="xs:float" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the bill amount as of the date the summary is generated, in the currency attribute of this UsageSummary (e.g., 840 = USD, US dollar).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="commodity" type="CommodityKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation> The commodity for this summary report.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="costAdditionalLastPeriod" type="xs:float" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Additional charges from the for the referenced billingPeriod, in the currency attribute of this UsageSummary (e.g., 840 = USD, US dollar).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="costAdditionalLastPeriodDetail" type="LineItem" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Additional charges from the for the referenced billingPeriod which in total add up to costAdditionalLastPeriod, in the currency attribute of this UsageSummary (e.g., 840 = USD, US dollar).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currency" type="CurrencyKind" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The ISO 4217 code indicating the currency applicable to the bill amounts in the summary. See list at http://www.unece.org/cefact/recommendations/rec09/rec09_ecetrd203.pdf</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currentBillingPeriodOverallConsumption" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The total consumption for the billing period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currentDayLastYearNetConsumption" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The amount of energy consumed one year ago interpreted as same day of week same week of year (see ISO 8601).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currentDayNetConsumption" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Net consumption for the current day (delivered - received).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currentDayOverallConsumption" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Overall energy consumption for the current day.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="overallConsumptionLastPeriod" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The amount of energy consumed in for the referenced billingPeriod.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="peakDemand" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, peak demand recorded for the current period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="previousDayLastYearOverallConsumption" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the amount of energy consumed on the previous day one year ago interpreted as same day of week same week of year (see ISO 8601) based on the day of the statusTimestamp.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="previousDayNetConsumption" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, net consumption for the previous day relative to the day of the statusTimestamp.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="previousDayOverallConsumption" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the total consumption for the previous day based on the day of the statusTimestamp.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="qualityOfReading" type="QualityOfReading" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Indication of the quality of the summary readings</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ratchetDemand" type="SummaryMeasurement" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the current ratchet demand value for the ratchet demand over the ratchetDemandPeriod.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ratchetDemandPeriod" type="UTCDateTimeInterval" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The period over which the ratchet demand applies.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="statusTimeStamp" type="UTCDateTime" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Date/Time status of this UsageSummary.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>
